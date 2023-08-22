@@ -1,0 +1,19 @@
+{
+  "name": "nestnook-backend",
+  "version": "1.0.0",
+  "description": "Backend of NestNook website",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedrobraghin/nestnook-backend.git"
+  },
+  "author": "Pedro Braghin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pedrobraghin/nestnook-backend/issues"
+  },
+  "homepage": "https://github.com/pedrobraghin/nestnook-backend#readme"
+}
