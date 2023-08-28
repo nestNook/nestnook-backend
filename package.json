@@ -4,7 +4,7 @@
   "description": "Backend of NestNook website",
   "main": "main.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "test:component": "cucumber-js",
     "test:mutation": "stryker run",
     "prepare": "husky install",
