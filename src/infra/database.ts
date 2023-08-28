@@ -25,3 +25,5 @@ export class Database {
     this.prisma?.$disconnect();
   }
 }
+
+export default new Database();
