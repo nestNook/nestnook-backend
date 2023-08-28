@@ -1,18 +1,24 @@
-import { Server } from './infra/server';
-import { Database } from './infra/database';
+import Server, { Server as ServerType } from './infra/server';
+import Database, { Database as DatabaseType } from './infra/database';
 
-class App {
-  private server: Server;
-  private database: Database;
+export class App {
+  private server: ServerType;
+  private database: DatabaseType;
 
   constructor() {
-    this.server = new Server();
-    this.database = new Database();
+    this.server = Server;
+    this.database = Database;
   }
 
   async initialize() {
     await this.database.connect();
     this.server.start();
+
+    process.on('SIGALRM', () => {
+      this.server.stop(async () => {
+        await this.database.disconnect();
+      });
+    });
   }
 }
 
