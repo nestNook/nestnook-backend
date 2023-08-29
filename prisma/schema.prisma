@@ -26,8 +26,8 @@ model User {
 }
 
 model Address {
-  id           String   @id
-  user         User     @relation(fields: [user_id], references: [id])
+  id           String       @id
+  user         User         @relation(fields: [user_id], references: [id])
   user_id      String
   postal_code  String
   country      String
@@ -35,6 +35,53 @@ model Address {
   state        String
   city         String
   neighborhood String
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+  Fabricator   Fabricator[]
+}
+
+model Product {
+  id            String     @id @default(uuid())
+  sku           String
+  name          String
+  description   String
+  category      String
+  price         Decimal
+  quantity      Int
+  currency      String
+  sector        Sector     @relation(fields: [sector_id], references: [id])
+  sector_id     String
+  fabricator    Fabricator @relation(fields: [fabricator_id], references: [id])
+  fabricator_id String
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+}
+
+model Fabricator {
+  id           String    @id @default(uuid())
+  registry     String
+  name         String
+  address      Address   @relation(fields: [adress_id], references: [id])
+  adress_id    String
+  phone_number String
+  email        String
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  Product      Product[]
+}
+
+model Sector {
+  id         String    @id @default(uuid())
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  Product    Product[]
+}
+
+model ProductImage {
+  id String @id @default(uuid())
+  image_id String
+  product_id String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
