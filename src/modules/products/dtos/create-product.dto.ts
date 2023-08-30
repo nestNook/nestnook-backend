@@ -1,5 +1,4 @@
 export interface CreateProductDTO {
-  id: string;
   sku: string;
   name: string;
   description: string;
