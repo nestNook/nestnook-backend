@@ -46,7 +46,7 @@ model Product {
   name          String
   description   String
   category      String
-  price         Decimal
+  price         BigInt
   quantity      Int
   currency      String
   sector        Sector     @relation(fields: [sector_id], references: [id])
@@ -79,9 +79,9 @@ model Sector {
 }
 
 model ProductImage {
-  id String @id @default(uuid())
-  image_id String
+  id         String   @id @default(uuid())
+  image_id   String
   product_id String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
