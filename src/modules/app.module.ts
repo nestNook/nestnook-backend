@@ -1,12 +1,13 @@
-import { BaseRouter } from '../common/baseRouter.interface';
 import ProductsModule from './products/products.module';
+import { BaseModule } from '../common/baseModule';
+import { BaseRouter } from '../common/baseRouter.interface';
 
 export class AppModule {
-  public routers: BaseRouter[];
+  public readonly routers: BaseRouter[];
 
-  constructor(routers: BaseRouter[]) {
-    this.routers = routers;
+  constructor(...modules: BaseModule[]) {
+    this.routers = modules.map((module) => module.router);
   }
 }
 
-export default new AppModule([ProductsModule.router]);
+export default new AppModule(ProductsModule);
