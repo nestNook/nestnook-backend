@@ -4,7 +4,7 @@ export interface CreateProductDTO {
   name: string;
   description: string;
   category: string;
-  price: number;
+  price: bigint;
   quantity: number;
   currency: string;
   sector_id: string;
