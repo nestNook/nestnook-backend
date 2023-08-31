@@ -10,7 +10,7 @@ export class SectorRouter implements BaseRouter {
     this.routes = [
       {
         path: '/',
-        handler: sectorController.createProduct,
+        handler: sectorController.createSector,
         method: 'post',
         middlewares: [],
       },

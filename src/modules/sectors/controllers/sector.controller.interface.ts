@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 export interface SectorControllerInterface {
-  createProduct(
+  createSector(
     req: Request,
     res: Response,
     next: NextFunction

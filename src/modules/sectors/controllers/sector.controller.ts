@@ -8,7 +8,7 @@ import { Controller } from '../../../common/controller.decorator';
 export class SectorController implements SectorControllerInterface {
   constructor(private readonly sectorService: SectorServiceInterface) {}
 
-  async createProduct(
+  async createSector(
     req: Request,
     res: Response,
     next: NextFunction
