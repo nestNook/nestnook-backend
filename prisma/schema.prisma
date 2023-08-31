@@ -27,6 +27,8 @@ model User {
   Address        Address[]
   Carts          Cart[]
   Admin          Admin[]
+  Comments       Comment[]
+  Review         Review[]
 }
 
 model Address {
@@ -234,4 +236,71 @@ model RolePermission {
   permission_id String
   created_at    DateTime   @default(now())
   updated_at    DateTime   @updatedAt
+}
+
+model Comment {
+  id           String         @id @default(uuid())
+  title        String
+  comment      String
+  user         User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  parent_id    String?
+  user_id      String
+  edited       Boolean?       @default(false)
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  CommentImage CommentImage[]
+  Review       Review[]
+}
+
+model CommentImage {
+  id         String   @id @default(uuid())
+  comment    Comment  @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  comment_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
+  stars      Int
+  comment    Comment  @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  comment_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model EmailStandardMessage {
+  id          String   @id @default(uuid())
+  from        String
+  subject     String
+  content     String
+  template_id String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model EmailTemplate {
+  id         String   @id @default(uuid())
+  html       String
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model EmailTemplatePlaceholder {
+  id                String   @id @default(uuid())
+  email_template_id String
+  placeholder_id    String
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+}
+
+model Placeholder {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
