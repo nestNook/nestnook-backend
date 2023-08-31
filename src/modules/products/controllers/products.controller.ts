@@ -7,9 +7,14 @@ import { ProductsServiceInterface } from '../services/products.service.interface
 export class ProductsController implements ProductsControllerInterface {
   constructor(private readonly productsService: ProductsServiceInterface) {}
 
-  async createProduct(req: Request, res: Response, next: NextFunction) {
+  async createProduct(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    const product = await this.productsService.createProduct(req.body);
+
+    console.log(product)
+
     return res.status(201).json({
-      data: req.body,
-    });
+      msg: 'Product created',
+      product
+    })
   }
 }
