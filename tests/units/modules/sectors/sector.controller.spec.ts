@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import request from 'supertest';
 import Server from '../../../../src/infra/server';
 import { createSectorMock, sectorMock } from './mocks/sector-mock';
