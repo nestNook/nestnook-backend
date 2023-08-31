@@ -5,7 +5,7 @@ import { ProductsRepositoryInterface } from './products.repository.interface';
 
 export class ProductsRepository implements ProductsRepositoryInterface {
   async createProduct(productDto: CreateProductDTO): Promise<Product | null> {
-    const product = await prisma.product.create({data: productDto})
-    return product
+    const product = await prisma.product.create({ data: productDto });
+    return product;
   }
 }
