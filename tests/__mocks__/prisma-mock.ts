@@ -5,4 +5,8 @@ export const mockPrisma = {
     findMany: jest.fn(),
     create: jest.fn(),
   },
+  sector: {
+    create: jest.fn(),
+    findFirst: jest.fn(),
+  },
 };
