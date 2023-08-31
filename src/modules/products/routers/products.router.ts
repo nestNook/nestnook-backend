@@ -9,10 +9,6 @@ export class ProductsRouter implements BaseRouter {
   constructor(
     private readonly productsController: ProductsControllerInterface
   ) {
-    this.configRoutes();
-  }
-
-  configRoutes() {
     this.routes = [
       {
         path: '/',
