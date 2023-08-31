@@ -61,8 +61,8 @@ model Fabricator {
   id           String    @id @default(uuid())
   registry     String
   name         String
-  address      Address   @relation(fields: [adress_id], references: [id])
-  adress_id    String
+  address      Address   @relation(fields: [address_id], references: [id])
+  address_id   String
   phone_number String
   email        String
   created_at   DateTime  @default(now())
