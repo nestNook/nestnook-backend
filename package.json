@@ -10,7 +10,8 @@
     "prepare": "husky install",
     "start": "node ./dist/main.js",
     "start:dev": "tsnd --rs --respawn --transpile-only ./src/main.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "gm": "sh ./scripts/generate-module.sh"
   },
   "repository": {
     "type": "git",
