@@ -1,4 +1,6 @@
+import SectorModule from './sectors/sector.module';
 import ProductsModule from './products/products.module';
+
 import { BaseModule } from '../common/baseModule';
 import { BaseRouter } from '../common/baseRouter.interface';
 
@@ -10,4 +12,4 @@ export class AppModule {
   }
 }
 
-export default new AppModule(ProductsModule);
+export default new AppModule(ProductsModule, SectorModule);
