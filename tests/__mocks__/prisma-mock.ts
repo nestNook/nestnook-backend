@@ -9,4 +9,7 @@ export const mockPrisma = {
     create: jest.fn(),
     findFirst: jest.fn(),
   },
+  fabricator: {
+    create: jest.fn(),
+  },
 };
