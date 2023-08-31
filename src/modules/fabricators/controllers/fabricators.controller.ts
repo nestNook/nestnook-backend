@@ -7,12 +7,12 @@ import { FabricatorServiceInterface } from '../services/fabricators.service.inte
 export class FabricatorsController implements FabricatorsControllerInterface {
   constructor(private readonly fabricatorService: FabricatorServiceInterface) {}
 
-  async createProduct(
+  async createFabricator(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response | void> {
-    const fabricator = await this.fabricatorService.createProduct(req.body);
+    const fabricator = await this.fabricatorService.createFabricator(req.body);
 
     return res.status(201).json({
       status: 'success',

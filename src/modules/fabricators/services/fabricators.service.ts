@@ -7,10 +7,10 @@ export class FabricatorsService implements FabricatorServiceInterface {
     private readonly fabricatorssRepository: FabricatorRepositoryInterface
   ) {}
 
-  async createProduct(
+  async createFabricator(
     createFabricatorDto: CreateFabricatorDTO
   ): Promise<Fabricator | null> {
-    const fabricator = await this.fabricatorssRepository.createProduct(
+    const fabricator = await this.fabricatorssRepository.createFabricator(
       createFabricatorDto
     );
     return fabricator;

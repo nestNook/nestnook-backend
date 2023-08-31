@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 export interface FabricatorsControllerInterface {
-  createProduct(
+  createFabricator(
     req: Request,
     res: Response,
     next: NextFunction

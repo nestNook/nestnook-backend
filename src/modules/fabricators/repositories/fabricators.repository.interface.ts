@@ -1,6 +1,6 @@
 import { CreateFabricatorDTO, Fabricator } from '../dtos';
 export interface FabricatorRepositoryInterface {
-  createProduct(
+  createFabricator(
     createFabricatorDto: CreateFabricatorDTO
   ): Promise<Fabricator | null>;
 }
