@@ -1,6 +1,4 @@
-import { CreateFabricatorDTO } from '../dtos/create-fabricator.dto';
-import { Fabricator } from '../dtos/fabricator.dto';
-
+import { CreateFabricatorDTO, Fabricator } from '../dtos';
 export interface FabricatorRepositoryInterface {
   createProduct(
     createFabricatorDto: CreateFabricatorDTO

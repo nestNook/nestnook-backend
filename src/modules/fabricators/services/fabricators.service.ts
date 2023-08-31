@@ -1,5 +1,4 @@
-import { CreateFabricatorDTO } from '../dtos/create-fabricator.dto';
-import { Fabricator } from '../dtos/fabricator.dto';
+import { CreateFabricatorDTO, Fabricator } from '../dtos';
 import { FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { FabricatorServiceInterface } from './fabricators.service.interface';
 
