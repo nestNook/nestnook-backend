@@ -1,6 +1,6 @@
-import config from '../config';
+import config from '@config/index';
 import AppModule from '../modules/app.module';
-import express, { Application } from 'express';
+import express, { Application, Router } from 'express';
 import { Server as HttpServer } from 'http';
 import { Route } from '../common/route.interface';
 import { BaseRouter } from '../common/baseRouter.interface';
@@ -8,9 +8,11 @@ import { BaseRouter } from '../common/baseRouter.interface';
 export class Server {
   public app: Application;
   public server: HttpServer | undefined;
+  private router: Router;
 
   constructor() {
     this.app = express();
+    this.router = Router();
   }
 
   start() {
@@ -31,13 +33,15 @@ export class Server {
 
   routes() {
     AppModule.routers.forEach((router) => this.addRouter(router));
+    this.app.use(config.apiPrefix, this.router);
+    console.log(config.apiPrefix);
     console.log(`Server is running on port ${config.port}`);
   }
 
   addRouter(router: BaseRouter) {
     const routePrefix = router.routePrefix ?? '/';
     console.group(`[${routePrefix}]:`);
-    this.app.use(routePrefix, this.mapRoutes(router.routes));
+    this.router.use(routePrefix, this.mapRoutes(router.routes));
     console.groupEnd();
   }
 
