@@ -1,3 +1,4 @@
+import UsersModule from './users/users.module';
 import SectorModule from './sectors/sector.module';
 import ProductsModule from './products/products.module';
 import FabricatorsModule from './fabricators/fabricators.module';
@@ -13,4 +14,9 @@ export class AppModule {
   }
 }
 
-export default new AppModule(ProductsModule, SectorModule, FabricatorsModule);
+export default new AppModule(
+  ProductsModule,
+  SectorModule,
+  FabricatorsModule,
+  UsersModule
+);
