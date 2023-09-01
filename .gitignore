@@ -3,3 +3,6 @@
 # stryker temp files
 .stryker-tmp
 /coverage/
+/dist/
+/coverage/
+/.vscode/

@@ -1,0 +1,6 @@
+import { MODULE_NAMEServiceInterface } from './MODULE_FILENAME.service.interface';
+import { MODULE_NAMERepositoryInterface } from '../repositories/MODULE_FILENAME.repository.interface';
+
+export class MODULE_NAMEService implements MODULE_NAMEServiceInterface {
+  constructor(private readonly MODULE_VARIABLE_NAMERepository: MODULE_NAMERepositoryInterface) {}
+}
