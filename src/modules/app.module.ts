@@ -14,4 +14,4 @@ export class AppModule {
   }
 }
 
-export default new AppModule(ProductsModule, SectorModule, FabricatorsModule);
+export default new AppModule(ProductsModule, SectorModule, FabricatorsModule, AddressModule);
