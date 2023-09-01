@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Controller } from '../../../common/controller.decorator';
 import { FabricatorsControllerInterface } from './fabricators.controller.interface';
 import { FabricatorServiceInterface } from '../services/fabricators.service.interface';
+import { CreateFabricatorDTO } from '../dtos';
 
 @Controller
 export class FabricatorsController implements FabricatorsControllerInterface {
@@ -12,7 +13,8 @@ export class FabricatorsController implements FabricatorsControllerInterface {
     res: Response,
     next: NextFunction
   ): Promise<Response | void> {
-    const fabricator = await this.fabricatorService.createFabricator(req.body);
+    const createFabricatorDto: CreateFabricatorDTO = req.body
+    const fabricator = await this.fabricatorService.createFabricator(createFabricatorDto);
 
     return res.status(201).json({
       status: 'success',
