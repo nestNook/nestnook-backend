@@ -7,12 +7,12 @@ export class FabricatorsRouter implements BaseRouter {
   public routes: Route[] = [];
 
   constructor(
-    private readonly fabricatorsController: FabricatorsControllerInterface
+    readonly fabricatorsController: FabricatorsControllerInterface
   ) {
     this.routes = [
       {
         path: '/',
-        handler: this.fabricatorsController.createFabricator,
+        handler: fabricatorsController.createFabricator,
         method: 'post',
         middlewares: [],
       },
