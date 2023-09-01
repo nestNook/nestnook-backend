@@ -4,13 +4,13 @@ import { AddressControllerInterface } from '../controllers/address.controller.in
 
 export class AddressRouter implements BaseRouter {
   routePrefix?: string | undefined = '/address';
-  routes: Route[];
+  public routes: Route[] = [];
 
-  constructor(readonly addressController: AddressControllerInterface) {
+  constructor(private readonly addressController: AddressControllerInterface) {
     this.routes = [
       {
         path: '/',
-        handler: addressController.createAddress,
+        handler: this.addressController.createAddress,
         method: 'post',
         middlewares: [],
       },

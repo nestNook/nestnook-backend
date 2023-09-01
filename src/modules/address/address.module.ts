@@ -1,15 +1,13 @@
-import { BaseModule } from "../../common/baseModule";
 import { AddressRouter } from "./routers/address.router";
 import { AddressService } from "./services/address.service";
-import { BaseRouter } from "../../common/baseRouter.interface";
 import { AddressController } from "./controllers/address.controller";
 import { AddressRepository } from "./repositories/address.repository";
 
-export class AddressModule implements BaseModule{
-  public router: BaseRouter;
+export class AddressModule {
+  public repository: AddressRepository;
   public service: AddressService;
   public controller: AddressController;
-  public repository: AddressRepository;
+  public router: AddressRouter;
 
   constructor() {
     this.repository = new AddressRepository();

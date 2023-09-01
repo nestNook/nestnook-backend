@@ -2,7 +2,6 @@ import { AddressControllerInterface } from './address.controller.interface';
 import { Request, Response, NextFunction } from 'express';
 import { AddressServiceInterface } from '../services/address.service.interface';
 import { Controller } from '../../../common/controller.decorator';
-import { CreateAddressDTO } from '../dtos';
 
 @Controller
 export class AddressController implements AddressControllerInterface {
@@ -13,8 +12,7 @@ export class AddressController implements AddressControllerInterface {
     res: Response,
     next: NextFunction
   ): Promise<Response> {
-    const cresteAddressDto: CreateAddressDTO = req.body;
-    const address = await this.addressService.createAddress(cresteAddressDto);
+    const address = await this.addressService.createAddress(req.body);
 
     return res.status(201).json({
       status: 'success',
