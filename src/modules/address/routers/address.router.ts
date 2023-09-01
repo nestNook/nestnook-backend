@@ -6,11 +6,11 @@ export class AddressRouter implements BaseRouter {
   routePrefix?: string | undefined = '/address';
   public routes: Route[] = [];
 
-  constructor(private readonly addressController: AddressControllerInterface) {
+  constructor(readonly addressController: AddressControllerInterface) {
     this.routes = [
       {
         path: '/',
-        handler: this.addressController.createAddress,
+        handler: addressController.createAddress,
         method: 'post',
         middlewares: [],
       },
