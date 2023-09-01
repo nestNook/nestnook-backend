@@ -1,0 +1,8 @@
+import { MODULE_NAMEServiceInterface } from '../services/MODULE_FILENAME.service.interface';
+import { MODULE_NAMEControllerInterface } from './MODULE_FILENAME.controller.interface';
+import { Controller } from '@common/controller.decorator';
+
+@Controller
+export class MODULE_NAMEController implements MODULE_NAMEControllerInterface {
+  constructor(private readonly MODULE_VARIABLE_NAMEService: MODULE_NAMEServiceInterface) {}
+}
