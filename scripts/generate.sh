@@ -109,6 +109,7 @@ sed -i "s/$module_name_placeholder/$module_name/g" $repository_interface_absolut
 cp "scripts/base/module.router.txt" $router_absolute_path
 sed -i "s/$module_name_placeholder/$module_name/g" $router_absolute_path
 sed -i "s/$module_filename_placeholder/$module_file_name/g" $router_absolute_path
+sed -i "s/$module_variable_name_placeholder/$module_variable_name/g" $router_absolute_path
 
 ## Module class
 cp "scripts/base/module.module.txt" $module_class_absolute_path
