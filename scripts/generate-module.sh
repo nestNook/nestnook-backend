@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-  echo "No module name provided. Usage: $0 m<module_name>"
+  echo "No module name provided. Usage: $0 <module_name>"
   exit 1
 fi
 
@@ -30,96 +30,137 @@ base_file_name=$(echo "$base_module_name" | tr '-' ' ' | sed 's/\b\(.\)/\u\1/g' 
 
 
 export_class="export class "
+export_interface="export interface "
+
+
+######################################################################
+
 
 echo "Generating controller"
 
-echo $base_file_name
+# Contents
 
-cc="$export_class$base_file_name"
-cc+="Controller { }"
+controller_interface_name="$base_file_name"
+controller_interface_name+="ControllerInterface"
 
-ci="$export_class$base_file_name"
-ci+="ControllerInterface{ }"
+controller_interface="$export_interface"
+controller_interface+="$controller_interface_name"
+controller_interface+=" {}"
 
-ccf=$base_controllers_path
-ccf+="/"
-ccf+="$base_module_name"
-ccf+=".controller.ts"
+controllerClass="import { $controller_interface_name } from './$base_module_name.controller.interface';\n\n"
+controllerClass+="$export_class$base_file_name"
+controllerClass+="Controller implements $controller_interface_name {}"
 
-cif=$base_controllers_path
-cif+="/"
-cif+="$base_module_name"
-cif+=".controller.interface.ts"
+# Files
+controllerClassFile=$base_controllers_path
+controllerClassFile+="/"
+controllerClassFile+="$base_module_name"
+controllerClassFile+=".controller.ts"
+
+controllerInterfaceFile=$base_controllers_path
+controllerInterfaceFile+="/"
+controllerInterfaceFile+="$base_module_name"
+controllerInterfaceFile+=".controller.interface.ts"
 
 
-echo $cc > $ccf
-echo $ci > $cif
+echo -e $controllerClass > $controllerClassFile
+echo -e $controller_interface > $controllerInterfaceFile
+
+
+######################################################################
+
 
 echo "Generating service"
 
-sc="$export_class$base_file_name"
-sc+="Service { }"
+service_interface_name="$base_file_name"
+service_interface_name+="ServiceInterface"
 
-si="$export_class$base_file_name"
-si+="ServiceInterface { }"
+service_interface="$export_interface"
+service_interface+="$service_interface_name"
+service_interface+=" {}"
 
-scf=$base_services_path
-scf+="/"
-scf+="$base_module_name"
-scf+=".service.ts"
+serviceClass="import { $service_interface_name } from './$base_module_name.service.interface';\n\n"
+serviceClass+="$export_class$base_file_name"
+serviceClass+="Service implements $service_interface_name {}"
 
-sif=$base_services_path
-sif+="/"
-sif+="$base_module_name"
-sif+=".service.interface.ts"
+# File
 
-echo $sc > $scf
-echo $si > $sif
+serviceClassFile=$base_services_path
+serviceClassFile+="/"
+serviceClassFile+="$base_module_name"
+serviceClassFile+=".service.ts"
 
-echo "Genrating repository"
+serviceInterfaceFile=$base_services_path
+serviceInterfaceFile+="/"
+serviceInterfaceFile+="$base_module_name"
+serviceInterfaceFile+=".service.interface.ts"
 
-rc="$export_class$base_file_name"
-rc+="Repository { }"
+echo -e $serviceClass > $serviceClassFile
+echo -e $service_interface > $serviceInterfaceFile
 
-ri="$export_class$base_file_name"
-ri+="RepositoryInterface { }"
 
-rcf=$base_repositories_path
-rcf+="/"
-rcf+="$base_module_name"
-rcf+=".repository.ts"
+######################################################################
 
-rif=$base_repositories_path
-rif+="/"
-rif+="$base_module_name"
-rif+=".repository.interface.ts"
 
-echo $rc > $rcf
-echo $ri > $rif
+echo "Generating repository"
+
+
+repositoryInterface="$export_interface$base_file_name"
+repositoryInterface+="RepositoryInterface {}"
+
+
+repositoryClass="$export_class$base_file_name"
+repositoryClass+="Repository {}"
+
+repositoryClassFile=$base_repositories_path
+repositoryClassFile+="/"
+repositoryClassFile+="$base_module_name"
+repositoryClassFile+=".repository.ts"
+
+repositoryInterfaceFile=$base_repositories_path
+repositoryInterfaceFile+="/"
+repositoryInterfaceFile+="$base_module_name"
+repositoryInterfaceFile+=".repository.interface.ts"
+
+echo $repositoryClass > $repositoryClassFile
+echo $repositoryInterface > $repositoryInterfaceFile
+
+
+######################################################################
+
 
 echo "Generating router"
 
-rtc="$export_class$base_file_name"
-rtc+="Router { }"
+routerClass="import { BaseRouter } from '../../../common/baseRouter.interface';\n\n"
+routerClass+="$export_class$base_file_name"
+routerClass+="Router implements BaseRouter {}"
 
-rtf=$base_routers_path
-rtf+="/"
-rtf+="$base_module_name"
-rtf+=".router.ts"
+routerClassFile=$base_routers_path
+routerClassFile+="/"
+routerClassFile+="$base_module_name"
+routerClassFile+=".router.ts"
 
-echo $rtc > $rtf
+echo -e $routerClass > $routerClassFile
 
-echo "Generatins module file"
 
-mff=$module_path
-mff+="/"
-mff+=$base_module_name
-mff+=".module.ts"
+######################################################################
 
-mfc="$export_class$base_file_name"
-mfc+="Module { }"
 
-echo $mfc > $mff
+echo "Generating module file"
+
+moduleFile=$module_path
+moduleFile+="/"
+moduleFile+=$base_module_name
+moduleFile+=".module.ts"
+
+moduleClass="import { BaseModule } from '../../common/baseModule';\n\n"
+moduleClass+="$export_class$base_file_name"
+moduleClass+="Module implements BaseModule {}"
+
+echo -e $moduleClass > $moduleFile
+
+
+######################################################################
 
 
 echo "Module generated"
