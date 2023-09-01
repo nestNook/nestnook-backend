@@ -1,0 +1,23 @@
+import { BaseModule } from '@common/baseModule';
+import { BaseRouter } from '@common/baseRouter.interface';
+
+import { MODULE_NAMERouter } from './routers/MODULE_FILENAME.router';
+import { MODULE_NAMEService } from './services/MODULE_FILENAME.service';
+import { MODULE_NAMEController } from './controllers/MODULE_FILENAME.controller';
+import { MODULE_NAMERepository } from './repositories/MODULE_FILENAME.repository';
+
+export class MODULE_NAMEModule implements BaseModule {
+  public router: BaseRouter;
+  public service: MODULE_NAMEService;
+  public controller: MODULE_NAMEController;
+  public repository: MODULE_NAMERepository;
+
+  constructor() {
+    this.repository = new MODULE_NAMERepository();
+    this.service = new MODULE_NAMEService(this.repository);
+    this.controller = new MODULE_NAMEController(this.service);
+    this.router = new MODULE_NAMERouter(this.controller);
+  }
+}
+
+export default new MODULE_NAMEModule();

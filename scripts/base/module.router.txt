@@ -1,0 +1,12 @@
+import { Route } from '@common/route.interface';
+import { BaseRouter } from '@common/baseRouter.interface';
+import { MODULE_NAMEControllerInterface } from '../controllers/MODULE_FILENAME.controller.interface';
+
+export class MODULE_NAMERouter implements BaseRouter {
+  routePrefix?: string | undefined = '/MODULE_FILENAME';
+  routes: Route[];
+
+  constructor(readonly MODULE_VARIABLE_NAMEController: MODULE_NAMEControllerInterface) {
+    this.routes = [];
+  }
+}

@@ -1,0 +1,4 @@
+import { prisma } from '@infra/database';
+import { MODULE_NAMERepositoryInterface } from './MODULE_FILENAME.repository.interface';
+
+export class MODULE_NAMERepository implements MODULE_NAMERepositoryInterface {}
