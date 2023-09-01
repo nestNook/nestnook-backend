@@ -3,7 +3,7 @@ import { FabricatorsController } from './controllers/fabricators.controller';
 import { FabricatorsService } from './services/fabricators.service';
 import { FabricatorsRouter } from './routers/fabricators.router';
 
-export class ProductsModule {
+export class FabricatorsModule {
   public repository: FabricatorRepository;
   public service: FabricatorsService;
   public controller: FabricatorsController;
@@ -17,4 +17,4 @@ export class ProductsModule {
   }
 }
 
-export default new ProductsModule();
+export default new FabricatorsModule();

@@ -12,7 +12,7 @@ export class FabricatorsRouter implements BaseRouter {
     this.routes = [
       {
         path: '/',
-        handler: this.fabricatorsController.createProduct,
+        handler: this.fabricatorsController.createFabricator,
         method: 'post',
         middlewares: [],
       },

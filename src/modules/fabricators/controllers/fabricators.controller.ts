@@ -16,7 +16,7 @@ export class FabricatorsController implements FabricatorsControllerInterface {
 
     return res.status(201).json({
       status: 'success',
-      fabricator,
+      data: fabricator,
     });
   }
 }
