@@ -4,13 +4,13 @@ import { FabricatorServiceInterface } from './fabricators.service.interface';
 
 export class FabricatorsService implements FabricatorServiceInterface {
   constructor(
-    private readonly fabricatorssRepository: FabricatorRepositoryInterface
+    private readonly fabricatorsRepository: FabricatorRepositoryInterface
   ) {}
 
   async createFabricator(
     createFabricatorDto: CreateFabricatorDTO
   ): Promise<Fabricator | null> {
-    const fabricator = await this.fabricatorssRepository.createFabricator(
+    const fabricator = await this.fabricatorsRepository.createFabricator(
       createFabricatorDto
     );
     return fabricator;

@@ -2,20 +2,20 @@ import { Fabricator, CreateFabricatorDTO } from '../../../../../src/modules/fabr
 import { randomUUID } from 'crypto'
 
 export const createFabricatorMock: CreateFabricatorDTO = {
+  registry: '11.111.111/0001-11',
   name: 'Nestlé',
   address_id: '1',
-  email: "nestlé@email.com",
   phone_number: "99999-9999",
-  registry: '11.111.111/0001-11'
+  email: "nestlé@email.com"
 }
 
 export const fabricatorMock: Fabricator = {
   id: randomUUID(),
+  registry: '11.111.111/0001-11',
   name: 'Nestlé',
   address_id: '1',
-  email: "nestlé@email.com",
   phone_number: "99999-9999",
-  registry: '11.111.111/0001-11',
+  email: "nestlé@email.com",
   created_at: new Date(),
   updated_at: new Date(),
 }
