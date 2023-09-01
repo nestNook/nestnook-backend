@@ -1,7 +1,7 @@
-import { BaseModule } from '../../common/baseModule';
+import { BaseModule } from '@common/baseModule';
 import { UsersRouter } from './routers/users.router';
 import { UsersService } from './services/users.service';
-import { BaseRouter } from '../../common/baseRouter.interface';
+import { BaseRouter } from '@common/baseRouter.interface';
 import { UsersController } from './controllers/users.controller';
 import { UsersRepository } from './repositories/users.repository';
 import { UsersServiceInterface } from './services/users.service.interface';
