@@ -14,6 +14,12 @@ export class UsersRouter implements BaseRouter {
         path: '/signup',
         middlewares: [],
       },
+      {
+        method: 'get',
+        handler: usersController.getMe,
+        path: '/',
+        middlewares: [],
+      },
     ];
   }
 }

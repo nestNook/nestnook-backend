@@ -8,7 +8,7 @@ export interface User {
   otp_enabled: boolean | null;
   otp_secret: string | null;
   google_id: string | null;
-  profile_pic_id?: string;
+  profile_pic_id: string | null;
   created_at: Date;
   updated_at: Date;
 }

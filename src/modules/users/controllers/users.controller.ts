@@ -20,4 +20,15 @@ export class UsersController implements UsersControllerInterface {
       data: tokens,
     });
   }
+
+  async getMe(req: Request, res: Response): Promise<Response> {
+    const { id: userId } = req.app.locals.user;
+
+    const user = await this.usersService.getUserById(userId);
+
+    return res.status(200).json({
+      status: 'success',
+      data: user,
+    });
+  }
 }

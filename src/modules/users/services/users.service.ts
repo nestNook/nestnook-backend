@@ -1,10 +1,12 @@
 import tokenUtils from '@utils/token-utils';
 import passwordUtils from '@utils/password-utils';
 
-import { CreateUserResDTO } from '../dto';
+import { SessionDTO } from '@@types/session.dto';
 import { CreateUserDTO } from '../dto/create-user.dto';
+import sessionModule from '@modules/session/session.module';
 import { UsersServiceInterface } from './users.service.interface';
 import { UsersRepositoryInterface } from '../repositories/users.repository.interface';
+import { GetUserDTO } from '../dto';
 
 export class UsersService implements UsersServiceInterface {
   constructor(private readonly usersRepository: UsersRepositoryInterface) {}
@@ -15,7 +17,7 @@ export class UsersService implements UsersServiceInterface {
     phone_number,
     password,
     password_confirm,
-  }: CreateUserDTO): Promise<CreateUserResDTO> {
+  }: CreateUserDTO): Promise<SessionDTO> {
     const isEmailAlreadyExistent = await this.usersRepository.findByEmail(
       email
     );
@@ -37,11 +39,32 @@ export class UsersService implements UsersServiceInterface {
       password_hash,
     });
 
-    const tokens: CreateUserResDTO = {
-      access_token: tokenUtils.accessToken(user.id),
-      refresh_token: tokenUtils.refreshToken(user.id),
+    const access_token = tokenUtils.accessToken({
+      user_id: user.id,
+    });
+    const refresh_token = tokenUtils.refreshToken(user.id);
+
+    const { id: session_id } = await sessionModule.service.createSession({
+      user_id: user.id,
+      refresh_token,
+    });
+
+    const tokens: SessionDTO = {
+      access_token,
+      refresh_token,
+      session_id,
     };
 
     return tokens;
+  }
+
+  async getUserById(userId: string): Promise<GetUserDTO | null> {
+    const user = await this.usersRepository.findById(userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
   }
 }

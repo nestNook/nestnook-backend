@@ -4,8 +4,8 @@ import config from '@config/index';
 import jwt from 'jsonwebtoken';
 
 export class TokenUtils {
-  accessToken(id: string): string {
-    const token = jwt.sign({ id }, config.jwtSecret, {
+  accessToken<T>(payload: T): string {
+    const token = jwt.sign({ payload }, config.jwtSecret, {
       expiresIn: config.jwtExpiresIn,
     });
 
