@@ -32,19 +32,20 @@ model User {
 }
 
 model Address {
-  id           String       @id @default(uuid())
-  user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id      String
-  postal_code  String
-  country      String
-  street       String
-  state        String
-  city         String
-  neighborhood String
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
-  Fabricator   Fabricator[]
-  Order        Order[]
+  id            String      @id @default(uuid())
+  user          User?       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       String?
+  fabricator    Fabricator? @relation(fields: [fabricator_id], references: [id], onDelete: Cascade)
+  fabricator_id String?
+  postal_code   String
+  country       String
+  street        String
+  state         String
+  city          String
+  neighborhood  String
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+  Order         Order[]
 }
 
 model Product {
@@ -69,13 +70,12 @@ model Fabricator {
   id           String    @id @default(uuid())
   registry     String
   name         String
-  address      Address   @relation(fields: [address_id], references: [id])
-  address_id   String
   phone_number String
   email        String
   created_at   DateTime  @default(now())
   updated_at   DateTime  @updatedAt
   Product      Product[]
+  Address      Address[]
 }
 
 model Sector {
