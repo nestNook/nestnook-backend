@@ -40,7 +40,10 @@ export class Server {
 
   addRouter(router: BaseRouter) {
     const routePrefix = router.routePrefix ?? '/';
-    console.group(`[${routePrefix}]:`);
+    console.group(`${routePrefix}:`);
+    router.routes.map(({ method, path }) => {
+      console.log(`${method.toLocaleUpperCase()} ${path}`);
+    });
     this.router.use(routePrefix, this.mapRoutes(router.routes));
     console.groupEnd();
   }
@@ -49,8 +52,6 @@ export class Server {
     const router = express.Router();
 
     routes.forEach(({ handler, method, middlewares, path }) => {
-      console.log(`[${method.toLocaleUpperCase()}]: ${path}`);
-
       switch (method) {
         case 'get': {
           router.get(path, ...middlewares, handler);
