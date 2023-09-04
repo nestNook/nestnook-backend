@@ -25,6 +25,7 @@
   "homepage": "https://github.com/pedrobraghin/nestnook-backend#readme",
   "devDependencies": {
     "@cucumber/cucumber": "^9.4.0",
+    "@faker-js/faker": "^8.0.2",
     "@jest/globals": "^29.6.3",
     "@stryker-mutator/core": "^7.1.1",
     "@stryker-mutator/jest-runner": "^7.1.1",
@@ -59,6 +60,7 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.0"
   }
 }
