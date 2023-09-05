@@ -1,14 +1,12 @@
-import { CreateSessionDTO } from '../dtos/create-session.dto';
-import { Session } from '../dtos/session.dto';
-import { UpdateSessionDTO } from '../dtos/update-session.dto';
+import { CreateSessionDTO, Session, UpdateSessionDTO } from '../dtos';
 
 export interface SessionsRepositoryInterface {
-  create(dto: CreateSessionDTO): Promise<Session>;
-  delete(sessionId: string): Promise<Session | null>;
+  createSession(dto: CreateSessionDTO): Promise<Session>;
+  deleteSession(sessionId: string): Promise<Session | null>;
   updateSession(
     sessionId: string,
     dto: UpdateSessionDTO
   ): Promise<Session | null>;
-  findById(sessionId: string): Promise<Session | null>;
-  findByUserId(userId: string): Promise<Session[]>;
+  findSessionById(sessionId: string): Promise<Session | null>;
+  findSessionsByUserId(userId: string): Promise<Session[]>;
 }

@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { SessionsControllerInterface } from './sessions.controller.interface';
 import { SessionsServiceInterface } from '../services/sessions.service.interface';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
+import { CreateSessionDTO, Session } from '../dtos';
 
 export class SessionsController implements SessionsControllerInterface {
   constructor(private sessionsService: SessionsServiceInterface) {}
@@ -13,6 +16,16 @@ export class SessionsController implements SessionsControllerInterface {
       status: 'success',
       results: sessions.length,
       data: sessions,
+    });
+  }
+
+  async createSession(req: Request, res: Response): Promise<Response> {
+    const dto: CreateSessionDTO = req.body;
+    const session: Session = await this.sessionsService.createSession(dto);
+
+    return res.status(201).json({
+      status: 'success',
+      data: session,
     });
   }
 }
