@@ -22,7 +22,7 @@ export class UsersController implements UsersControllerInterface {
   }
 
   async getMe(req: Request, res: Response): Promise<Response> {
-    const { id: userId } = req.app.locals.user;
+    const userId: string = req.app.locals.user.id;
 
     const user = await this.usersService.getUserById(userId);
 
@@ -33,7 +33,7 @@ export class UsersController implements UsersControllerInterface {
   }
 
   async deleteMe(req: Request, res: Response): Promise<Response> {
-    const id: string = req.app.locals.user;
+    const id: string = req.app.locals.user.id;
 
     await this.usersService.deleteUserById(id);
 
@@ -42,7 +42,7 @@ export class UsersController implements UsersControllerInterface {
 
   async updateMe(req: Request, res: Response): Promise<Response> {
     const dto: UpdateUserDTO = req.body;
-    const id: string = req.app.locals.user;
+    const id: string = req.app.locals.user.id;
 
     const updatedUser = await this.usersService.updateUserById(id, dto);
 
@@ -54,7 +54,7 @@ export class UsersController implements UsersControllerInterface {
 
   async updatePassword(req: Request, res: Response): Promise<Response> {
     const dto: UpdatePasswordDTO = req.body;
-    const id: string = req.app.locals.user;
+    const id: string = req.app.locals.user.id;
 
     await this.usersService.updateUserPassword(id, dto);
 
