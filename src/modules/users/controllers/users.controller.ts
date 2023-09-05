@@ -1,9 +1,9 @@
-import { CreateUserResDTO } from '../dto';
 import { Request, Response } from 'express';
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { Controller } from '@common/controller.decorator';
 import { UsersControllerInterface } from './users.controller.interface';
 import { UsersServiceInterface } from '../services/users.service.interface';
+import { CreateUserResDTO, UpdatePasswordDTO, UpdateUserDTO } from '../dto';
 
 @Controller
 export class UsersController implements UsersControllerInterface {
@@ -22,7 +22,7 @@ export class UsersController implements UsersControllerInterface {
   }
 
   async getMe(req: Request, res: Response): Promise<Response> {
-    const { id: userId } = req.app.locals.user;
+    const userId: string = req.app.locals.user.id;
 
     const user = await this.usersService.getUserById(userId);
 
@@ -30,5 +30,34 @@ export class UsersController implements UsersControllerInterface {
       status: 'success',
       data: user,
     });
+  }
+
+  async deleteMe(req: Request, res: Response): Promise<Response> {
+    const id: string = req.app.locals.user.id;
+
+    await this.usersService.deleteUserById(id);
+
+    return res.status(204).json();
+  }
+
+  async updateMe(req: Request, res: Response): Promise<Response> {
+    const dto: UpdateUserDTO = req.body;
+    const id: string = req.app.locals.user.id;
+
+    const updatedUser = await this.usersService.updateUserById(id, dto);
+
+    return res.status(200).json({
+      status: 'success',
+      data: updatedUser,
+    });
+  }
+
+  async updatePassword(req: Request, res: Response): Promise<Response> {
+    const dto: UpdatePasswordDTO = req.body;
+    const id: string = req.app.locals.user.id;
+
+    await this.usersService.updateUserPassword(id, dto);
+
+    return res.status(204).json();
   }
 }

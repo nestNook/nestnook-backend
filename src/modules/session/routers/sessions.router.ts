@@ -11,7 +11,13 @@ export class SessionsRouter implements BaseRouter {
       {
         method: 'get',
         handler: sessionsController.getUserSessions,
-        path: '/:id',
+        path: '/',
+        middlewares: [],
+      },
+      {
+        method: 'post',
+        handler: sessionsController.createSession,
+        path: '/',
         middlewares: [],
       },
     ];
