@@ -11,12 +11,30 @@ export class UsersRouter implements BaseRouter {
       {
         method: 'post',
         handler: usersController.createUser,
-        path: '/signup',
+        path: '/',
         middlewares: [],
       },
       {
         method: 'get',
         handler: usersController.getMe,
+        path: '/',
+        middlewares: [],
+      },
+      {
+        method: 'patch',
+        handler: usersController.updateMe,
+        path: '/',
+        middlewares: [],
+      },
+      {
+        method: 'patch',
+        handler: usersController.updatePassword,
+        path: '/update-password',
+        middlewares: [],
+      },
+      {
+        method: 'delete',
+        handler: usersController.deleteMe,
         path: '/',
         middlewares: [],
       },
