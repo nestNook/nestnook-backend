@@ -1,5 +1,5 @@
-import { SessionsServiceInterface } from './sessions.service.interface';
 import { SessionsRepositoryInterface } from '../repositories/sessions.repository.interface';
+import { SessionsServiceInterface } from './sessions.service.interface';
 import { CreateSessionDTO, Session } from '../dtos';
 
 export class SessionsService implements SessionsServiceInterface {
