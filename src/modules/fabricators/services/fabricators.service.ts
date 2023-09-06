@@ -1,4 +1,4 @@
-import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
+import { CreateFabricatorDTO, Fabricator, FabricatorQuery, UpdateFabricatorDTO } from '../dtos';
 import { FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { FabricatorServiceInterface } from './fabricators.service.interface';
 
@@ -10,7 +10,7 @@ export class FabricatorsService implements FabricatorServiceInterface {
   async createFabricator(
     createFabricatorDto: CreateFabricatorDTO
   ): Promise<Fabricator> {
-    const fabricatorAlreadyExists = await this.fabricatorsRepository.findByEmail(createFabricatorDto.email)
+    const fabricatorAlreadyExists = await this.fabricatorsRepository.find(createFabricatorDto)
 
     if(fabricatorAlreadyExists) {
       throw new Error('Email already registered')
@@ -26,8 +26,8 @@ export class FabricatorsService implements FabricatorServiceInterface {
     return fabricator;
   }
 
-  async findByEmail(email: string): Promise<Fabricator | null> {
-    const fabricator = await this.fabricatorsRepository.findByEmail(email);
+  async find(dto: FabricatorQuery): Promise<Fabricator | null> {
+    const fabricator = await this.fabricatorsRepository.find(dto);
     return fabricator;
   }
 

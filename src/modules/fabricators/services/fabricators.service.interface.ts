@@ -1,4 +1,4 @@
-import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
+import { CreateFabricatorDTO, Fabricator, FabricatorQuery, UpdateFabricatorDTO } from '../dtos';
 
 export interface FabricatorServiceInterface {
   createFabricator(
@@ -7,7 +7,7 @@ export interface FabricatorServiceInterface {
 
   findById(id: string): Promise<Fabricator | null>;
 
-  findByEmail(email: string): Promise<Fabricator | null>;
+  find(dto: FabricatorQuery): Promise<Fabricator | null>;
 
   updateFabricator(
     id: string,
