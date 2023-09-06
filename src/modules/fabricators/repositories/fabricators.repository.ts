@@ -1,5 +1,5 @@
 import { prisma } from '../../../infra/database';
-import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
+import { CreateFabricatorDTO, Fabricator, FabricatorQuery, UpdateFabricatorDTO } from '../dtos';
 import { FabricatorRepositoryInterface } from './fabricators.repository.interface';
 
 export class FabricatorRepository implements FabricatorRepositoryInterface {
@@ -21,11 +21,9 @@ export class FabricatorRepository implements FabricatorRepositoryInterface {
     return fabricator;
   }
 
-  async findByEmail(email: string): Promise<Fabricator | null> {
+  async find(dto: FabricatorQuery): Promise<Fabricator | null> {
     const fabricator = await prisma.fabricator.findFirst({
-      where: {
-        email,
-      },
+      where: dto
     });
     return fabricator;
   }
