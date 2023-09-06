@@ -1,6 +1,5 @@
-import { User } from '../dto';
 import { prisma } from '@infra/database';
-import { InternCreateUserDTO } from '../dto/intern-create-user.dto';
+import { InternCreateUserDTO, UpdateUserDTO, User, UserQuery } from '../dto';
 import { UsersRepositoryInterface } from './users.repository.interface';
 
 export class UsersRepository implements UsersRepositoryInterface {
@@ -12,21 +11,40 @@ export class UsersRepository implements UsersRepositoryInterface {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     const user = await prisma.user.findFirst({
       where: {
-        email,
+        id,
       },
     });
 
     return user;
   }
 
-  async findById(id: string): Promise<User | null> {
-    const user = await prisma.user.findFirst({
+  async delete(id: string): Promise<User | null> {
+    const deletedUser = await prisma.user.delete({
       where: {
         id,
       },
+    });
+
+    return deletedUser;
+  }
+
+  async update(id: string, dto: UpdateUserDTO): Promise<User | null> {
+    const updatedUser = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: dto,
+    });
+
+    return updatedUser;
+  }
+
+  async find(dto: UserQuery): Promise<User | null> {
+    const user = await prisma.user.findFirst({
+      where: dto,
     });
 
     return user;
