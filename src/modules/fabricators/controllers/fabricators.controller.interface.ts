@@ -6,7 +6,7 @@ export interface FabricatorsControllerInterface {
     res: Response,
   ): Promise<Response>;
 
-  findByEmail(
+  find(
     req: Request,
     res: Response,
   ): Promise<Response>;

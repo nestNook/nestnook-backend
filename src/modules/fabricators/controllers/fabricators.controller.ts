@@ -23,12 +23,12 @@ export class FabricatorsController implements FabricatorsControllerInterface {
     });
   }
 
-  async findByEmail(
+  async find(
     req: Request,
     res: Response,
   ): Promise<Response> {
     const { email } = req.body;
-    const fabricator = await this.fabricatorService.findByEmail(email);
+    const fabricator = await this.fabricatorService.find(email);
 
     return res.status(200).json({
       status: 'success',
