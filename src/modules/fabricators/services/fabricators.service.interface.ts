@@ -6,9 +6,6 @@ export interface FabricatorServiceInterface {
   ): Promise<Fabricator>;
 
   findById(id: string): Promise<Fabricator | null>;
-
-  find(dto: FabricatorQuery): Promise<Fabricator | null>;
-
   updateFabricator(
     id: string,
     updateFabricatorDto: UpdateFabricatorDTO
