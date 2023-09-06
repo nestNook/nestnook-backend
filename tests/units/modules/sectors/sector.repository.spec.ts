@@ -1,7 +1,7 @@
-import { SectorRepository } from './../../../../src/modules/sectors/repositories/sector.repository';
+import { SectorRepositoryInterface } from '@modules/sectors/repositories/sector.repository.interface';
+import { SectorRepository } from '@modules/sectors/repositories/sector.repository';
 import { createSectorMock, sectorMock } from './mocks/sector-mock';
-import { mockPrisma } from '../../../__mocks__/prisma-mock';
-import { SectorRepositoryInterface } from '../../../../src/modules/sectors/repositories/sector.repository.interface';
+import { mockPrisma } from '@test/__mocks__/prisma-mock';
 
 describe('Sector Repository', () => {
   let sectorRepository: SectorRepositoryInterface;

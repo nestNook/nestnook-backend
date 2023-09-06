@@ -1,7 +1,7 @@
-import { FabricatorRepository } from '../../../../src/modules/fabricators/repositories/fabricators.repository';
-import { FabricatorRepositoryInterface } from '../../../../src/modules/fabricators/repositories/fabricators.repository.interface';
-import { mockPrisma } from '../../../__mocks__/prisma-mock';
+import { FabricatorRepositoryInterface } from '@modules/fabricators/repositories/fabricators.repository.interface';
+import { FabricatorRepository } from '@modules/fabricators/repositories/fabricators.repository';
 import { createFabricatorMock, fabricatorMock } from './mocks/fabricator-mock';
+import { mockPrisma } from '@test/__mocks__/prisma-mock';
 
 describe('Fabricator Repository', () => {
   let fabricatorRepository: FabricatorRepositoryInterface;

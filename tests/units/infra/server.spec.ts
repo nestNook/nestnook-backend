@@ -1,5 +1,6 @@
-import { Server } from './../../../src/infra/server';
 import { routerMock } from './mocks/router-mock';
+import { Server } from '@infra/server';
+
 describe('Server module', () => {
   let server: Server;
 

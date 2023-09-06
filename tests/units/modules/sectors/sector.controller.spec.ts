@@ -1,7 +1,7 @@
-import request from 'supertest';
-import Server from '../../../../src/infra/server';
+import { SectorRepository } from '@modules/sectors/repositories/sector.repository';
 import { createSectorMock, sectorMock } from './mocks/sector-mock';
-import { SectorRepository } from '../../../../src/modules/sectors/repositories/sector.repository';
+import Server from '@infra/server';
+import request from 'supertest';
 
 describe('Sector controller', () => {
   const app = Server.app;

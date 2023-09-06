@@ -1,4 +1,4 @@
-import { BaseRouter } from '../../../../src/common/baseRouter.interface';
+import { BaseRouter } from '@common/baseRouter.interface';
 
 export const routerMock: BaseRouter = {
   routePrefix: '/',

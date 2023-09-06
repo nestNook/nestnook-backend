@@ -1,7 +1,7 @@
-import request from 'supertest';
-import Server from '../../../../src/infra/server';
+import { FabricatorRepository } from '@modules/fabricators/repositories/fabricators.repository';
 import { createFabricatorMock, fabricatorMock } from './mocks/fabricator-mock';
-import { FabricatorRepository } from '../../../../src/modules/fabricators/repositories/fabricators.repository';
+import Server from '@infra/server';
+import request from 'supertest';
 
 describe('Fabricator controller', () => {
   const app = Server.app;
