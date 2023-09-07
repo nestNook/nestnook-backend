@@ -1,8 +1,8 @@
-import { ProductsService } from '../../../../src/modules/products/services/products.service';
-import { ProductsServiceInterface } from '../../../../src/modules/products/services/products.service.interface';
-import { ProductsRepository } from '../../../../src/modules/products/repositories/products.repository';
-import { mockPrisma } from '../../../__mocks__/prisma-mock';
+import { ProductsServiceInterface } from '@modules/products/services/products.service.interface';
+import { ProductsRepository } from '@modules/products/repositories/products.repository';
+import { ProductsService } from '@modules/products/services/products.service';
 import { createProductMock, productMock } from './mocks/product-mock';
+import { mockPrisma } from '@test/__mocks__/prisma-mock';
 
 describe('Product services', () => {
   let productsService: ProductsServiceInterface;

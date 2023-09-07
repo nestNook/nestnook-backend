@@ -1,5 +1,5 @@
-import { Sector } from '../../../../../src/modules/sectors/dtos';
-import { CreateSectorDTO } from './../../../../../src/modules/sectors/dtos/create-sector.dto';
+import { CreateSectorDTO } from '@modules/sectors/dtos/create-sector.dto';
+import { Sector } from '@modules/sectors/dtos';
 import { randomUUID } from 'crypto';
 
 export const createSectorMock: CreateSectorDTO = {

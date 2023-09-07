@@ -1,7 +1,4 @@
-import {
-  Address,
-  CreateAddressDTO,
-} from '../../../../../src/modules/address/dtos';
+import { Address, CreateAddressDTO } from '@modules/address/dtos';
 import { randomUUID } from 'crypto';
 
 export const createAddressMock: CreateAddressDTO = {

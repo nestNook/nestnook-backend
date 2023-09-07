@@ -1,10 +1,10 @@
-import { SectorControllerInterface } from '../../../../src/modules/sectors/controllers/sector.controller.interface';
-import { SectorRepositoryInterface } from '../../../../src/modules/sectors/repositories/sector.repository.interface';
-import { SectorServiceInterface } from '../../../../src/modules/sectors/services/sector.service.interface';
-import { SectorController } from '../../../../src/modules/sectors/controllers/sector.controller';
-import { SectorService } from '../../../../src/modules/sectors/services/sector.service';
-import { createSectorMock, sectorMock } from './mocks/sector-mock';
+import { SectorControllerInterface } from '@modules/sectors/controllers/sector.controller.interface';
+import { SectorRepositoryInterface } from '@modules/sectors/repositories/sector.repository.interface';
+import { SectorServiceInterface } from '@modules/sectors/services/sector.service.interface';
+import { SectorController } from '@modules/sectors/controllers/sector.controller';
+import { SectorService } from '@modules/sectors/services/sector.service';
 import { SectorRepositoryMock } from './mocks/sector-mock.repository';
+import { createSectorMock, sectorMock } from './mocks/sector-mock';
 
 const prismaMock = jest.fn().mockImplementation(() => ({
   $connect: jest.fn(),

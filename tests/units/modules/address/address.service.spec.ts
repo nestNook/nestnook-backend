@@ -1,7 +1,7 @@
-import { AddressServiceInterface } from '../../../../src/modules/address/services/address.service.interface';
-import { AddressService } from '../../../../src/modules/address/services/address.service';
-import { addressMock, createAddressMock } from './mocks/address-mock';
+import { AddressServiceInterface } from '@modules/address/services/address.service.interface';
+import { AddressService } from '@modules/address/services/address.service';
 import { AddressRepositoryMock } from './mocks/address-mock.repository';
+import { addressMock, createAddressMock } from './mocks/address-mock';
 
 describe('Address service', () => {
   let addressService: AddressServiceInterface;
@@ -17,8 +17,8 @@ describe('Address service', () => {
       .spyOn(addressRepository, 'createAddress')
       .mockReturnValueOnce(Promise.resolve(addressMock));
 
-      const address = await addressService.createAddress(createAddressMock)
-      expect(repositorySpy).toHaveBeenCalledWith(createAddressMock);
-      expect(address).toEqual(addressMock);
+    const address = await addressService.createAddress(createAddressMock);
+    expect(repositorySpy).toHaveBeenCalledWith(createAddressMock);
+    expect(address).toEqual(addressMock);
   });
 });
