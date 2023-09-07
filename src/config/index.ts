@@ -9,6 +9,12 @@ export class Config {
   public readonly jwtExpiresIn: string = process.env.JWT_EXPIRES_IN;
   public readonly refreshTokenExpiresIn: string =
     process.env.REFRESH_TOKEN_EXPIRES_IN;
+  public readonly refreshTokenCookieExpiresIn: number = Number(
+    process.env.REFRESH_TOKEN_COOKIE_EXPIRES_IN
+  );
+  public readonly sessionCookieExpiresIn: number = Number(
+    process.env.SESSION_COOKIE_EXPIRES_IN
+  );
 }
 
 export default new Config();
