@@ -60,4 +60,17 @@ export class SessionsService implements SessionsServiceInterface {
 
     return updatedSession;
   }
+
+  async deleteSession(userId: string, sessionId: string): Promise<Session> {
+    const session = await this.sessionRepository.deleteSession(
+      sessionId,
+      userId
+    );
+
+    if (!session) {
+      throw new Error('Session not found');
+    }
+
+    return session;
+  }
 }

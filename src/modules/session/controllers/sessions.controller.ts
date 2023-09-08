@@ -29,4 +29,16 @@ export class SessionsController implements SessionsControllerInterface {
       data: session,
     });
   }
+
+  async deleteSession(req: Request, res: Response): Promise<Response> {
+    const { id: userId } = req.app.locals.user;
+    const { id: sessionId } = req.params;
+
+    const session = await this.sessionsService.deleteSession(userId, sessionId);
+
+    return res.status(200).json({
+      status: 'success',
+      data: session,
+    });
+  }
 }

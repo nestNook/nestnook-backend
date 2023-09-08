@@ -7,4 +7,5 @@ export interface SessionsServiceInterface {
   findUserSessions(userId: string): Promise<Session[]>;
   findSessionById(sessionsId: string): Promise<Session>;
   updateSession(sessionsId: string, dto: UpdateSessionDTO): Promise<Session>;
+  deleteSession(userId: string, sessionId: string): Promise<Session>;
 }
