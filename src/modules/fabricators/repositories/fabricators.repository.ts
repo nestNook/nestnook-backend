@@ -46,7 +46,7 @@ export class FabricatorRepository implements FabricatorRepositoryInterface {
     return updatedFabricator;
   }
 
-  async deleteFabricator(id: string): Promise<Fabricator | null> {
+  async deleteFabricator(id: string): Promise<Fabricator> {
     const fabricator = await prisma.fabricator.delete({
       where: { id },
     });
