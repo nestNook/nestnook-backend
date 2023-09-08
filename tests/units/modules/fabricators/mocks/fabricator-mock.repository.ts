@@ -5,5 +5,6 @@ export class FabricatorRepositoryMock implements FabricatorRepositoryInterface {
   find = jest.fn();
   findById = jest.fn();
   updateFabricator = jest.fn();
-  deleteFabricator = jest.fn()
+  deleteFabricator = jest.fn();
+  findOr = jest.fn();
 }
