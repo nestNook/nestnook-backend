@@ -10,5 +10,5 @@ export interface Route {
   path: string;
   handler: Handler | Router;
   method: keyof Router;
-  middlewares: Array<Handler>;
+  middlewares?: Array<Handler>;
 }

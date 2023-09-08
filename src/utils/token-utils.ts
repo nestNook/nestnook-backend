@@ -4,8 +4,8 @@ import config from '@config/index';
 import jwt from 'jsonwebtoken';
 
 export class TokenUtils {
-  accessToken<T>(payload: T): string {
-    const token = jwt.sign({ payload }, config.jwtSecret, {
+  accessToken<T extends Record<string, any>>(payload: T): string {
+    const token = jwt.sign(payload, config.jwtSecret, {
       expiresIn: config.jwtExpiresIn,
     });
 
@@ -24,8 +24,8 @@ export class TokenUtils {
     }
   }
 
-  refreshToken(id: string): string {
-    const token = jwt.sign({ id }, config.jwtSecret, {
+  refreshToken(sessionId: string): string {
+    const token = jwt.sign({ session_id: sessionId }, config.jwtSecret, {
       expiresIn: config.refreshTokenExpiresIn,
     });
 

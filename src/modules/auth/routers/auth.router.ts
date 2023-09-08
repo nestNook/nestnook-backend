@@ -7,6 +7,12 @@ export class AuthRouter implements BaseRouter {
   routes: Route[];
 
   constructor(readonly authController: AuthControllerInterface) {
-    this.routes = [];
+    this.routes = [
+      {
+        path: '/sign-in',
+        handler: authController.signIn,
+        method: 'post',
+      },
+    ];
   }
 }

@@ -10,6 +10,8 @@ export class AddressController implements AddressControllerInterface {
 
   async createAddress(req: Request, res: Response): Promise<Response> {
     const createAddressDto: CreateAddressDTO = req.body;
+    const { id } = req.app.locals.user;
+    createAddressDto.user_id = id;
     const address = await this.addressService.createAddress(createAddressDto);
 
     return res.status(201).json({

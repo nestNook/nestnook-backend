@@ -8,8 +8,18 @@ export class SessionsRepository implements SessionsRepositoryInterface {
     return session;
   }
 
-  async deleteSession(sessionId: string): Promise<Session | null> {
-    const session = await SessionModel.findOneAndDelete({ id: sessionId });
+  async deleteSession(
+    sessionId: string,
+    userId: string
+  ): Promise<Session | null> {
+    const session = await SessionModel.findOneAndDelete({
+      $and: [
+        {
+          id: sessionId,
+          user_id: userId,
+        },
+      ],
+    });
     return session;
   }
 
@@ -26,7 +36,9 @@ export class SessionsRepository implements SessionsRepositoryInterface {
   }
 
   async findSessionById(sessionId: string): Promise<Session | null> {
-    const session = await SessionModel.findById(sessionId);
+    const session = await SessionModel.findOne({
+      id: sessionId,
+    });
     return session;
   }
 

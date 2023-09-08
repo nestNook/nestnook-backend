@@ -1,6 +1,4 @@
-import { SessionDTO } from '@@types/session.dto';
-import { SignInDTO } from '../dtos/sign-in.dto';
-
+import { Request, Response } from 'express';
 export interface AuthControllerInterface {
-  signIn(dto: SignInDTO): Promise<SessionDTO>;
+  signIn(req: Request, res: Response): Promise<Response>;
 }

@@ -1,13 +1,11 @@
 export class ValidationUtils {
-  isObjectEmpty(object: Record<string, any>): boolean {
-    let isEmpty = true;
-
-    for (const [v] of Object.values(object)) {
-      isEmpty =
-        isEmpty && (typeof v !== 'object' ? !!v : this.isObjectEmpty(v));
+  isObjectEmpty(object: Record<string, any>) {
+    for (const key in object) {
+      if (Object.prototype.hasOwnProperty.call(object, key)) {
+        return false;
+      }
     }
-
-    return isEmpty;
+    return true;
   }
 }
 
