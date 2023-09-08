@@ -3,6 +3,7 @@ import { randomUUID } from 'crypto';
 
 export const createAddressMock: CreateAddressDTO = {
   user_id: '1',
+  fabricator_id: null,
   postal_code: '13213-190',
   country: 'Brasil',
   street: 'mimosa',
@@ -14,6 +15,7 @@ export const createAddressMock: CreateAddressDTO = {
 export const addressMock: Address = {
   id: randomUUID(),
   user_id: '1',
+  fabricator_id: null,
   postal_code: '13213-190',
   country: 'Brasil',
   street: 'mimosa',
@@ -22,4 +24,14 @@ export const addressMock: Address = {
   neighborhood: 'vila mimosa',
   created_at: new Date(),
   updated_at: new Date(),
+};
+
+export const mockCreateAddressResponse = () => {
+  const res = {
+    status: jest.mock,
+    json: jest.mock,
+  };
+  res.status = jest.fn().mockReturnValue(res);
+  res.json = jest.fn().mockReturnValue(res);
+  return res;
 };
