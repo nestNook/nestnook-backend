@@ -1,5 +1,10 @@
 import { prisma } from '../../../infra/database';
-import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
+import {
+  CreateFabricatorDTO,
+  Fabricator,
+  FabricatorQuery,
+  UpdateFabricatorDTO,
+} from '../dtos';
 import { FabricatorRepositoryInterface } from './fabricators.repository.interface';
 
 export class FabricatorRepository implements FabricatorRepositoryInterface {
@@ -21,11 +26,9 @@ export class FabricatorRepository implements FabricatorRepositoryInterface {
     return fabricator;
   }
 
-  async findByEmail(email: string): Promise<Fabricator | null> {
+  async find(dto: FabricatorQuery): Promise<Fabricator | null> {
     const fabricator = await prisma.fabricator.findFirst({
-      where: {
-        email,
-      },
+      where: dto,
     });
     return fabricator;
   }
@@ -43,10 +46,24 @@ export class FabricatorRepository implements FabricatorRepositoryInterface {
     return updatedFabricator;
   }
 
-  async deleteFabricator(id: string): Promise<Fabricator | null> {
+  async deleteFabricator(id: string): Promise<Fabricator> {
     const fabricator = await prisma.fabricator.delete({
       where: { id },
     });
     return fabricator;
+  }
+
+  async findOr(query: FabricatorQuery): Promise<Fabricator[]> {
+    const fabricator = await prisma.fabricator.findMany({
+      where: {
+        OR: [
+          { email: query.email },
+          { phone_number: query.phone_number },
+          { registry: query.registry },
+        ],
+      },
+    });
+
+    return fabricator
   }
 }

@@ -2,4 +2,9 @@ import { FabricatorRepositoryInterface } from '../../../../../src/modules/fabric
 
 export class FabricatorRepositoryMock implements FabricatorRepositoryInterface {
   createFabricator = jest.fn();
+  find = jest.fn();
+  findById = jest.fn();
+  updateFabricator = jest.fn();
+  deleteFabricator = jest.fn();
+  findOr = jest.fn();
 }

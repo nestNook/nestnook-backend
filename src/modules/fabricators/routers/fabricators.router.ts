@@ -17,7 +17,7 @@ export class FabricatorsRouter implements BaseRouter {
         middlewares: [],
       },
       {
-        path: '/',
+        path: '/:id',
         handler: fabricatorsController.updateFabricator,
         method: 'patch',
         middlewares: [],

@@ -27,4 +27,127 @@ describe('Fabricator Repository', () => {
       expect(fabricator).toEqual(fabricatorMock);
     });
   });
+
+  describe('Update fabricator', () => {
+    it('should be able to update a fabricator', async () => {
+      const updateFabricatorPrismaMock =
+        mockPrisma.fabricator.update.mockReturnValueOnce(
+          Promise.resolve(fabricatorMock)
+        );
+
+      const fabricator = await fabricatorRepository.updateFabricator(
+        fabricatorMock.id,
+        fabricatorMock
+      );
+
+      expect(updateFabricatorPrismaMock).toHaveBeenCalledWith({
+        data: fabricatorMock,
+        where: { id: fabricatorMock.id },
+      });
+      expect(fabricator).toEqual(fabricatorMock);
+    });
+  });
+
+  describe('Find fabricator by id', () => {
+    it('should return a fabricator', async () => {
+      const findByIdPrismaMock =
+        mockPrisma.fabricator.findFirst.mockReturnValueOnce(
+          Promise.resolve(fabricatorMock)
+        );
+
+      const fabricator = await fabricatorRepository.findById(fabricatorMock.id);
+
+      expect(findByIdPrismaMock).toHaveBeenCalledWith({
+        where: { id: fabricatorMock.id },
+      });
+      expect(fabricator).toEqual(fabricatorMock);
+    });
+
+    it('should return null if fabricator is not found', async () => {
+      const findByIdPrismaMock =
+        mockPrisma.fabricator.findFirst.mockReturnValueOnce(
+          Promise.resolve(null)
+        );
+
+      const fabricator = await fabricatorRepository.findById('123');
+
+      expect(findByIdPrismaMock).toHaveBeenCalledWith('123');
+      expect(fabricator).toBe(null);
+    });
+  });
+
+  describe('Find fabricator by query', () => {
+    it('should return a fabricator', async () => {
+      const findPrismaMock =
+        mockPrisma.fabricator.findFirst.mockReturnValueOnce(
+          Promise.resolve(fabricatorMock)
+        );
+
+      const fabricator = await fabricatorRepository.find({
+        email: fabricatorMock.email,
+      });
+
+      expect(findPrismaMock).toHaveBeenCalledWith({
+        where: { email: fabricatorMock.email },
+      });
+      expect(fabricator).toEqual(fabricatorMock);
+    });
+
+    it('should return null if fabricator is not found', async () => {
+      const findPrismaMock =
+        mockPrisma.fabricator.findFirst.mockReturnValueOnce(
+          Promise.resolve(null)
+        );
+
+      const fabricator = await fabricatorRepository.find({
+        email: fabricatorMock.email,
+      });
+
+      expect(findPrismaMock).toHaveBeenCalledWith({
+        where: { email: fabricatorMock.email },
+      });
+      expect(fabricator).toBe(null);
+    });
+  });
+
+  describe('Delete fabricator', () => {
+    it('should be able to delete a fabricator', async () => {
+      const deletePrismaMock = mockPrisma.fabricator.delete.mockReturnValueOnce(
+        Promise.resolve(null)
+      );
+
+      const fabricator = await fabricatorRepository.deleteFabricator(
+        fabricatorMock.id
+      );
+
+      expect(deletePrismaMock).toHaveBeenCalledWith({
+        where: { id: fabricatorMock.id },
+      });
+      expect(fabricator).toBe(null);
+    });
+  });
+
+  describe('FindOr query', () => {
+    it('should return a fabricator', async () => {
+      const findOrPrismaMock =
+        mockPrisma.fabricator.findMany.mockReturnValueOnce(
+          Promise.resolve(fabricatorMock)
+        );
+
+      const fabricator = await fabricatorRepository.findOr({
+        email: fabricatorMock.email,
+      });
+
+      expect(fabricator).toEqual(fabricatorMock);
+      expect(findOrPrismaMock).toHaveBeenCalledWith({
+        where: {
+          OR: [
+            { email: fabricatorMock.email },
+            { phone_number: undefined },
+            { registry: undefined },
+          ],
+        },
+      });
+    });
+  });
 });

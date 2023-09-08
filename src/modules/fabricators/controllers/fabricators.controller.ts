@@ -8,10 +8,7 @@ import { CreateFabricatorDTO, UpdateFabricatorDTO } from '../dtos';
 export class FabricatorsController implements FabricatorsControllerInterface {
   constructor(private readonly fabricatorService: FabricatorServiceInterface) {}
 
-  async createFabricator(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  async createFabricator(req: Request, res: Response): Promise<Response> {
     const createFabricatorDto: CreateFabricatorDTO = req.body;
     const fabricator = await this.fabricatorService.createFabricator(
       createFabricatorDto
@@ -23,23 +20,7 @@ export class FabricatorsController implements FabricatorsControllerInterface {
     });
   }
 
-  async findByEmail(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
-    const { email } = req.body;
-    const fabricator = await this.fabricatorService.findByEmail(email);
-
-    return res.status(200).json({
-      status: 'success',
-      data: fabricator,
-    });
-  }
-
-  async findById(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  async findById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const fabricator = await this.fabricatorService.findById(id);
 
@@ -49,10 +30,7 @@ export class FabricatorsController implements FabricatorsControllerInterface {
     });
   }
 
-  async updateFabricator(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  async updateFabricator(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const fabricator: UpdateFabricatorDTO = req.body;
     const updatedFabricator = await this.fabricatorService.updateFabricator(
@@ -66,10 +44,7 @@ export class FabricatorsController implements FabricatorsControllerInterface {
     });
   }
 
-  async deleteFabricator(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  async deleteFabricator(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     await this.fabricatorService.deleteFabricator(id);
 

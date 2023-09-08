@@ -5,12 +5,6 @@ export interface FabricatorsControllerInterface {
     req: Request,
     res: Response,
   ): Promise<Response>;
-
-  findByEmail(
-    req: Request,
-    res: Response,
-  ): Promise<Response>;
-
   findById(
     req: Request,
     res: Response,
