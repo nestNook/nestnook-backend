@@ -1,5 +1,3 @@
 import { JwtPayload } from 'jsonwebtoken';
 
-export interface TokenPayload<T> extends JwtPayload {
-  payload: T;
-}
+export type TokenPayload<T> = JwtPayload & T;
