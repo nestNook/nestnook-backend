@@ -11,4 +11,6 @@ export interface FabricatorRepositoryInterface {
   updateFabricator(id: string, updateFabricatorDto: UpdateFabricatorDTO): Promise<Fabricator | null>
 
   deleteFabricator(id: string): Promise<Fabricator | null>
+
+  findOr(query: FabricatorQuery): Promise<Fabricator[]>
 }

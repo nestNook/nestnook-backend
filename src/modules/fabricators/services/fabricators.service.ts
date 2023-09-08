@@ -7,41 +7,50 @@ export class FabricatorsService implements FabricatorServiceInterface {
     private readonly fabricatorsRepository: FabricatorRepositoryInterface
   ) {}
 
-  async createFabricator({
+  private async checkFabricator({
     registry,
     email,
     phone_number,
-    name,
-  }: CreateFabricatorDTO): Promise<Fabricator> {
-    const registryAlreadyExists = await this.fabricatorsRepository.find({
+  }: CreateFabricatorDTO | UpdateFabricatorDTO): Promise<void> {
+    const fabricatorAlreadyExists = await this.fabricatorsRepository.findOr({
       registry,
-    });
-
-    const emailAlreadyExists = await this.fabricatorsRepository.find({
       email,
-    });
-
-    const phoneAlreadyExists = await this.fabricatorsRepository.find({
       phone_number,
     });
 
-    if (registryAlreadyExists) {
-      throw new Error('Registry already exists');
-    }
+    if (fabricatorAlreadyExists.length > 0) {
+      const errors = [];
 
-    if (emailAlreadyExists) {
-      throw new Error('Email already exists');
-    }
-    if (phoneAlreadyExists) {
-      throw new Error('Phone already exists');
-    }
+      const registryAlreadyExists = fabricatorAlreadyExists.find(
+        (fabricator) => {
+          return registry === fabricator.registry;
+        }
+      );
+      if (registryAlreadyExists) {
+        errors.push('Registry already exists');
+      }
+      const emailAlreadyExists = fabricatorAlreadyExists.find((fabricator) => {
+        return email === fabricator.email;
+      });
+      if (emailAlreadyExists) {
+        errors.push('Email already exists');
+      }
+      const phoneAlreadyExists = fabricatorAlreadyExists.find((fabricator) => {
+        return phone_number === fabricator.phone_number;
+      });
+      if (phoneAlreadyExists) {
+        errors.push('Phone already exists');
+      }
 
-    const fabricator = await this.fabricatorsRepository.createFabricator({
-      registry,
-      name,
-      phone_number,
-      email,
-    });
+      if (errors.length > 0) {
+        throw new Error(`Validation error: ${errors.join(', ')}`);
+      }
+    }
+  }
+
+  async createFabricator(dto: CreateFabricatorDTO): Promise<Fabricator> {
+    await this.checkFabricator(dto);
+    const fabricator = await this.fabricatorsRepository.createFabricator(dto);
     return fabricator;
   }
 
@@ -52,38 +61,12 @@ export class FabricatorsService implements FabricatorServiceInterface {
 
   async updateFabricator(
     id: string,
-    { registry, name, phone_number, email }: UpdateFabricatorDTO
+    dto: UpdateFabricatorDTO
   ): Promise<Fabricator | null> {
-    const registryAlreadyExists = await this.fabricatorsRepository.find({
-      registry,
-    });
-
-    const emailAlreadyExists = await this.fabricatorsRepository.find({
-      email,
-    });
-
-    const phoneAlreadyExists = await this.fabricatorsRepository.find({
-      phone_number,
-    });
-
-    if (registryAlreadyExists) {
-      throw new Error('Registry already exists');
-    }
-
-    if (emailAlreadyExists) {
-      throw new Error('Email already exists');
-    }
-    if (phoneAlreadyExists) {
-      throw new Error('Phone already exists');
-    }
+    await this.checkFabricator(dto);
     const updatedFabricator = await this.fabricatorsRepository.updateFabricator(
       id,
-      {
-        registry,
-        name,
-        phone_number,
-        email,
-      }
+      dto
     );
 
     return updatedFabricator;
@@ -91,6 +74,5 @@ export class FabricatorsService implements FabricatorServiceInterface {
 
   async deleteFabricator(id: string): Promise<void> {
     await this.fabricatorsRepository.deleteFabricator(id);
-    return;
   }
 }
