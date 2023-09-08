@@ -98,4 +98,28 @@ describe('Fabricator Repository', () => {
       expect(fabricator).toBe(null);
     });
   });
+
+  describe('FindOr query', () => {
+    it('should return a fabricator', async () => {
+      const findOrPrismaMock =
+        mockPrisma.fabricator.findMany.mockReturnValueOnce(
+          Promise.resolve(fabricatorMock)
+        );
+
+      const fabricator = await fabricatorRepository.findOr({
+        email: fabricatorMock.email,
+      });
+
+      expect(fabricator).toEqual(fabricatorMock);
+      expect(findOrPrismaMock).toHaveBeenCalledWith({
+        where: {
+          OR: [
+            { email: fabricatorMock.email },
+            { phone_number: undefined },
+            { registry: undefined },
+          ],
+        },
+      });
+    });
+  });
 });
