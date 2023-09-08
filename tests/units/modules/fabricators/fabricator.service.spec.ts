@@ -17,11 +17,30 @@ describe('Fabricator service', () => {
       const repositorySpy = jest
         .spyOn(fabricatorRepository, 'createFabricator')
         .mockReturnValueOnce(Promise.resolve(fabricatorMock));
-        
+
       const fabricator = await fabricatorService.createFabricator(
         createFabricatorMock
       );
       expect(repositorySpy).toHaveBeenCalledWith(createFabricatorMock);
+      expect(fabricator).toEqual(fabricatorMock);
+    });
+  });
+
+  describe('Update fabricator', () => {
+    it('should be able to update a fabricator', async () => {
+      const repositorySpy = jest
+        .spyOn(fabricatorRepository, 'updateFabricator')
+        .mockReturnValueOnce(Promise.resolve(fabricatorMock));
+
+      const fabricator = await fabricatorService.updateFabricator(
+        fabricatorMock.id,
+        {
+          name: fabricatorMock.name,
+        }
+      );
+      expect(repositorySpy).toHaveBeenCalledWith(fabricatorMock.id, {
+        name: fabricatorMock.name,
+      });
       expect(fabricator).toEqual(fabricatorMock);
     });
   });

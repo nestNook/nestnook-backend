@@ -11,6 +11,8 @@ export const mockPrisma = {
   },
   fabricator: {
     create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn()
   },
   address: {
     create: jest.fn()

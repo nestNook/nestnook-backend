@@ -1,7 +1,10 @@
 import { FabricatorRepository } from '../../../../src/modules/fabricators/repositories/fabricators.repository';
 import { FabricatorRepositoryInterface } from '../../../../src/modules/fabricators/repositories/fabricators.repository.interface';
 import { mockPrisma } from '../../../__mocks__/prisma-mock';
-import { createFabricatorMock, fabricatorMock } from './mocks/fabricator-mock';
+import {
+  createFabricatorMock,
+  fabricatorMock,
+} from './mocks/fabricator-mock';
 
 describe('Fabricator Repository', () => {
   let fabricatorRepository: FabricatorRepositoryInterface;
@@ -23,6 +26,26 @@ describe('Fabricator Repository', () => {
 
       expect(createFabricatorPrismaMock).toHaveBeenLastCalledWith({
         data: createFabricatorMock,
+      });
+      expect(fabricator).toEqual(fabricatorMock);
+    });
+  });
+
+  describe('Update fabricator', () => {
+    it('should be able to update a fabricator', async () => {
+      const updateFabricatorPrismaMock =
+        mockPrisma.fabricator.update.mockReturnValueOnce(
+          Promise.resolve(fabricatorMock)
+        );
+
+      const fabricator = await fabricatorRepository.updateFabricator(
+        fabricatorMock.id,
+        fabricatorMock
+      );
+
+      expect(updateFabricatorPrismaMock).toHaveBeenCalledWith({
+        data: fabricatorMock,
+        where: { id: fabricatorMock.id}
       });
       expect(fabricator).toEqual(fabricatorMock);
     });
