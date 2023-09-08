@@ -10,7 +10,7 @@
     "prepare": "husky install",
     "start": "node -r tsconfig-paths/register ./dist/main.js",
     "start:dev": "tsnd -r tsconfig-paths/register --rs --respawn --transpile-only ./src/main.ts",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && tsc-alias",
     "gm": "sh ./scripts/generate.sh"
   },
   "repository": {
@@ -35,6 +35,7 @@
     "@types/jest": "^29.5.4",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.5.3",
+    "@types/sinon": "^10.0.16",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "eslint": "^8.2.0",
@@ -49,10 +50,12 @@
     "husky": "^8.0.0",
     "jest": "^29.6.3",
     "prisma": "^5.2.0",
+    "sinon": "^15.2.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.7",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6"
   },

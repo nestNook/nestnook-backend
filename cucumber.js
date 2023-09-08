@@ -1,10 +1,7 @@
-const common = [
-  'tests/components/**/*.feature',
-  '--require-module ts-node/register',
-  '--require tests/components/**/*.ts',
-  '--parallel 2',
-].join(' ');
-
 module.exports = {
-  default: common,
+  default: {
+    requireModule: ['ts-node/register', 'tsconfig-paths/register'],
+    require: ['tests/components/**/*.ts'],
+    paths: ['tests/components/**/*.feature'],
+  },
 };
