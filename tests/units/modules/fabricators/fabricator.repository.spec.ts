@@ -62,6 +62,18 @@ describe('Fabricator Repository', () => {
       });
       expect(fabricator).toEqual(fabricatorMock);
     });
+
+    it('should return null if fabricator is not found', async () => {
+      const findByIdPrismaMock =
+        mockPrisma.fabricator.findFirst.mockReturnValueOnce(
+          Promise.resolve(null)
+        );
+
+      const fabricator = await fabricatorRepository.findById('123');
+
+      expect(findByIdPrismaMock).toHaveBeenCalledWith('123');
+      expect(fabricator).toBe(null);
+    });
   });
 
   describe('Find fabricator by query', () => {
@@ -79,6 +91,22 @@ describe('Fabricator Repository', () => {
         where: { email: fabricatorMock.email },
       });
       expect(fabricator).toEqual(fabricatorMock);
+    });
+
+    it('should return null if fabricator is not found', async () => {
+      const findPrismaMock =
+        mockPrisma.fabricator.findFirst.mockReturnValueOnce(
+          Promise.resolve(null)
+        );
+
+      const fabricator = await fabricatorRepository.find({
+        email: fabricatorMock.email,
+      });
+
+      expect(findPrismaMock).toHaveBeenCalledWith({
+        where: { email: fabricatorMock.email },
+      });
+      expect(fabricator).toBe(null);
     });
   });
 
