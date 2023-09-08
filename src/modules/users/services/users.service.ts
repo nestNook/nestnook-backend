@@ -42,23 +42,9 @@ export class UsersService implements UsersServiceInterface {
       password_hash,
     });
 
-    const access_token = tokenUtils.accessToken({
-      user_id: user.id,
-    });
-    const refresh_token = tokenUtils.refreshToken(user.id);
+    const session = await sessionModule.service.createSession(user);
 
-    const { id: session_id } = await sessionModule.service.createSession({
-      user_id: user.id,
-      refresh_token,
-    });
-
-    const tokens: SessionDTO = {
-      access_token,
-      refresh_token,
-      session_id,
-    };
-
-    return tokens;
+    return session;
   }
 
   async getUserById(userId: string): Promise<GetUserDTO | null> {
