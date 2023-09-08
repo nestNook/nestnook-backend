@@ -9,19 +9,22 @@ import cookieUtils from '@utils/cookie-utils';
 export function auth() {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const accessToken = req.cookies.access_token;
+      const accessToken =
+        req.cookies.access_token || req.headers.authorization?.split(' ')[0];
       const refreshToken = req.cookies.refresh_token;
 
       if (!accessToken || !refreshToken) {
         return next(new Error('Token is missing'));
       }
 
-      const isValidAccessToken = tokenUtils.verifyToken<string>(accessToken);
+      const isValidAccessToken = tokenUtils.verifyToken<{ user_id: string }>(
+        accessToken
+      );
       const isValidRefreshToken = tokenUtils.verifyToken<string>(refreshToken);
 
       if (isValidAccessToken) {
         const user = await usersModule.service.getUserById(
-          isValidAccessToken.payload
+          isValidAccessToken.payload.user_id
         );
 
         if (!user) {
