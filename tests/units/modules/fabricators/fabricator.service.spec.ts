@@ -1,5 +1,5 @@
-import { FabricatorServiceInterface } from '../../../../src/modules/fabricators/services/fabricators.service.interface';
-import { FabricatorsService } from '../../../../src/modules/fabricators/services/fabricators.service';
+import { FabricatorServiceInterface } from '@modules/fabricators/services/fabricators.service.interface';
+import { FabricatorsService } from '@modules/fabricators/services/fabricators.service';
 import { createFabricatorMock, fabricatorMock } from './mocks/fabricator-mock';
 import { FabricatorRepositoryMock } from './mocks/fabricator-mock.repository';
 

@@ -1,5 +1,5 @@
-import { Database } from './../../../src/infra/database';
-import { mockPrisma } from '../../__mocks__/prisma-mock';
+import { mockPrisma } from '@test/__mocks__/prisma-mock';
+import { Database } from '@infra/database';
 
 describe('Database module', () => {
   let database: Database;

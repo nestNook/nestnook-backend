@@ -9,6 +9,8 @@ declare global {
       JWT_EXPIRES_IN: string;
       REFRESH_TOKEN_EXPIRES_IN: string;
       MONGODB_URL: string;
+      REFRESH_TOKEN_COOKIE_EXPIRES_IN: string;
+      SESSION_COOKIE_EXPIRES_IN: string;
     }
   }
 }

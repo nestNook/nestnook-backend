@@ -1,4 +1,4 @@
-import { SectorRepositoryInterface } from '../../../../../src/modules/sectors/repositories/sector.repository.interface';
+import { SectorRepositoryInterface } from '@modules/sectors/repositories/sector.repository.interface';
 
 export class SectorRepositoryMock implements SectorRepositoryInterface {
   createSector = jest.fn();

@@ -1,7 +1,7 @@
-import request from 'supertest';
-import Server from '../../../../src/infra/server';
+import { AddressRepository } from '@modules/address/repositories/address.repository';
 import { addressMock, createAddressMock } from './mocks/address-mock';
-import { AddressRepository } from '../../../../src/modules/address/repositories/address.repository';
+import Server from '@infra/server';
+import request from 'supertest';
 
 describe('Address controller', () => {
   const app = Server.app;

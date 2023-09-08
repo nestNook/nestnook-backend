@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { SessionsControllerInterface } from './sessions.controller.interface';
 import { SessionsServiceInterface } from '../services/sessions.service.interface';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
 import { CreateSessionDTO, Session } from '../dtos';
 
 export class SessionsController implements SessionsControllerInterface {

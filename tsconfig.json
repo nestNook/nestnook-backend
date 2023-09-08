@@ -12,7 +12,8 @@
       "@config/*": ["./src/config/*"],
       "@modules/*": ["./src/modules/*"],
       "@utils/*": ["./src/utils/*"],
-      "@src/*": ["./src/*"]
+      "@src/*": ["./src/*"],
+      "@test/*": ["./tests/*"]
     },
     "lib": ["ES6"],
     "allowJs": true,

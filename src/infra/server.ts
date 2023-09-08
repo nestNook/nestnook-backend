@@ -4,7 +4,7 @@ import express, { Application, Router } from 'express';
 import { Server as HttpServer } from 'http';
 import { Route } from '../common/route.interface';
 import { BaseRouter } from '../common/baseRouter.interface';
-
+import cookieParser from 'cookie-parser';
 export class Server {
   public app: Application;
   public server: HttpServer | undefined;
@@ -29,6 +29,7 @@ export class Server {
   middlewares() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(cookieParser());
   }
 
   routes() {

@@ -1,7 +1,7 @@
-import { ProductsRepository } from '../../../../src/modules/products/repositories/products.repository';
-import { ProductsRepositoryInterface } from '../../../../src/modules/products/repositories/products.repository.interface';
-import { mockPrisma } from '../../../__mocks__/prisma-mock';
+import { ProductsRepositoryInterface } from '@modules/products/repositories/products.repository.interface';
+import { ProductsRepository } from '@modules/products/repositories/products.repository';
 import { createProductMock, productMock } from './mocks/product-mock';
+import { mockPrisma } from '@test/__mocks__/prisma-mock';
 
 describe('Products Repository', () => {
   let productsRepository: ProductsRepositoryInterface;
