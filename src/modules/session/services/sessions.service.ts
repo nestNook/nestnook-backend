@@ -1,9 +1,10 @@
 import { SessionsRepositoryInterface } from '../repositories/sessions.repository.interface';
 import { SessionsServiceInterface } from './sessions.service.interface';
 import { CreateSessionDTO, Session, UpdateSessionDTO } from '../dtos';
-import { User } from '@modules/users/dto';
-import tokenUtils from '@utils/token-utils';
 import { SessionDTO } from '@@types/session.dto';
+import tokenUtils from '@utils/token-utils';
+import { User } from '@modules/users/dto';
+import { v4 as uuid } from 'uuid';
 
 export class SessionsService implements SessionsServiceInterface {
   constructor(
@@ -11,23 +12,27 @@ export class SessionsService implements SessionsServiceInterface {
   ) {}
 
   async createSession(user: User): Promise<SessionDTO> {
-    const access_token = tokenUtils.accessToken({
-      user_id: user.id,
-    });
-    const refresh_token = tokenUtils.refreshToken(user.id);
+    const session_id = uuid();
+    const refresh_token = tokenUtils.refreshToken(session_id);
     const dto: CreateSessionDTO = {
       user_id: user.id,
       refresh_token,
+      id: session_id,
     };
 
-    const { id: session_id } = await this.sessionRepository.createSession(dto);
-    const session: SessionDTO = {
+    await this.sessionRepository.createSession(dto);
+    const access_token = tokenUtils.accessToken({
+      user_id: user.id,
+      session_id,
+    });
+
+    const tokens: SessionDTO = {
       access_token,
       refresh_token,
       session_id,
     };
 
-    return session;
+    return tokens;
   }
 
   async findUserSessions(userId: string): Promise<Session[]> {

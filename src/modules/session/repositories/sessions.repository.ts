@@ -36,7 +36,9 @@ export class SessionsRepository implements SessionsRepositoryInterface {
   }
 
   async findSessionById(sessionId: string): Promise<Session | null> {
-    const session = await SessionModel.findById(sessionId);
+    const session = await SessionModel.findOne({
+      id: sessionId,
+    });
     return session;
   }
 

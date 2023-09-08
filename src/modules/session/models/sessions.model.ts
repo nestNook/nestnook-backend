@@ -4,6 +4,11 @@ import { SessionStatus } from '@@types/session-status';
 
 const sessionSchema = new Schema<Session>(
   {
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     user_id: {
       type: String,
       required: true,
@@ -20,7 +25,14 @@ const sessionSchema = new Schema<Session>(
       required: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      transform(_, ret) {
+        delete ret._id;
+      },
+    },
+  }
 );
 
 export const SessionModel = model('Session', sessionSchema);
