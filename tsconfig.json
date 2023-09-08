@@ -5,6 +5,8 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "baseUrl": ".",
+    "declaration": true,
+    "incremental": true,
     "paths": {
       "@@types/*": ["./src/@types/*"],
       "@infra/*": ["./src/infra/*"],
@@ -24,8 +26,9 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./src/@types"]
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*", "tests/**/*"],
-  "files": ["src/main.ts"]
+  "include": ["src/**/*", "tests/**/*", "env.d.ts"],
+  "files": ["src/main.ts", "src/env.d.ts"]
 }
