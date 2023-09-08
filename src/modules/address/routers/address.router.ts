@@ -1,9 +1,11 @@
 import { AddressControllerInterface } from '../controllers/address.controller.interface';
 import { BaseRouter } from '@common/baseRouter.interface';
-import { Route } from '@common/route.interface';
+import { Handler, Route } from '@common/route.interface';
+import { auth } from '@modules/auth/middlewares/auth.middleware';
 
 export class AddressRouter implements BaseRouter {
   routePrefix?: string | undefined = '/address';
+  middlewares?: Handler[] = [auth()];
   public routes: Route[] = [];
 
   constructor(readonly addressController: AddressControllerInterface) {
@@ -12,31 +14,26 @@ export class AddressRouter implements BaseRouter {
         path: '/',
         handler: addressController.createAddress,
         method: 'post',
-        middlewares: [],
       },
       {
         path: '/:id',
         handler: addressController.getAddressById,
         method: 'get',
-        middlewares: [],
       },
       {
         path: '/',
         handler: addressController.getUserAddresses,
         method: 'get',
-        middlewares: [],
       },
       {
         path: '/:id',
         handler: addressController.updateAddress,
         method: 'patch',
-        middlewares: [],
       },
       {
         path: '/:id',
         handler: addressController.deleteAddress,
         method: 'delete',
-        middlewares: [],
       },
     ];
   }
