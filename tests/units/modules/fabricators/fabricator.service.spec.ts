@@ -110,6 +110,67 @@ describe('Fabricator service', () => {
       });
       expect(fabricator).toEqual(fabricatorMock);
     });
+
+    it('should throw if email is already registered', async () => {
+      const emailError = new Error('Validation error: Email already exists');
+
+      jest
+        .spyOn(fabricatorRepository, 'findOr')
+        .mockReturnValueOnce(Promise.resolve([fabricatorMock]));
+
+      await expect(
+        fabricatorService.updateFabricator(fabricatorMock.id, {
+          email: fabricatorMock.email,
+        })
+      ).rejects.toThrow(emailError);
+    });
+
+    it('should throw if registry is already registered', async () => {
+      const registryError = new Error(
+        'Validation error: Registry already exists'
+      );
+
+      jest
+        .spyOn(fabricatorRepository, 'findOr')
+        .mockReturnValueOnce(Promise.resolve([fabricatorMock]));
+
+      await expect(
+        fabricatorService.updateFabricator(fabricatorMock.id, {
+          registry: fabricatorMock.registry,
+        })
+      ).rejects.toThrow(registryError);
+    });
+
+    it('should throw if phone number is already registered', async () => {
+      const phoneError = new Error('Validation error: Phone already exists');
+
+      jest
+        .spyOn(fabricatorRepository, 'findOr')
+        .mockReturnValueOnce(Promise.resolve([fabricatorMock]));
+
+      await expect(
+        fabricatorService.updateFabricator(fabricatorMock.id, {
+          phone_number: fabricatorMock.phone_number,
+        })
+      ).rejects.toThrow(phoneError);
+    });
+
+    it('should return null if id does not exist', async () => {
+      const repositorySpy = jest
+        .spyOn(fabricatorRepository, 'updateFabricator')
+        .mockReturnValueOnce(Promise.resolve(null));
+
+      jest
+        .spyOn(fabricatorRepository, 'findOr')
+        .mockReturnValueOnce(Promise.resolve([]));
+
+      const fabricator = await fabricatorService.updateFabricator('123', {
+        registry: '123',
+      });
+
+      expect(fabricator).toBe(null);
+      expect(repositorySpy).toHaveBeenCalledWith('123', { registry: '123' });
+    });
   });
 
   describe('Find fabricator by id', () => {
@@ -123,6 +184,17 @@ describe('Fabricator service', () => {
       expect(repositorySpy).toHaveBeenCalledWith(fabricatorMock.id);
       expect(fabricator).toEqual(fabricatorMock);
     });
+
+    it('should return null if fabricator is not found', async () => { 
+      const repositorySpy = jest
+        .spyOn(fabricatorRepository, 'findById')
+        .mockReturnValueOnce(Promise.resolve(null));
+
+        const fabricator = await fabricatorService.findById('123')
+
+        expect(fabricator).toBe(null);
+        expect(repositorySpy).toHaveBeenCalledWith('123');
+    })
   });
 
   describe('delete fabricator', () => {
