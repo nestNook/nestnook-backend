@@ -3,9 +3,11 @@ import { SessionsServiceInterface } from '../services/sessions.service.interface
 import { SessionDTO } from '@@types/session.dto';
 import { Request, Response } from 'express';
 import { User } from '@modules/users/dto';
+import { Controller } from '@common/controller.decorator';
 
+@Controller
 export class SessionsController implements SessionsControllerInterface {
-  constructor(private sessionsService: SessionsServiceInterface) {}
+  constructor(private readonly sessionsService: SessionsServiceInterface) {}
 
   async getUserSessions(req: Request, res: Response): Promise<Response> {
     const { id } = req.app.locals.user;
