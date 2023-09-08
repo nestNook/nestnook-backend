@@ -42,9 +42,60 @@ describe('Fabricator Repository', () => {
 
       expect(updateFabricatorPrismaMock).toHaveBeenCalledWith({
         data: fabricatorMock,
-        where: { id: fabricatorMock.id}
+        where: { id: fabricatorMock.id },
       });
       expect(fabricator).toEqual(fabricatorMock);
+    });
+  });
+
+  describe('Find fabricator by id', () => {
+    it('should return a fabricator', async () => {
+      const findByIdPrismaMock =
+        mockPrisma.fabricator.findFirst.mockReturnValueOnce(
+          Promise.resolve(fabricatorMock)
+        );
+
+      const fabricator = await fabricatorRepository.findById(fabricatorMock.id);
+
+      expect(findByIdPrismaMock).toHaveBeenCalledWith({
+        where: { id: fabricatorMock.id },
+      });
+      expect(fabricator).toEqual(fabricatorMock);
+    });
+  });
+
+  describe('Find fabricator by query', () => {
+    it('should return a fabricator', async () => {
+      const findPrismaMock =
+        mockPrisma.fabricator.findFirst.mockReturnValueOnce(
+          Promise.resolve(fabricatorMock)
+        );
+
+      const fabricator = await fabricatorRepository.find({
+        email: fabricatorMock.email,
+      });
+
+      expect(findPrismaMock).toHaveBeenCalledWith({
+        where: { email: fabricatorMock.email },
+      });
+      expect(fabricator).toEqual(fabricatorMock);
+    });
+  });
+
+  describe('Delete fabricator', () => {
+    it('should be able to delete a fabricator', async () => {
+      const deletePrismaMock = mockPrisma.fabricator.delete.mockReturnValueOnce(
+        Promise.resolve(null)
+      );
+
+      const fabricator = await fabricatorRepository.deleteFabricator(
+        fabricatorMock.id
+      );
+
+      expect(deletePrismaMock).toHaveBeenCalledWith({
+        where: { id: fabricatorMock.id },
+      });
+      expect(fabricator).toBe(null);
     });
   });
 });
