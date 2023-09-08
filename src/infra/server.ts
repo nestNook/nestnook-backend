@@ -39,20 +39,20 @@ export class Server {
     console.log(`Server is running on port ${config.port}`);
   }
 
-  addRouter(router: BaseRouter) {
-    const routePrefix = router.routePrefix ?? '/';
+  addRouter({ routes, routePrefix, middlewares = [] }: BaseRouter) {
+    const pathPrefix = routePrefix ?? '/';
     console.group(`${routePrefix}:`);
-    router.routes.map(({ method, path }) => {
+    routes.map(({ method, path }) => {
       console.log(`${method.toLocaleUpperCase()} ${path}`);
     });
-    this.router.use(routePrefix, this.mapRoutes(router.routes));
+    this.router.use(pathPrefix, ...middlewares, this.mapRoutes(routes));
     console.groupEnd();
   }
 
   private mapRoutes(routes: Route[]) {
     const router = express.Router();
 
-    routes.forEach(({ handler, method, middlewares, path }) => {
+    routes.forEach(({ handler, method, middlewares = [], path }) => {
       switch (method) {
         case 'get': {
           router.get(path, ...middlewares, handler);
