@@ -5,6 +5,7 @@ import { Server as HttpServer } from 'http';
 import { Route } from '../common/route.interface';
 import { BaseRouter } from '../common/baseRouter.interface';
 import cookieParser from 'cookie-parser';
+import { errorHandler } from '@common/error-handler.middleware';
 export class Server {
   public app: Application;
   public server: HttpServer | undefined;
@@ -17,8 +18,9 @@ export class Server {
 
   start() {
     this.server = this.app.listen(config.port);
-    this.middlewares();
+    this.preMiddlewares();
     this.routes();
+    this.postMiddlewares();
   }
 
   stop(cb?: () => void) {
@@ -26,17 +28,20 @@ export class Server {
     this.server.close(cb);
   }
 
-  middlewares() {
+  preMiddlewares() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+  }
+
+  postMiddlewares() {
+    this.app.use(errorHandler());
   }
 
   routes() {
     AppModule.routers.forEach((router) => this.addRouter(router));
     this.app.use(config.apiPrefix, this.router);
     console.log(config.apiPrefix);
-    console.log(`Server is running on port ${config.port}`);
   }
 
   addRouter({ routes, routePrefix, middlewares = [] }: BaseRouter) {
