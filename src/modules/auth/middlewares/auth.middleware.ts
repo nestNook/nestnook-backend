@@ -1,10 +1,10 @@
-import sessionModule from '@modules/session/session.module';
 import { Request, Response, NextFunction } from 'express';
 import { SessionStatus } from '@@types/session-status';
-import usersModule from '@modules/users/users.module';
+import authModule from '../auth.module';
 import { Session } from '@modules/session/dtos';
 import tokenUtils from '@utils/token-utils';
 import cookieUtils from '@utils/cookie-utils';
+import { UnauthorizedException } from '@src/errors/unauthorized-exception';
 
 export function auth() {
   return async function (req: Request, res: Response, next: NextFunction) {
@@ -15,7 +15,7 @@ export function auth() {
         req.cookies.refresh_token || req.headers['Refresh-Token'];
 
       if (!accessToken || !refreshToken) {
-        return next(new Error('Token is missing'));
+        return next(new UnauthorizedException('Token is missing'));
       }
       const isValidAccessToken = tokenUtils.verifyToken<{ user_id: string }>(
         accessToken
@@ -25,20 +25,20 @@ export function auth() {
       }>(refreshToken);
 
       if (!isValidRefreshToken) {
-        return next(new Error('Invalid or expired token'));
+        return next(new UnauthorizedException('Invalid or expired token'));
       }
 
-      const session: Session = await sessionModule.service.findSessionById(
+      const session: Session = await authModule.service.findSessionById(
         isValidRefreshToken.session_id
       );
 
       if (isValidAccessToken && session.status === SessionStatus.ACTIVE) {
-        const user = await usersModule.service.getUserById(
+        const user = await authModule.service.getUserById(
           isValidAccessToken.user_id
         );
 
         if (!user) {
-          return next(new Error('Invalid or expired token'));
+          return next(new UnauthorizedException('Invalid or expired token'));
         }
 
         req.app.locals.user = user;
@@ -46,13 +46,13 @@ export function auth() {
       }
 
       if (!(refreshToken === session.refresh_token)) {
-        return next(new Error('Invalid or expired token'));
+        return next(new UnauthorizedException('Invalid or expired token'));
       }
 
-      const user = await usersModule.service.getUserById(session.user_id);
+      const user = await authModule.service.getUserById(session.user_id);
 
       if (!user) {
-        return next(new Error('Invalid or expired token'));
+        return next(new UnauthorizedException('Invalid or expired token'));
       }
 
       req.app.locals.user = user;
@@ -60,7 +60,7 @@ export function auth() {
       const newAccessToken = tokenUtils.accessToken({ user_id: user.id });
       const newRefreshToken = tokenUtils.refreshToken(user.id);
 
-      await sessionModule.service.updateSession(session.id, {
+      await authModule.service.updateSession(session.id, {
         refresh_token: newRefreshToken,
         status: SessionStatus.ACTIVE,
       });
@@ -70,7 +70,7 @@ export function auth() {
 
       return next();
     } catch (error) {
-      return next(new Error('Invalid or expired token'));
+      return next(new UnauthorizedException('Invalid or expired token'));
     }
   };
 }
