@@ -1,4 +1,3 @@
-import tokenUtils from '@utils/token-utils';
 import passwordUtils from '@utils/password-utils';
 import sessionModule from '@modules/session/session.module';
 
@@ -12,6 +11,9 @@ import {
   UpdateUserDTO,
 } from '../dto';
 import { UsersRepositoryInterface } from '../repositories/users.repository.interface';
+import { BadRequestException } from '@src/errors/bad-request-exception';
+import { NotFoundException } from '@src/errors/not-found-exception';
+import { ForbiddenException } from '@src/errors/forbidden-exception';
 
 export class UsersService implements UsersServiceInterface {
   constructor(private readonly usersRepository: UsersRepositoryInterface) {}
@@ -26,7 +28,7 @@ export class UsersService implements UsersServiceInterface {
     const isEmailAlreadyExistent = await this.usersRepository.find({ email });
 
     if (isEmailAlreadyExistent) {
-      throw new Error('Email already exists');
+      throw new BadRequestException('Email already exists');
     }
 
     if (password !== password_confirm) {
@@ -51,7 +53,7 @@ export class UsersService implements UsersServiceInterface {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     return user;
@@ -61,7 +63,7 @@ export class UsersService implements UsersServiceInterface {
     const deletedUser = await this.usersRepository.delete(id);
 
     if (!deletedUser) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     return deletedUser;
@@ -71,7 +73,7 @@ export class UsersService implements UsersServiceInterface {
     const user = await this.usersRepository.find({ email });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     const publicUser = UserBuilder.publicUser(user);
@@ -86,7 +88,7 @@ export class UsersService implements UsersServiceInterface {
     const { email, phone_number, password_hash } = dto;
 
     if (Object.keys(dto).length === 0) {
-      throw new Error('At least one field required to update');
+      throw new BadRequestException('At least one field required to update');
     }
 
     if (email) {
@@ -95,7 +97,7 @@ export class UsersService implements UsersServiceInterface {
       });
 
       if (isEmailAlreadyExistent) {
-        throw new Error('Email already exists');
+        throw new BadRequestException('Email already exists');
       }
     }
 
@@ -105,18 +107,20 @@ export class UsersService implements UsersServiceInterface {
       });
 
       if (isPhoneNumberAlreadyExistent) {
-        throw new Error('Phone number already exists');
+        throw new BadRequestException('Phone number already exists');
       }
     }
 
     if (password_hash) {
-      throw new Error('Update password is not allowed in this route');
+      throw new ForbiddenException(
+        'Update password is not allowed in this route'
+      );
     }
 
     const user = await this.usersRepository.update(id, dto);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     const publicUser = UserBuilder.publicUser(user);
@@ -131,7 +135,7 @@ export class UsersService implements UsersServiceInterface {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     const passwordsMatch = await passwordUtils.comparePass(
@@ -140,11 +144,11 @@ export class UsersService implements UsersServiceInterface {
     );
 
     if (!passwordsMatch) {
-      throw new Error('Invalid current password');
+      throw new ForbiddenException('Invalid current password');
     }
 
     if (dto.password !== dto.passwordConfirm) {
-      throw new Error('Passwords does not match');
+      throw new BadRequestException('Passwords does not match');
     }
 
     const password_hash = await passwordUtils.hashPass(dto.password);
