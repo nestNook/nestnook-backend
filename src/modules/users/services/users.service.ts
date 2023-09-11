@@ -85,45 +85,45 @@ export class UsersService implements UsersServiceInterface {
     id: string,
     dto: UpdateUserDTO
   ): Promise<GetUserDTO | null> {
-    const { email, phone_number, password_hash } = dto;
-
-    if (Object.keys(dto).length === 0) {
-      throw new BadRequestException('At least one field required to update');
-    }
-
-    if (email) {
-      const isEmailAlreadyExistent = await this.usersRepository.find({
-        email,
-      });
-
-      if (isEmailAlreadyExistent) {
-        throw new BadRequestException('Email already exists');
-      }
-    }
-
-    if (phone_number) {
-      const isPhoneNumberAlreadyExistent = await this.usersRepository.find({
-        phone_number,
-      });
-
-      if (isPhoneNumberAlreadyExistent) {
-        throw new BadRequestException('Phone number already exists');
-      }
-    }
-
-    if (password_hash) {
-      throw new ForbiddenException(
-        'Update password is not allowed in this route'
-      );
-    }
-
-    const user = await this.usersRepository.update(id, dto);
+    const { email, phone_number } = dto;
+    const user = await this.usersRepository.findById(id);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    const publicUser = UserBuilder.publicUser(user);
+    const emailPromise = email
+      ? this.usersRepository.find({ email })
+      : Promise.resolve(null);
+
+    const phoneNumberPromise = phone_number
+      ? this.usersRepository.find({ phone_number })
+      : Promise.resolve(null);
+
+    const [existingEmailUser, existingPhoneNumberUser] = await Promise.all([
+      emailPromise,
+      phoneNumberPromise,
+    ]);
+
+    if (existingEmailUser) {
+      throw new BadRequestException('Email already exists');
+    }
+
+    if (existingPhoneNumberUser) {
+      throw new BadRequestException('Phone number already exists');
+    }
+
+    if (Object.keys(dto).length === 0) {
+      throw new BadRequestException('At least one field required to update');
+    }
+
+    const updatedUser = await this.usersRepository.update(id, dto);
+
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    const publicUser = UserBuilder.publicUser(updatedUser);
 
     return publicUser;
   }
