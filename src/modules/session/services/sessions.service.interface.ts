@@ -1,4 +1,4 @@
-import { User } from '@modules/users/dto';
+import { User } from '@modules/users/dtos';
 import { Session, UpdateSessionDTO } from '../dtos';
 import { SessionDTO } from '@@types/session.dto';
 

@@ -1,5 +1,5 @@
 import { Session, UpdateSessionDTO } from '@modules/session/dtos';
-import { User } from '@modules/users/dto';
+import { User } from '@modules/users/dtos';
 
 export interface AuthRepositoryInterface {
   findByEmail(email: string): Promise<User | null>;

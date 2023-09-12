@@ -3,7 +3,7 @@ import { SessionsServiceInterface } from './sessions.service.interface';
 import { CreateSessionDTO, Session, UpdateSessionDTO } from '../dtos';
 import { SessionDTO } from '@@types/session.dto';
 import tokenUtils from '@utils/token-utils';
-import { User } from '@modules/users/dto';
+import { User } from '@modules/users/dtos';
 import { v4 as uuid } from 'uuid';
 
 export class SessionsService implements SessionsServiceInterface {

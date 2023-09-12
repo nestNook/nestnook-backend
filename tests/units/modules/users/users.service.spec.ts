@@ -14,7 +14,12 @@ import { UserBuilder } from '@modules/users/providers/user.builder';
 import { UsersRepositoryMock } from './mocks/users-mock.repository';
 import { sessionMock } from '../sessions/mocks/sessions-mock';
 import { PasswordUtils } from '@utils/password-utils';
-import { GetUserDTO, UpdateUserDTO, User, UserQuery } from '@modules/users/dto';
+import {
+  GetUserDTO,
+  UpdateUserDTO,
+  User,
+  UserQuery,
+} from '@modules/users/dtos';
 import { ForbiddenException } from '@src/errors/forbidden-exception';
 
 describe('Users service', () => {
