@@ -86,11 +86,6 @@ export class UsersService implements UsersServiceInterface {
     dto: UpdateUserDTO
   ): Promise<GetUserDTO | null> {
     const { email, phone_number } = dto;
-    const user = await this.usersRepository.findById(id);
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
 
     const emailPromise = email
       ? this.usersRepository.find({ email })
