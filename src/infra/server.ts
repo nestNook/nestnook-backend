@@ -44,13 +44,12 @@ export class Server {
     console.log(config.apiPrefix);
   }
 
-  addRouter({ routes, routePrefix, middlewares = [] }: BaseRouter) {
-    const pathPrefix = routePrefix ?? '/';
+  addRouter({ routes, routePrefix = '/', middlewares = [] }: BaseRouter) {
     console.group(`${routePrefix}:`);
     routes.map(({ method, path }) => {
       console.log(`${method.toLocaleUpperCase()} ${path}`);
     });
-    this.router.use(pathPrefix, ...middlewares, this.mapRoutes(routes));
+    this.router.use(routePrefix, ...middlewares, this.mapRoutes(routes));
     console.groupEnd();
   }
 
