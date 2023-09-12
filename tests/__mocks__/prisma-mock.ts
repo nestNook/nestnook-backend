@@ -19,4 +19,8 @@ export const mockPrisma = {
   address: {
     create: jest.fn(),
   },
+  user: {
+    create: jest.fn(),
+    findFirst: jest.fn(),
+  },
 };
