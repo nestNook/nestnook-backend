@@ -1,5 +1,6 @@
 import passwordUtils from '@utils/password-utils';
 import sessionModule from '@modules/session/session.module';
+import validationUtils from '@utils/validation-utils';
 
 import { SessionDTO } from '@@types/session.dto';
 import { UserBuilder } from '../providers/user.builder';
@@ -32,7 +33,7 @@ export class UsersService implements UsersServiceInterface {
     }
 
     if (password !== password_confirm) {
-      throw new Error('Passwords does not match');
+      throw new BadRequestException('Passwords does not match');
     }
 
     const password_hash = await passwordUtils.hashPass(password);
@@ -108,7 +109,7 @@ export class UsersService implements UsersServiceInterface {
       throw new BadRequestException('Phone number already exists');
     }
 
-    if (Object.keys(dto).length === 0) {
+    if (validationUtils.isObjectEmpty(dto)) {
       throw new BadRequestException('At least one field required to update');
     }
 
