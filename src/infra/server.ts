@@ -8,6 +8,8 @@ import swaggerUi from 'swagger-ui-express';
 import swagger from '../../swagger.json';
 import cookieParser from 'cookie-parser';
 import config from '@config/index';
+import { HealthCheckRoute } from '@common/health-check.route';
+import { NotFoundRoute } from '@common/not-found.route';
 export class Server {
   public app: Application;
   public server: HttpServer | undefined;
@@ -39,10 +41,12 @@ export class Server {
       swaggerUi.serve,
       swaggerUi.setup(swagger)
     );
+    this.app.get(`${config.apiPrefix}/health-check`, HealthCheckRoute);
   }
 
   postMiddlewares() {
     this.app.use(errorHandler());
+    this.app.use(NotFoundRoute);
   }
 
   routes() {
