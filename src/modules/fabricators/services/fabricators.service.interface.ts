@@ -11,5 +11,5 @@ export interface FabricatorServiceInterface {
     updateFabricatorDto: UpdateFabricatorDTO
   ): Promise<Fabricator | null>;
 
-  deleteFabricator(id: string): Promise<void>
+  deleteFabricator(id: string): Promise<Fabricator | null>
 }

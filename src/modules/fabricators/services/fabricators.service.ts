@@ -3,6 +3,7 @@ import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
 import { FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { FabricatorServiceInterface } from './fabricators.service.interface';
 import validationUtils from '@utils/validation-utils';
+import { NotFoundException } from '@src/errors/not-found-exception';
 
 export class FabricatorsService implements FabricatorServiceInterface {
   constructor(
@@ -85,7 +86,9 @@ export class FabricatorsService implements FabricatorServiceInterface {
     return updatedFabricator;
   }
 
-  async deleteFabricator(id: string): Promise<void> {
-    await this.fabricatorsRepository.deleteFabricator(id);
+  async deleteFabricator(id: string): Promise<Fabricator | null> {
+   const deletedFabricator = await this.fabricatorsRepository.deleteFabricator(id);
+   if(!deletedFabricator) throw new NotFoundException('Fabricator not found');
+   return deletedFabricator;
   }
 }
