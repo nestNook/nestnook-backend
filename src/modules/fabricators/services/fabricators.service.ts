@@ -1,3 +1,4 @@
+import { BadRequestException } from '@src/errors/bad-request-exception';
 import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
 import { FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { FabricatorServiceInterface } from './fabricators.service.interface';
@@ -13,16 +14,6 @@ export class FabricatorsService implements FabricatorServiceInterface {
     email,
     phone_number,
   }: CreateFabricatorDTO | UpdateFabricatorDTO): Promise<void> {
-    const isEmpty = validationUtils.isObjectEmpty({
-      registry,
-      email,
-      phone_number,
-    });
-
-    if(isEmpty) {
-      throw new Error("At least one field is required");
-    }
-
     const fabricatorAlreadyExists = await this.fabricatorsRepository.findOr({
       registry,
       email,
@@ -54,12 +45,18 @@ export class FabricatorsService implements FabricatorServiceInterface {
       }
 
       if (errors.length > 0) {
-        throw new Error(`Validation error: ${errors.join(', ')}`);
+        throw new BadRequestException(`Validation error: ${errors.join(', ')}`);
       }
     }
   }
 
   async createFabricator(dto: CreateFabricatorDTO): Promise<Fabricator> {
+    const isEmpty = validationUtils.isObjectEmpty(dto);
+
+    if(isEmpty) {
+      throw new BadRequestException("At least one field is required to create a fabricator");
+    }
+
     await this.checkFabricator(dto);
     const fabricator = await this.fabricatorsRepository.createFabricator(dto);
     return fabricator;
@@ -74,6 +71,11 @@ export class FabricatorsService implements FabricatorServiceInterface {
     id: string,
     dto: UpdateFabricatorDTO
   ): Promise<Fabricator | null> {
+    const isEmpty = validationUtils.isObjectEmpty(dto);
+
+    if(isEmpty) {
+      throw new BadRequestException("At least one field is required to update a fabricator");
+    }
     await this.checkFabricator(dto);
     const updatedFabricator = await this.fabricatorsRepository.updateFabricator(
       id,
