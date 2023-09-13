@@ -4,6 +4,9 @@ import sessionModule from '@modules/session/session.module';
 import passwordUtils from '@utils/password-utils';
 import { SessionDTO } from '@@types/session.dto';
 import { SignInDTO } from '../dtos/sign-in.dto';
+import { NotFoundException } from '@src/errors/not-found-exception';
+import { User } from '@modules/users/dto';
+import { Session, UpdateSessionDTO } from '@modules/session/dtos';
 
 export class AuthService implements AuthServiceInterface {
   constructor(private readonly authRepository: AuthRepositoryInterface) {}
@@ -27,5 +30,41 @@ export class AuthService implements AuthServiceInterface {
     const session: SessionDTO = await sessionModule.service.createSession(user);
 
     return session;
+  }
+
+  async getUserById(userId: string): Promise<User> {
+    const user = await this.authRepository.findUserById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async findSessionById(sessionsId: string): Promise<Session> {
+    const session = await this.authRepository.findSessionById(sessionsId);
+
+    if (!session) {
+      throw new NotFoundException('Session not found');
+    }
+
+    return session;
+  }
+
+  async updateSession(
+    sessionsId: string,
+    dto: UpdateSessionDTO
+  ): Promise<Session> {
+    const updatedSession = await this.authRepository.updateSession(
+      sessionsId,
+      dto
+    );
+
+    if (!updatedSession) {
+      throw new Error('Session not found');
+    }
+
+    return updatedSession;
   }
 }

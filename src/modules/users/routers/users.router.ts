@@ -1,6 +1,7 @@
 import { Route } from '@common/route.interface';
 import { BaseRouter } from '@common/baseRouter.interface';
 import { UsersControllerInterface } from '../controllers/users.controller.interface';
+import { auth } from '@modules/auth/middlewares/auth.middleware';
 
 export class UsersRouter implements BaseRouter {
   routePrefix?: string | undefined = '/users';
@@ -18,25 +19,25 @@ export class UsersRouter implements BaseRouter {
         method: 'get',
         handler: usersController.getMe,
         path: '/',
-        middlewares: [],
+        middlewares: [auth()],
       },
       {
         method: 'patch',
         handler: usersController.updateMe,
         path: '/',
-        middlewares: [],
+        middlewares: [auth()],
       },
       {
         method: 'patch',
         handler: usersController.updatePassword,
         path: '/update-password',
-        middlewares: [],
+        middlewares: [auth()],
       },
       {
         method: 'delete',
         handler: usersController.deleteMe,
         path: '/',
-        middlewares: [],
+        middlewares: [auth()],
       },
     ];
   }

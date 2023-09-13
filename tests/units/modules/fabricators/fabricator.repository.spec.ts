@@ -71,7 +71,11 @@ describe('Fabricator Repository', () => {
 
       const fabricator = await fabricatorRepository.findById('123');
 
-      expect(findByIdPrismaMock).toHaveBeenCalledWith('123');
+      expect(findByIdPrismaMock).toHaveBeenCalledWith({
+        where: {
+          id: '123',
+        },
+      });
       expect(fabricator).toBe(null);
     });
   });

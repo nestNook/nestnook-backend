@@ -13,12 +13,14 @@ describe('Server module', () => {
   });
 
   it('should start server with all routes and middlewares', async () => {
-    const middlewaresApy = jest.spyOn(server, 'middlewares');
+    const postMiddlewaresApy = jest.spyOn(server, 'postMiddlewares');
+    const preMiddlewaresApy = jest.spyOn(server, 'preMiddlewares');
     const routesSpy = jest.spyOn(server, 'routes');
 
     server.start();
 
-    expect(middlewaresApy).toHaveBeenCalled();
+    expect(postMiddlewaresApy).toHaveBeenCalled();
+    expect(preMiddlewaresApy).toHaveBeenCalled();
     expect(routesSpy).toHaveBeenCalled();
   });
 
