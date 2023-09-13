@@ -1,0 +1,153 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "NestNook API",
+    "version": "1.0.0",
+    "description": "E-commerce api for NestNook Store"
+  },
+  "host": "api.nestnook.com",
+  "basePath": "api/v1",
+  "schemes": ["http"],
+  "servers": [
+    {
+      "description": "Development server",
+      "url": "http://localhost:8081/api/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "CreateUserDTO": {
+        "type": "object",
+        "description": "Crate user DTO schema",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "password_confirm": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          }
+        }
+      },
+      "SessionDTO": {
+        "type": "object",
+        "description": "Tokens to authenticate API calls",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "session_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Endpoints for managing user accounts"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Creates a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDTO"
+              },
+              "examples": {
+                "Create user": {
+                  "value": {
+                    "name": "John",
+                    "email": "john@example.com",
+                    "password": "password",
+                    "password_confirm": "password",
+                    "phone_number": "18912345678"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/SessionDTO",
+                  "example": {
+                    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYTkwOTE0MDYtODNkNC00MTBmLTgxMTYtNGE4NTg1N2QwYTkzIiwic2Vzc2lvbl9pZCI6ImQxZTQ2NGJhLWMwYzktNDQ2NC04ZDFiLTA0ZmFlODEwNWY5ZSIsImlhdCI6MTY5NDYyNTI5MywiZXhwIjoxNjk0ODg0NDkzfQ.Y3eNaOOhh-QEBGaeJUTlNt4FzCE3QwcVaxdEKdXn5ys",
+                    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoiZDFlNDY0YmEtYzBjOS00NDY0LThkMWItMDRmYWU4MTA1ZjllIiwiaWF0IjoxNjk0NjI1MjkzLCJleHAiOjE2OTUyMzAwOTN9.NvNrqz7M2DdByDm-AmpLw0SJCgUGo_B6UCqzCl6YCKg",
+                    "session_id": "d1e464ba-c0c9-4464-8d1b-04fae8105f9e"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body. Causes: invalid fields or values as email or phone_number already in user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Email already exists"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Phone number already exists"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
