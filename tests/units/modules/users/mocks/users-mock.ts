@@ -5,7 +5,7 @@ import {
   UpdatePasswordDTO,
   UpdateUserDTO,
   User,
-} from '@modules/users/dto';
+} from '@modules/users/dtos';
 import { faker } from '@faker-js/faker';
 
 const password = faker.internet.password({ length: 8 });

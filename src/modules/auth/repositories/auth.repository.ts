@@ -1,5 +1,5 @@
 import { AuthRepositoryInterface } from './auth.repository.interface';
-import { User } from '@modules/users/dto';
+import { User } from '@modules/users/dtos';
 import { prisma } from '@infra/database';
 import { Session, UpdateSessionDTO } from '@modules/session/dtos';
 import SessionModel from '@modules/session/models/sessions.model';

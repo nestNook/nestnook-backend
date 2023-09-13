@@ -1,5 +1,5 @@
 import { prisma } from '@infra/database';
-import { InternCreateUserDTO, UpdateUserDTO, User, UserQuery } from '../dto';
+import { InternCreateUserDTO, UpdateUserDTO, User, UserQuery } from '../dtos';
 import { UsersRepositoryInterface } from './users.repository.interface';
 
 export class UsersRepository implements UsersRepositoryInterface {
