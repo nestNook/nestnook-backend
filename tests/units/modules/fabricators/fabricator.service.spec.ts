@@ -5,6 +5,7 @@ import { FabricatorRepositoryMock } from './mocks/fabricator-mock.repository';
 import validationUtils from '@utils/validation-utils';
 import { BadRequestException } from '@src/errors/bad-request-exception';
 import { CreateFabricatorDTO } from '@modules/fabricators/dtos';
+import { NotFoundException } from '@src/errors/not-found-exception';
 
 describe('Fabricator service', () => {
   let fabricatorService: FabricatorServiceInterface;
@@ -226,11 +227,30 @@ describe('Fabricator service', () => {
     it('should be able to delete a fabricator', async () => {
       const repositorySpy = jest
         .spyOn(fabricatorRepository, 'deleteFabricator')
-        .mockReturnValueOnce(Promise.resolve());
+        .mockReturnValueOnce(Promise.resolve(fabricatorMock));
 
-      await fabricatorService.deleteFabricator(fabricatorMock.id);
-
+      const deletedFabricator = await fabricatorService.deleteFabricator(
+        fabricatorMock.id
+      );
+      
+      expect(deletedFabricator).toEqual(fabricatorMock);
       expect(repositorySpy).toHaveBeenCalledWith(fabricatorMock.id);
+    });
+
+    it('should not be able to delete a user that does not exist', async () => {
+      const error = new NotFoundException('Fabricator not found');
+
+      const deleteFabricatorRepositorySpy = jest
+        .spyOn(fabricatorRepository, 'deleteFabricator')
+        .mockReturnValueOnce(Promise.resolve(null));
+
+      await expect(
+        fabricatorService.deleteFabricator(fabricatorMock.id)
+      ).rejects.toThrow(error);
+
+      expect(deleteFabricatorRepositorySpy).toHaveBeenCalledWith(
+        fabricatorMock.id
+      );
     });
   });
 });
