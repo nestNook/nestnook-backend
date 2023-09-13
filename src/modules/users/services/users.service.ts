@@ -9,7 +9,7 @@ import {
   GetUserDTO,
   UpdatePasswordDTO,
   UpdateUserDTO,
-} from '../dto';
+} from '../dtos';
 import { UsersRepositoryInterface } from '../repositories/users.repository.interface';
 import { BadRequestException } from '@src/errors/bad-request-exception';
 import { NotFoundException } from '@src/errors/not-found-exception';
