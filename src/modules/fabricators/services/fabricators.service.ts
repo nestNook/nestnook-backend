@@ -1,6 +1,7 @@
 import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
 import { FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { FabricatorServiceInterface } from './fabricators.service.interface';
+import validationUtils from '@utils/validation-utils';
 
 export class FabricatorsService implements FabricatorServiceInterface {
   constructor(
@@ -12,6 +13,16 @@ export class FabricatorsService implements FabricatorServiceInterface {
     email,
     phone_number,
   }: CreateFabricatorDTO | UpdateFabricatorDTO): Promise<void> {
+    const isEmpty = validationUtils.isObjectEmpty({
+      registry,
+      email,
+      phone_number,
+    });
+
+    if(isEmpty) {
+      throw new Error("At least one field is required");
+    }
+
     const fabricatorAlreadyExists = await this.fabricatorsRepository.findOr({
       registry,
       email,
