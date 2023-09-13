@@ -12,14 +12,9 @@ import { UsersService } from '@modules/users/services/users.service';
 import { NotFoundException } from '@src/errors/not-found-exception';
 import { UserBuilder } from '@modules/users/providers/user.builder';
 import { UsersRepositoryMock } from './mocks/users-mock.repository';
-import { sessionMock } from '../sessions/mocks/sessions-mock';
+import { sessionDTOMock } from '../sessions/mocks/sessions-mock';
 import { PasswordUtils } from '@utils/password-utils';
-import {
-  GetUserDTO,
-  UpdateUserDTO,
-  User,
-  UserQuery,
-} from '@modules/users/dtos';
+import { GetUserDTO, User, UserQuery } from '@modules/users/dtos';
 import { ForbiddenException } from '@src/errors/forbidden-exception';
 
 describe('Users service', () => {
@@ -49,11 +44,11 @@ describe('Users service', () => {
 
       const sessionsServiceSpy = jest
         .spyOn(SessionsService.prototype, 'createSession')
-        .mockReturnValueOnce(Promise.resolve(sessionMock));
+        .mockReturnValueOnce(Promise.resolve(sessionDTOMock));
 
       const session = await usersService.createUser(createUserMock);
 
-      expect(session).toEqual(sessionMock);
+      expect(session).toEqual(sessionDTOMock);
       expect(session).toHaveProperty('access_token');
       expect(session).toHaveProperty('refresh_token');
       expect(hashPassSpy).toHaveBeenCalledWith(createUserMock.password);

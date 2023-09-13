@@ -1,8 +1,9 @@
 import { Address, CreateAddressDTO } from '@modules/address/dtos';
 import { randomUUID } from 'crypto';
+import { userMock } from '../../users/mocks/users-mock';
 
 export const createAddressMock: CreateAddressDTO = {
-  user_id: '1',
+  user_id: userMock.id,
   fabricator_id: null,
   postal_code: '13213-190',
   country: 'Brasil',

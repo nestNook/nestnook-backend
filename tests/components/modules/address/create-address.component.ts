@@ -1,25 +1,19 @@
+import { AddressRepository } from '@modules/address/repositories/address.repository';
 import {
   addressMock,
   createAddressMock,
 } from '@test/units/modules/address/mocks/address-mock';
-import { When, Then, BeforeAll, AfterAll } from '@cucumber/cucumber';
+import { server } from '@test/components/setup';
+import { When, Then } from '@cucumber/cucumber';
 import request, { Response } from 'supertest';
-import { Server } from '@infra/server';
-import assert from 'assert';
-import { AddressRepository } from '@modules/address/repositories/address.repository';
 import * as sinon from 'sinon';
+import assert from 'assert';
+import {
+  accessToken,
+  refreshToken,
+} from '@test/units/modules/sessions/mocks/sessions-mock';
 
-let server: Server;
 let response: Response;
-
-BeforeAll(() => {
-  server = new Server();
-  server.start();
-});
-
-AfterAll(() => {
-  server.stop();
-});
 
 When('a user send a post request to {string}', async function (url: string) {
   const repositoryStub = sinon.stub(
@@ -28,7 +22,15 @@ When('a user send a post request to {string}', async function (url: string) {
   );
   repositoryStub.callsFake(() => Promise.resolve(addressMock));
 
-  response = await request(server.app).post(url).send(createAddressMock);
+  response = await request(server.app)
+    .post(url)
+    .set({
+      Authorization: `Bearer ${accessToken}`,
+      'Refresh-Token': refreshToken,
+      Accept: 'application/json',
+    })
+    .send(createAddressMock);
+
   repositoryStub.restore();
 });
 
