@@ -1,25 +1,27 @@
+import { UnauthorizedException } from '@src/errors/unauthorized-exception';
 import { Request, Response, NextFunction } from 'express';
 import { SessionStatus } from '@@types/session-status';
-import authModule from '../auth.module';
 import { Session } from '@modules/session/dtos';
-import tokenUtils from '@utils/token-utils';
 import cookieUtils from '@utils/cookie-utils';
-import { UnauthorizedException } from '@src/errors/unauthorized-exception';
+import tokenUtils from '@utils/token-utils';
+import authModule from '../auth.module';
 
 export function auth() {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const accessToken =
-        req.cookies.access_token || req.headers.authorization?.split(' ')[0];
+        req.cookies.access_token || req.headers.authorization?.split(' ')[1];
       const refreshToken =
-        req.cookies.refresh_token || req.headers['Refresh-Token'];
+        req.cookies.refresh_token || req.get('Refresh-Token');
 
       if (!accessToken || !refreshToken) {
         return next(new UnauthorizedException('Token is missing'));
       }
+
       const isValidAccessToken = tokenUtils.verifyToken<{ user_id: string }>(
         accessToken
       );
+
       const isValidRefreshToken = tokenUtils.verifyToken<{
         session_id: string;
       }>(refreshToken);
