@@ -1,23 +1,29 @@
-import passwordUtils from '@utils/password-utils';
+import { RolesRepositoryInterface } from '@modules/roles/repositories/roles.repository.interface';
+import { UsersRepositoryInterface } from '../repositories/users.repository.interface';
+import { BadRequestException } from '@src/errors/bad-request-exception';
+import { NotFoundException } from '@src/errors/not-found-exception';
+import { ForbiddenException } from '@src/errors/forbidden-exception';
+import { UsersServiceInterface } from './users.service.interface';
+import { UserBuilder } from '../builders/user.builder';
+import { SessionDTO } from '@@types/session.dto';
+import { UserRoles } from '@@types/user-roles';
+
 import sessionModule from '@modules/session/session.module';
 import validationUtils from '@utils/validation-utils';
+import passwordUtils from '@utils/password-utils';
 
-import { SessionDTO } from '@@types/session.dto';
-import { UserBuilder } from '../providers/user.builder';
-import { UsersServiceInterface } from './users.service.interface';
 import {
   CreateUserDTO,
   GetUserDTO,
   UpdatePasswordDTO,
   UpdateUserDTO,
 } from '../dtos';
-import { UsersRepositoryInterface } from '../repositories/users.repository.interface';
-import { BadRequestException } from '@src/errors/bad-request-exception';
-import { NotFoundException } from '@src/errors/not-found-exception';
-import { ForbiddenException } from '@src/errors/forbidden-exception';
 
 export class UsersService implements UsersServiceInterface {
-  constructor(private readonly usersRepository: UsersRepositoryInterface) {}
+  constructor(
+    private readonly usersRepository: UsersRepositoryInterface,
+    private readonly rolesRepository: RolesRepositoryInterface
+  ) {}
 
   async createUser({
     email,
@@ -36,6 +42,12 @@ export class UsersService implements UsersServiceInterface {
       throw new BadRequestException('Passwords does not match');
     }
 
+    const role = await this.rolesRepository.getByName(UserRoles.CUSTOMER);
+
+    if (!role) {
+      throw new NotFoundException('Role not found');
+    }
+
     const password_hash = await passwordUtils.hashPass(password);
 
     const user = await this.usersRepository.create({
@@ -43,6 +55,7 @@ export class UsersService implements UsersServiceInterface {
       name,
       phone_number,
       password_hash,
+      role_id: role.id,
     });
 
     const session = await sessionModule.service.createSession(user);
@@ -57,7 +70,9 @@ export class UsersService implements UsersServiceInterface {
       throw new NotFoundException('User not found');
     }
 
-    return user;
+    const publicUser = UserBuilder.publicUser(user);
+
+    return publicUser;
   }
 
   async deleteUserById(id: string): Promise<GetUserDTO | null> {

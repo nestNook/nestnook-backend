@@ -1,12 +1,14 @@
 import { UnauthorizedException } from '@src/errors/unauthorized-exception';
+import { ForbiddenException } from '@src/errors/forbidden-exception';
 import { Request, Response, NextFunction } from 'express';
 import { SessionStatus } from '@@types/session-status';
 import { Session } from '@modules/session/dtos';
+import { UserRoles } from '@@types/user-roles';
 import cookieUtils from '@utils/cookie-utils';
 import tokenUtils from '@utils/token-utils';
 import authModule from '../auth.module';
 
-export function auth() {
+export function auth(role: UserRoles = UserRoles.CUSTOMER) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const accessToken =
@@ -42,6 +44,12 @@ export function auth() {
         if (!user) {
           return next(new UnauthorizedException('Invalid or expired token'));
         }
+        console.log(user.role.name, role);
+        if (user.role.name != role) {
+          return next(
+            new ForbiddenException('You are not allowed to perform this action')
+          );
+        }
 
         req.app.locals.user = user;
         return next();
@@ -55,6 +63,12 @@ export function auth() {
 
       if (!user) {
         return next(new UnauthorizedException('Invalid or expired token'));
+      }
+
+      if (user.role.name != role) {
+        return next(
+          new ForbiddenException('You are not allowed to perform this action')
+        );
       }
 
       req.app.locals.user = user;

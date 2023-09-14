@@ -10,6 +10,9 @@ export class AuthRepository implements AuthRepositoryInterface {
       where: {
         email,
       },
+      include: {
+        role: true,
+      },
     });
 
     return user;
@@ -19,6 +22,9 @@ export class AuthRepository implements AuthRepositoryInterface {
     const user = await prisma.user.findFirst({
       where: {
         id,
+      },
+      include: {
+        role: true,
       },
     });
 
