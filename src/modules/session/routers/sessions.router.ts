@@ -1,7 +1,7 @@
-import { SessionsControllerInterface } from '../controllers/sessions.controller.interface';
+import { type SessionsControllerInterface } from '../controllers/sessions.controller.interface';
 import { auth } from '@modules/auth/middlewares/auth.middleware';
-import { Handler, Route } from '@common/route.interface';
-import { BaseRouter } from '@common/baseRouter.interface';
+import { type Handler, type Route } from '@common/route.interface';
+import { type BaseRouter } from '@common/baseRouter.interface';
 
 export class SessionsRouter implements BaseRouter {
   routePrefix?: string | undefined = '/sessions';

@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 
 export interface SessionsControllerInterface {
-  getUserSessions(req: Request, res: Response): Promise<Response>;
-  createSession(req: Request, res: Response): Promise<Response>;
-  deleteSession(req: Request, res: Response): Promise<Response>;
+  getUserSessions: (req: Request, res: Response) => Promise<Response>;
+  createSession: (req: Request, res: Response) => Promise<Response>;
+  deleteSession: (req: Request, res: Response) => Promise<Response>;
 }

@@ -1,14 +1,18 @@
-import { SessionsRepositoryInterface } from '../repositories/sessions.repository.interface';
-import { SessionsServiceInterface } from './sessions.service.interface';
-import { CreateSessionDTO, Session, UpdateSessionDTO } from '../dtos';
-import { SessionDTO } from '@@types/session.dto';
+import { type SessionsRepositoryInterface } from '../repositories/sessions.repository.interface';
+import { type SessionsServiceInterface } from './sessions.service.interface';
+import {
+  type CreateSessionDTO,
+  type Session,
+  type UpdateSessionDTO,
+} from '../dtos';
+import { type SessionDTO } from '@@types/session.dto';
 import tokenUtils from '@utils/token-utils';
-import { User } from '@modules/users/dtos';
+import { type User } from '@modules/users/dtos';
 import { v4 as uuid } from 'uuid';
 
 export class SessionsService implements SessionsServiceInterface {
   constructor(
-    private readonly sessionRepository: SessionsRepositoryInterface
+    private readonly sessionRepository: SessionsRepositoryInterface,
   ) {}
 
   async createSession(user: User): Promise<SessionDTO> {
@@ -52,11 +56,11 @@ export class SessionsService implements SessionsServiceInterface {
 
   async updateSession(
     sessionsId: string,
-    dto: UpdateSessionDTO
+    dto: UpdateSessionDTO,
   ): Promise<Session> {
     const updatedSession = await this.sessionRepository.updateSession(
       sessionsId,
-      dto
+      dto,
     );
 
     if (!updatedSession) {
@@ -69,7 +73,7 @@ export class SessionsService implements SessionsServiceInterface {
   async deleteSession(userId: string, sessionId: string): Promise<Session> {
     const session = await this.sessionRepository.deleteSession(
       sessionId,
-      userId
+      userId,
     );
 
     if (!session) {

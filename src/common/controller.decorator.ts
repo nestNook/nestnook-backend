@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import { type Request, type Response, type NextFunction } from 'express';
 
-export function Controller(target: any) {
+export function Controller(target: any): void {
   const methods = Object.getOwnPropertyNames(target.prototype);
   for (const method of methods) {
     const descriptor = Object.getOwnPropertyDescriptor(
       target.prototype,
-      method
+      method,
     );
 
     if (descriptor && typeof descriptor.value === 'function') {

@@ -1,11 +1,19 @@
 import { prisma } from '@infra/database';
-import { InternCreateUserDTO, UpdateUserDTO, User, UserQuery } from '../dtos';
-import { UsersRepositoryInterface } from './users.repository.interface';
+import {
+  type InternCreateUserDTO,
+  type UpdateUserDTO,
+  type User,
+  type UserQuery,
+} from '../dtos';
+import { type UsersRepositoryInterface } from './users.repository.interface';
 
 export class UsersRepository implements UsersRepositoryInterface {
   async create(dto: InternCreateUserDTO): Promise<User> {
     const user = await prisma.user.create({
       data: dto,
+      include: {
+        role: true,
+      },
     });
 
     return user;
@@ -16,6 +24,9 @@ export class UsersRepository implements UsersRepositoryInterface {
       where: {
         id,
       },
+      include: {
+        role: true,
+      },
     });
 
     return user;
@@ -25,6 +36,9 @@ export class UsersRepository implements UsersRepositoryInterface {
     const deletedUser = await prisma.user.delete({
       where: {
         id,
+      },
+      include: {
+        role: true,
       },
     });
 
@@ -37,6 +51,9 @@ export class UsersRepository implements UsersRepositoryInterface {
         id,
       },
       data: dto,
+      include: {
+        role: true,
+      },
     });
 
     return updatedUser;
@@ -45,6 +62,9 @@ export class UsersRepository implements UsersRepositoryInterface {
   async find(dto: UserQuery): Promise<User | null> {
     const user = await prisma.user.findFirst({
       where: dto,
+      include: {
+        role: true,
+      },
     });
 
     return user;

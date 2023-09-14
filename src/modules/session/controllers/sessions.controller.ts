@@ -1,8 +1,8 @@
-import { SessionsControllerInterface } from './sessions.controller.interface';
-import { SessionsServiceInterface } from '../services/sessions.service.interface';
-import { SessionDTO } from '@@types/session.dto';
-import { Request, Response } from 'express';
-import { User } from '@modules/users/dtos';
+import { type SessionsControllerInterface } from './sessions.controller.interface';
+import { type SessionsServiceInterface } from '../services/sessions.service.interface';
+import { type SessionDTO } from '@@types/session.dto';
+import { type Request, type Response } from 'express';
+import { type User } from '@modules/users/dtos';
 import { Controller } from '@common/controller.decorator';
 
 @Controller

@@ -1,6 +1,6 @@
-import { Route } from '../../../common/route.interface';
-import { BaseRouter } from '../../../common/baseRouter.interface';
-import { SectorControllerInterface } from '../controllers/sector.controller.interface';
+import { type Route } from '../../../common/route.interface';
+import { type BaseRouter } from '../../../common/baseRouter.interface';
+import { type SectorControllerInterface } from '../controllers/sector.controller.interface';
 
 export class SectorRouter implements BaseRouter {
   routePrefix?: string | undefined = '/sectors';

@@ -1,5 +1,5 @@
 export interface FabricatorQuery {
-    email?: string;
-    phone_number?: string;
-    registry?: string;
+  email?: string;
+  phone_number?: string;
+  registry?: string;
 }

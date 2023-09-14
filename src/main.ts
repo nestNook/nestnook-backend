@@ -1,11 +1,11 @@
-import Server, { Server as ServerType } from './infra/server';
-import Database, { Database as DatabaseType } from './infra/database';
-import MongoDB, { MongoDB as MongoDBType } from '@infra/mongodb';
+import Server, { type Server as ServerType } from './infra/server';
+import Database, { type Database as DatabaseType } from './infra/database';
+import MongoDB, { type MongoDB as MongoDBType } from '@infra/mongodb';
 
 export class App {
-  private server: ServerType;
-  private database: DatabaseType;
-  private mongodb: MongoDBType;
+  private readonly server: ServerType;
+  private readonly database: DatabaseType;
+  private readonly mongodb: MongoDBType;
 
   constructor() {
     this.server = Server;
@@ -13,7 +13,7 @@ export class App {
     this.mongodb = MongoDB;
   }
 
-  async initialize() {
+  async initialize(): Promise<void> {
     await this.database.connect();
     await this.mongodb.connect();
 

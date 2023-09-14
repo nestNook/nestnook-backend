@@ -1,9 +1,9 @@
-import { SessionDTO } from '@@types/session.dto';
-import { SignInDTO } from '../dtos/sign-in.dto';
-import { AuthServiceInterface } from '../services/auth.service.interface';
-import { AuthControllerInterface } from './auth.controller.interface';
+import { type SessionDTO } from '@@types/session.dto';
+import { type SignInDTO } from '../dtos/sign-in.dto';
+import { type AuthServiceInterface } from '../services/auth.service.interface';
+import { type AuthControllerInterface } from './auth.controller.interface';
 import { Controller } from '@common/controller.decorator';
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 import cookieUtils from '@utils/cookie-utils';
 
 @Controller

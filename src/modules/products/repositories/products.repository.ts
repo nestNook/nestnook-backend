@@ -1,7 +1,7 @@
 import { prisma } from '../../../infra/database';
-import { CreateProductDTO } from '../dtos/create-product.dto';
-import { Product } from '../dtos/product.dto';
-import { ProductsRepositoryInterface } from './products.repository.interface';
+import { type CreateProductDTO } from '../dtos/create-product.dto';
+import { type Product } from '../dtos/product.dto';
+import { type ProductsRepositoryInterface } from './products.repository.interface';
 
 export class ProductsRepository implements ProductsRepositoryInterface {
   async createProduct(productDto: CreateProductDTO): Promise<Product | null> {

@@ -1,5 +1,5 @@
 import config from '@config/index';
-import { CookieOptions, Response } from 'express';
+import { type CookieOptions, type Response } from 'express';
 
 export class CookieUtils {
   accessToken(token: string, res: Response): void {

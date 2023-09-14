@@ -1,15 +1,15 @@
 import { prisma } from '../../../infra/database';
 import {
-  CreateFabricatorDTO,
-  Fabricator,
-  FabricatorQuery,
-  UpdateFabricatorDTO,
+  type CreateFabricatorDTO,
+  type Fabricator,
+  type FabricatorQuery,
+  type UpdateFabricatorDTO,
 } from '../dtos';
-import { FabricatorRepositoryInterface } from './fabricators.repository.interface';
+import { type FabricatorRepositoryInterface } from './fabricators.repository.interface';
 
 export class FabricatorRepository implements FabricatorRepositoryInterface {
   async createFabricator(
-    createFabricatorDto: CreateFabricatorDTO
+    createFabricatorDto: CreateFabricatorDTO,
   ): Promise<Fabricator> {
     const fabricator = await prisma.fabricator.create({
       data: createFabricatorDto,
@@ -35,7 +35,7 @@ export class FabricatorRepository implements FabricatorRepositoryInterface {
 
   async updateFabricator(
     id: string,
-    updateFabricatorDto: UpdateFabricatorDTO
+    updateFabricatorDto: UpdateFabricatorDTO,
   ): Promise<Fabricator | null> {
     const updatedFabricator = await prisma.fabricator.update({
       where: {
@@ -64,6 +64,6 @@ export class FabricatorRepository implements FabricatorRepositoryInterface {
       },
     });
 
-    return fabricator
+    return fabricator;
   }
 }

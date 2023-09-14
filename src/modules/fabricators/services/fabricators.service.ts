@@ -1,10 +1,14 @@
-import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
-import { FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
-import { FabricatorServiceInterface } from './fabricators.service.interface';
+import {
+  type CreateFabricatorDTO,
+  type Fabricator,
+  type UpdateFabricatorDTO,
+} from '../dtos';
+import { type FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
+import { type FabricatorServiceInterface } from './fabricators.service.interface';
 
 export class FabricatorsService implements FabricatorServiceInterface {
   constructor(
-    private readonly fabricatorsRepository: FabricatorRepositoryInterface
+    private readonly fabricatorsRepository: FabricatorRepositoryInterface,
   ) {}
 
   private async checkFabricator({
@@ -24,7 +28,7 @@ export class FabricatorsService implements FabricatorServiceInterface {
       const registryAlreadyExists = fabricatorAlreadyExists.find(
         (fabricator) => {
           return registry === fabricator.registry;
-        }
+        },
       );
       if (registryAlreadyExists) {
         errors.push('Registry already exists');
@@ -61,12 +65,12 @@ export class FabricatorsService implements FabricatorServiceInterface {
 
   async updateFabricator(
     id: string,
-    dto: UpdateFabricatorDTO
+    dto: UpdateFabricatorDTO,
   ): Promise<Fabricator | null> {
     await this.checkFabricator(dto);
     const updatedFabricator = await this.fabricatorsRepository.updateFabricator(
       id,
-      dto
+      dto,
     );
 
     return updatedFabricator;
