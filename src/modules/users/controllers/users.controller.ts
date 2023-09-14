@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { CreateUserDTO } from '../dto/create-user.dto';
+import { CreateUserDTO } from '../dtos/create-user.dto';
 import { Controller } from '@common/controller.decorator';
 import { UsersControllerInterface } from './users.controller.interface';
 import { UsersServiceInterface } from '../services/users.service.interface';
-import { CreateUserResDTO, UpdatePasswordDTO, UpdateUserDTO } from '../dto';
+import { CreateUserResDTO, UpdatePasswordDTO, UpdateUserDTO } from '../dtos';
 
 @Controller
 export class UsersController implements UsersControllerInterface {

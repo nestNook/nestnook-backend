@@ -1,11 +1,15 @@
-import config from '@config/index';
-import AppModule from '../modules/app.module';
-import express, { Application, Router } from 'express';
-import { Server as HttpServer } from 'http';
-import { Route } from '../common/route.interface';
-import { BaseRouter } from '../common/baseRouter.interface';
-import cookieParser from 'cookie-parser';
 import { errorHandler } from '@common/error-handler.middleware';
+import { BaseRouter } from '../common/baseRouter.interface';
+import express, { Application, Router } from 'express';
+import { Route } from '../common/route.interface';
+import AppModule from '../modules/app.module';
+import { Server as HttpServer } from 'http';
+import swaggerUi from 'swagger-ui-express';
+import swagger from '../../swagger.json';
+import cookieParser from 'cookie-parser';
+import config from '@config/index';
+import { HealthCheckRoute } from '@common/health-check.route';
+import { NotFoundRoute } from '@common/not-found.route';
 export class Server {
   public app: Application;
   public server: HttpServer | undefined;
@@ -32,10 +36,17 @@ export class Server {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(
+      `${config.apiPrefix}/api-docs`,
+      swaggerUi.serve,
+      swaggerUi.setup(swagger)
+    );
+    this.app.get(`${config.apiPrefix}/health-check`, HealthCheckRoute);
   }
 
   postMiddlewares() {
     this.app.use(errorHandler());
+    this.app.use(NotFoundRoute);
   }
 
   routes() {

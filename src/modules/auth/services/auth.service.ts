@@ -5,7 +5,7 @@ import passwordUtils from '@utils/password-utils';
 import { SessionDTO } from '@@types/session.dto';
 import { SignInDTO } from '../dtos/sign-in.dto';
 import { NotFoundException } from '@src/errors/not-found-exception';
-import { User } from '@modules/users/dto';
+import { User } from '@modules/users/dtos';
 import { Session, UpdateSessionDTO } from '@modules/session/dtos';
 
 export class AuthService implements AuthServiceInterface {
