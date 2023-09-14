@@ -19,7 +19,7 @@ export class RolesService implements RolesServiceInterface {
     );
 
     if (roleNameAlreadyExists) {
-      throw new BadRequestException('Rome name already exists');
+      throw new BadRequestException('Role name already exists');
     }
 
     const role = await this.rolesRepository.create(dto);

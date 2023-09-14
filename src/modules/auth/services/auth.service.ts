@@ -7,6 +7,7 @@ import { type AuthServiceInterface } from './auth.service.interface';
 import passwordUtils from '@utils/password-utils';
 import { type SessionDTO } from '@@types/session.dto';
 import { type SignInDTO } from '../dtos/sign-in.dto';
+import { type User } from '@modules/users/dtos';
 
 export class AuthService implements AuthServiceInterface {
   constructor(
@@ -33,6 +34,16 @@ export class AuthService implements AuthServiceInterface {
     const session: SessionDTO = await this.sessionsService.createSession(user);
 
     return session;
+  }
+
+  async getUserById(userId: string): Promise<User> {
+    const user = await this.authRepository.findUserById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 
   async findSessionById(sessionsId: string): Promise<Session> {

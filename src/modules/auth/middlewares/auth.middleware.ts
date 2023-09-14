@@ -47,7 +47,7 @@ export function auth(role: UserRoles = UserRoles.CUSTOMER) {
           next(new UnauthorizedException('Invalid or expired token'));
           return;
         }
-        console.log(user.role.name, role);
+
         if (user.role.name !== role) {
           next(
             new ForbiddenException(
