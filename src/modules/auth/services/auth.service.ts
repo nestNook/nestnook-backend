@@ -1,12 +1,13 @@
 import { AuthRepositoryInterface } from '../repositories/auth.repository.interface';
+import { UnauthorizedException } from '@src/errors/unauthorized-exception';
+import { NotFoundException } from '@src/errors/not-found-exception';
+import { Session, UpdateSessionDTO } from '@modules/session/dtos';
 import { AuthServiceInterface } from './auth.service.interface';
 import sessionModule from '@modules/session/session.module';
 import passwordUtils from '@utils/password-utils';
 import { SessionDTO } from '@@types/session.dto';
 import { SignInDTO } from '../dtos/sign-in.dto';
-import { NotFoundException } from '@src/errors/not-found-exception';
 import { User } from '@modules/users/dtos';
-import { Session, UpdateSessionDTO } from '@modules/session/dtos';
 
 export class AuthService implements AuthServiceInterface {
   constructor(private readonly authRepository: AuthRepositoryInterface) {}
@@ -15,7 +16,7 @@ export class AuthService implements AuthServiceInterface {
     const user = await this.authRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('Invalid email or password');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const isValidPassword = await passwordUtils.comparePass(
@@ -24,7 +25,7 @@ export class AuthService implements AuthServiceInterface {
     );
 
     if (!isValidPassword) {
-      throw new Error('Invalid email or password');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const session: SessionDTO = await sessionModule.service.createSession(user);
@@ -62,7 +63,7 @@ export class AuthService implements AuthServiceInterface {
     );
 
     if (!updatedSession) {
-      throw new Error('Session not found');
+      throw new NotFoundException('Session not found');
     }
 
     return updatedSession;
