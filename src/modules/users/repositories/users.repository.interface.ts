@@ -1,4 +1,4 @@
-import { InternCreateUserDTO, UpdateUserDTO, User, UserQuery } from '../dto';
+import { InternCreateUserDTO, UpdateUserDTO, User, UserQuery } from '../dtos';
 export interface UsersRepositoryInterface {
   create(dto: InternCreateUserDTO): Promise<User>;
   find(dto: UserQuery): Promise<User | null>;
