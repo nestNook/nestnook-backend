@@ -9,17 +9,37 @@ import {
   createUserMock,
   userMock,
 } from '@test/units/modules/users/mocks/users-mock';
+import { SessionsService } from '@modules/session/services/sessions.service';
+import { sessionDTOMock } from '@test/units/modules/sessions/mocks/sessions-mock';
 
 let response: Response;
 
 When(
   'a user send a post request to {string} to create a new user profile',
   async function (url: string) {
-    const repositoryStub = sinon.stub(UsersRepository.prototype, 'create');
-    repositoryStub.callsFake(() => Promise.resolve(userMock));
+    const crateUserRepositoryStub = sinon.stub(
+      UsersRepository.prototype,
+      'create'
+    );
+    const findUserRepositoryStub = sinon.stub(
+      UsersRepository.prototype,
+      'find'
+    );
+
+    const createSessionServiceStub = sinon.stub(
+      SessionsService.prototype,
+      'createSession'
+    );
+
+    crateUserRepositoryStub.callsFake(() => Promise.resolve(userMock));
+    findUserRepositoryStub.callsFake(() => Promise.resolve(null));
+    createSessionServiceStub.callsFake(() => Promise.resolve(sessionDTOMock));
 
     response = await request(server.app).post(url).send(createUserMock);
-    repositoryStub.restore();
+
+    crateUserRepositoryStub.restore();
+    findUserRepositoryStub.restore();
+    createSessionServiceStub.restore();
   }
 );
 

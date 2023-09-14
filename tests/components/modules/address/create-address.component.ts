@@ -1,26 +1,45 @@
 import { AddressRepository } from '@modules/address/repositories/address.repository';
-import {
-  addressMock,
-  createAddressMock,
-} from '@test/units/modules/address/mocks/address-mock';
+import { userMock } from '@test/units/modules/users/mocks/users-mock';
+import { AuthService } from '@modules/auth/services/auth.service';
 import { server } from '@test/components/setup';
 import { When, Then } from '@cucumber/cucumber';
 import request, { Response } from 'supertest';
 import * as sinon from 'sinon';
 import assert from 'assert';
+
+import {
+  addressMock,
+  createAddressMock,
+} from '@test/units/modules/address/mocks/address-mock';
+
 import {
   accessToken,
   refreshToken,
+  sessionMock,
 } from '@test/units/modules/sessions/mocks/sessions-mock';
+import { AuthRepository } from '@modules/auth/repositories/auth.repository';
 
 let response: Response;
 
 When('a user send a post request to {string}', async function (url: string) {
-  const repositoryStub = sinon.stub(
+  const createUserRepositoryStub = sinon.stub(
     AddressRepository.prototype,
     'createAddress'
   );
-  repositoryStub.callsFake(() => Promise.resolve(addressMock));
+
+  const findUserByIdRepositoryStub = sinon.stub(
+    AuthRepository.prototype,
+    'findUserById'
+  );
+
+  const createSessionServiceStub = sinon.stub(
+    AuthService.prototype,
+    'findSessionById'
+  );
+
+  createSessionServiceStub.callsFake(() => Promise.resolve(sessionMock));
+  createUserRepositoryStub.callsFake(() => Promise.resolve(addressMock));
+  findUserByIdRepositoryStub.callsFake(() => Promise.resolve(userMock));
 
   response = await request(server.app)
     .post(url)
@@ -31,7 +50,9 @@ When('a user send a post request to {string}', async function (url: string) {
     })
     .send(createAddressMock);
 
-  repositoryStub.restore();
+  createUserRepositoryStub.restore();
+  createSessionServiceStub.restore();
+  findUserByIdRepositoryStub.restore();
 });
 
 Then('the response status should be {int}', function (status: number) {
