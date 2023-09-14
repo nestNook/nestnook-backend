@@ -7,6 +7,7 @@ import { UsersRepository } from './repositories/users.repository';
 import { UsersServiceInterface } from './services/users.service.interface';
 import { UsersControllerInterface } from './controllers/users.controller.interface';
 import { UsersRepositoryInterface } from './repositories/users.repository.interface';
+import rolesModule from '@modules/roles/roles.module';
 
 export class UsersModule implements BaseModule {
   router: BaseRouter;
@@ -16,7 +17,7 @@ export class UsersModule implements BaseModule {
 
   constructor() {
     this.repository = new UsersRepository();
-    this.service = new UsersService(this.repository);
+    this.service = new UsersService(this.repository, rolesModule.repository);
     this.controller = new UsersController(this.service);
     this.router = new UsersRouter(this.controller);
   }
