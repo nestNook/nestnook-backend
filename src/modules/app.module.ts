@@ -1,3 +1,4 @@
+import RolesModule from "./roles/roles.module"
 import Auth from './auth/auth.module';
 import UsersModule from './users/users.module';
 import SectorModule from './sectors/sector.module';
@@ -17,7 +18,7 @@ export class AppModule {
   }
 }
 
-export default new AppModule(
+export default new AppModule(RolesModule, 
   Auth,
   ProductsModule,
   SectorModule,
