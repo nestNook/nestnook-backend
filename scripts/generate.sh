@@ -120,11 +120,14 @@ echo "Creating $module_name module"
 
 # Import the new module into AppModule
 
+module_import_name=$module_name
+module_import_name+="Module"
+
 search="AppModule("
-replace="AppModule($module_name, "
+replace="AppModule($module_import_name, "
 filename="src/modules/app.module.ts"
 
-sed -i "1iimport $module_name from \"./$module_file_name/$module_file_name.module\"" $filename
+sed -i "1iimport $module_import_name from \"./$module_file_name/$module_file_name.module\"" $filename
 sed -i "s/$search/$replace/" $filename
 
 echo "Done!"

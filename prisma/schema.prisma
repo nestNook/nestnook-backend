@@ -24,9 +24,10 @@ model User {
   profile_pic_id String?
   created_at     DateTime  @default(now())
   updated_at     DateTime  @updatedAt
+  role_id        String
+  role           Role      @relation(fields: [role_id], references: [id])
   Address        Address[]
   Carts          Cart[]
-  Admin          Admin[]
   Comments       Comment[]
   Review         Review[]
 }
@@ -202,40 +203,13 @@ model OrderItem {
   updated_at          DateTime @updatedAt
 }
 
-model Admin {
-  id          String    @id @default(uuid())
-  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id     String
-  role        Role      @relation(fields: [role_id], references: [id])
-  role_id     String
-  hiring_date DateTime? @default(now())
-}
-
 model Role {
-  id             String           @id @default(uuid())
-  RolePermission RolePermission[]
-  description    String
-  created_at     DateTime         @default(now())
-  updated_at     DateTime         @updatedAt
-  Admin          Admin[]
-}
-
-model Permission {
-  id             String           @id @default(uuid())
-  name           String
-  created_at     DateTime         @default(now())
-  updated_at     DateTime         @updatedAt
-  RolePermission RolePermission[]
-}
-
-model RolePermission {
-  id            String     @id @default(uuid())
-  role          Role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
-  role_id       String
-  permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
-  permission_id String
-  created_at    DateTime   @default(now())
-  updated_at    DateTime   @updatedAt
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  User        User[]
 }
 
 model Comment {
