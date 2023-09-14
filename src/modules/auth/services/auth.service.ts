@@ -1,16 +1,18 @@
+import { type SessionsServiceInterface } from '@modules/session/services/sessions.service.interface';
 import { type AuthRepositoryInterface } from '../repositories/auth.repository.interface';
 import { UnauthorizedException } from '@src/errors/unauthorized-exception';
 import { NotFoundException } from '@src/errors/not-found-exception';
 import { type Session, type UpdateSessionDTO } from '@modules/session/dtos';
 import { type AuthServiceInterface } from './auth.service.interface';
-import sessionModule from '@modules/session/session.module';
 import passwordUtils from '@utils/password-utils';
 import { type SessionDTO } from '@@types/session.dto';
 import { type SignInDTO } from '../dtos/sign-in.dto';
-import { type User } from '@modules/users/dtos';
 
 export class AuthService implements AuthServiceInterface {
-  constructor(private readonly authRepository: AuthRepositoryInterface) {}
+  constructor(
+    private readonly authRepository: AuthRepositoryInterface,
+    private readonly sessionsService: SessionsServiceInterface,
+  ) {}
 
   async login({ email, password }: SignInDTO): Promise<SessionDTO> {
     const user = await this.authRepository.findByEmail(email);
@@ -28,19 +30,9 @@ export class AuthService implements AuthServiceInterface {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const session: SessionDTO = await sessionModule.service.createSession(user);
+    const session: SessionDTO = await this.sessionsService.createSession(user);
 
     return session;
-  }
-
-  async getUserById(userId: string): Promise<User> {
-    const user = await this.authRepository.findUserById(userId);
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    return user;
   }
 
   async findSessionById(sessionsId: string): Promise<Session> {

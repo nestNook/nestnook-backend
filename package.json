@@ -12,7 +12,8 @@
     "start:dev": "tsnd -r tsconfig-paths/register --rs --respawn --transpile-only ./src/main.ts",
     "build": "tsc -p tsconfig.build.json && tsc-alias",
     "gm": "sh ./scripts/generate.sh",
-    "lint": "eslint ./src/**"
+    "lint": "eslint ./src/**",
+    "deps": "madge ./src -c"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "husky": "^8.0.0",
     "jest": "^29.6.3",
+    "madge": "^6.1.0",
     "prettier": "3.0.3",
     "prisma": "^5.2.0",
     "sinon": "^15.2.0",
