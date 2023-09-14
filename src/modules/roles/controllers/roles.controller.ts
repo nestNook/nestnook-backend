@@ -1,8 +1,8 @@
-import { RolesServiceInterface } from '../services/roles.service.interface';
-import { RolesControllerInterface } from './roles.controller.interface';
+import { type RolesServiceInterface } from '../services/roles.service.interface';
+import { type RolesControllerInterface } from './roles.controller.interface';
 import { Controller } from '@common/controller.decorator';
-import { CreateRoleDTO, UpdateRoleDTO } from '../dtos';
-import { Request, Response } from 'express';
+import { type CreateRoleDTO, type UpdateRoleDTO } from '../dtos';
+import { type Request, type Response } from 'express';
 
 @Controller
 export class RolesController implements RolesControllerInterface {

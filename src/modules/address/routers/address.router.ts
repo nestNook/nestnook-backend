@@ -1,6 +1,6 @@
-import { AddressControllerInterface } from '../controllers/address.controller.interface';
-import { BaseRouter } from '@common/baseRouter.interface';
-import { Handler, Route } from '@common/route.interface';
+import { type AddressControllerInterface } from '../controllers/address.controller.interface';
+import { type BaseRouter } from '@common/baseRouter.interface';
+import { type Handler, type Route } from '@common/route.interface';
 import { auth } from '@modules/auth/middlewares/auth.middleware';
 
 export class AddressRouter implements BaseRouter {

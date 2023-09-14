@@ -1,4 +1,4 @@
-import { TokenPayload } from '@@types/token-payload';
+import { type TokenPayload } from '@@types/token-payload';
 import config from '@config/index';
 
 import jwt from 'jsonwebtoken';
@@ -16,7 +16,7 @@ export class TokenUtils {
     try {
       const payload: TokenPayload<T> = jwt.verify(
         token,
-        config.jwtSecret
+        config.jwtSecret,
       ) as TokenPayload<T>;
       return payload;
     } catch (e) {

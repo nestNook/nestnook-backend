@@ -1,21 +1,21 @@
-import { RolesRepositoryInterface } from '../repositories/roles.repository.interface';
+import { type UsersRepositoryInterface } from '@modules/users/repositories/users.repository.interface';
+import { type RolesRepositoryInterface } from '../repositories/roles.repository.interface';
 import { BadRequestException } from '@src/errors/bad-request-exception';
-import { NotFoundException } from '@src/errors/not-found-exception';
-import { RolesServiceInterface } from './roles.service.interface';
-import { CreateRoleDTO, Role, UpdateRoleDTO } from '../dtos';
-import validationUtils from '@utils/validation-utils';
-import { UsersRepositoryInterface } from '@modules/users/repositories/users.repository.interface';
 import { ForbiddenException } from '@src/errors/forbidden-exception';
+import { NotFoundException } from '@src/errors/not-found-exception';
+import { type RolesServiceInterface } from './roles.service.interface';
+import { type CreateRoleDTO, type Role, type UpdateRoleDTO } from '../dtos';
+import validationUtils from '@utils/validation-utils';
 
 export class RolesService implements RolesServiceInterface {
   constructor(
     private readonly rolesRepository: RolesRepositoryInterface,
-    private readonly usersRepository: UsersRepositoryInterface
+    private readonly usersRepository: UsersRepositoryInterface,
   ) {}
 
   async createRole(dto: CreateRoleDTO): Promise<Role> {
     const roleNameAlreadyExists = await this.rolesRepository.getByName(
-      dto.name
+      dto.name,
     );
 
     if (roleNameAlreadyExists) {
@@ -67,7 +67,7 @@ export class RolesService implements RolesServiceInterface {
 
     if (dto.name) {
       const roleNameAlreadyExists = await this.rolesRepository.getByName(
-        dto.name
+        dto.name,
       );
 
       if (roleNameAlreadyExists) {

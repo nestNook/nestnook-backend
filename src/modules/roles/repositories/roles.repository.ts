@@ -1,5 +1,5 @@
-import { RolesRepositoryInterface } from './roles.repository.interface';
-import { CreateRoleDTO, Role, UpdateRoleDTO } from '../dtos';
+import { type RolesRepositoryInterface } from './roles.repository.interface';
+import { type CreateRoleDTO, type Role, type UpdateRoleDTO } from '../dtos';
 import { prisma } from '@infra/database';
 
 export class RolesRepository implements RolesRepositoryInterface {

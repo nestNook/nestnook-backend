@@ -1,7 +1,7 @@
-import { CreateSectorDTO } from '../dtos';
-import { Request, Response, NextFunction } from 'express';
-import { SectorServiceInterface } from '../services/sector.service.interface';
-import { SectorControllerInterface } from './sector.controller.interface';
+import { type CreateSectorDTO } from '../dtos';
+import { type Request, type Response, type NextFunction } from 'express';
+import { type SectorServiceInterface } from '../services/sector.service.interface';
+import { type SectorControllerInterface } from './sector.controller.interface';
 import { Controller } from '../../../common/controller.decorator';
 
 @Controller
@@ -11,7 +11,7 @@ export class SectorController implements SectorControllerInterface {
   async createSector(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<Response> {
     const createSectorDto: CreateSectorDTO = req.body;
     const sector = await this.sectorService.createSector(createSectorDto);

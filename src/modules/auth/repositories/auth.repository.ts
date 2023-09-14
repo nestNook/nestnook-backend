@@ -1,7 +1,7 @@
-import { AuthRepositoryInterface } from './auth.repository.interface';
-import { User } from '@modules/users/dtos';
+import { type AuthRepositoryInterface } from './auth.repository.interface';
+import { type User } from '@modules/users/dtos';
 import { prisma } from '@infra/database';
-import { Session, UpdateSessionDTO } from '@modules/session/dtos';
+import { type Session, type UpdateSessionDTO } from '@modules/session/dtos';
 import SessionModel from '@modules/session/models/sessions.model';
 
 export class AuthRepository implements AuthRepositoryInterface {
@@ -40,12 +40,12 @@ export class AuthRepository implements AuthRepositoryInterface {
 
   async updateSession(
     sessionId: string,
-    dto: UpdateSessionDTO
+    dto: UpdateSessionDTO,
   ): Promise<Session | null> {
     const session = await SessionModel.findOneAndUpdate(
       { id: sessionId },
       dto,
-      { new: true }
+      { new: true },
     );
     return session;
   }

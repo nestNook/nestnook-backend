@@ -1,6 +1,6 @@
-import { Route } from '@common/route.interface';
-import { BaseRouter } from '@common/baseRouter.interface';
-import { UsersControllerInterface } from '../controllers/users.controller.interface';
+import { type Route } from '@common/route.interface';
+import { type BaseRouter } from '@common/baseRouter.interface';
+import { type UsersControllerInterface } from '../controllers/users.controller.interface';
 import { auth } from '@modules/auth/middlewares/auth.middleware';
 
 export class UsersRouter implements BaseRouter {

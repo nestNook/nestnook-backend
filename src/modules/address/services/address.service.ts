@@ -1,6 +1,10 @@
-import { AddressRepositoryInterface } from '../repositories/address.repository.interface';
-import { AddressServiceInterface } from './address.service.interface';
-import { Address, CreateAddressDTO, UpdateAddressDTO } from '../dtos';
+import { type AddressRepositoryInterface } from '../repositories/address.repository.interface';
+import { type AddressServiceInterface } from './address.service.interface';
+import {
+  type Address,
+  type CreateAddressDTO,
+  type UpdateAddressDTO,
+} from '../dtos';
 import validationUtils from '@utils/validation-utils';
 
 export class AddressService implements AddressServiceInterface {
@@ -24,7 +28,7 @@ export class AddressService implements AddressServiceInterface {
   async updateAddress(
     id: string,
     userId: string,
-    dto: UpdateAddressDTO
+    dto: UpdateAddressDTO,
   ): Promise<Address> {
     if (validationUtils.isObjectEmpty(dto)) {
       throw new Error('At least one field required to update');
@@ -33,7 +37,7 @@ export class AddressService implements AddressServiceInterface {
     const updatedAddress = await this.addressRepository.updateAddress(
       id,
       userId,
-      dto
+      dto,
     );
 
     if (!updatedAddress) {

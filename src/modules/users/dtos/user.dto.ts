@@ -1,4 +1,4 @@
-import { Role } from '@modules/roles/dtos';
+import { type Role } from '@modules/roles/dtos';
 
 export interface User {
   id: string;

@@ -1,6 +1,6 @@
 import { prisma } from '../../../infra/database';
-import { CreateSectorDTO, Sector } from '../dtos';
-import { SectorRepositoryInterface } from './sector.repository.interface';
+import { type CreateSectorDTO, type Sector } from '../dtos';
+import { type SectorRepositoryInterface } from './sector.repository.interface';
 
 export class SectorRepository implements SectorRepositoryInterface {
   async findSectorByName(name: string): Promise<Sector | null> {

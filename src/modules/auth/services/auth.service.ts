@@ -1,13 +1,13 @@
-import { AuthRepositoryInterface } from '../repositories/auth.repository.interface';
+import { type AuthRepositoryInterface } from '../repositories/auth.repository.interface';
 import { UnauthorizedException } from '@src/errors/unauthorized-exception';
 import { NotFoundException } from '@src/errors/not-found-exception';
-import { Session, UpdateSessionDTO } from '@modules/session/dtos';
-import { AuthServiceInterface } from './auth.service.interface';
+import { type Session, type UpdateSessionDTO } from '@modules/session/dtos';
+import { type AuthServiceInterface } from './auth.service.interface';
 import sessionModule from '@modules/session/session.module';
 import passwordUtils from '@utils/password-utils';
-import { SessionDTO } from '@@types/session.dto';
-import { SignInDTO } from '../dtos/sign-in.dto';
-import { User } from '@modules/users/dtos';
+import { type SessionDTO } from '@@types/session.dto';
+import { type SignInDTO } from '../dtos/sign-in.dto';
+import { type User } from '@modules/users/dtos';
 
 export class AuthService implements AuthServiceInterface {
   constructor(private readonly authRepository: AuthRepositoryInterface) {}
@@ -21,7 +21,7 @@ export class AuthService implements AuthServiceInterface {
 
     const isValidPassword = await passwordUtils.comparePass(
       password,
-      user.password_hash
+      user.password_hash,
     );
 
     if (!isValidPassword) {
@@ -55,11 +55,11 @@ export class AuthService implements AuthServiceInterface {
 
   async updateSession(
     sessionsId: string,
-    dto: UpdateSessionDTO
+    dto: UpdateSessionDTO,
   ): Promise<Session> {
     const updatedSession = await this.authRepository.updateSession(
       sessionsId,
-      dto
+      dto,
     );
 
     if (!updatedSession) {

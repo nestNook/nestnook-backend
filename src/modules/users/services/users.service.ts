@@ -1,11 +1,11 @@
-import { RolesRepositoryInterface } from '@modules/roles/repositories/roles.repository.interface';
-import { UsersRepositoryInterface } from '../repositories/users.repository.interface';
+import { type RolesRepositoryInterface } from '@modules/roles/repositories/roles.repository.interface';
+import { type UsersRepositoryInterface } from '../repositories/users.repository.interface';
 import { BadRequestException } from '@src/errors/bad-request-exception';
 import { NotFoundException } from '@src/errors/not-found-exception';
 import { ForbiddenException } from '@src/errors/forbidden-exception';
-import { UsersServiceInterface } from './users.service.interface';
+import { type UsersServiceInterface } from './users.service.interface';
 import { UserBuilder } from '../builders/user.builder';
-import { SessionDTO } from '@@types/session.dto';
+import { type SessionDTO } from '@@types/session.dto';
 import { UserRoles } from '@@types/user-roles';
 
 import sessionModule from '@modules/session/session.module';
@@ -13,16 +13,16 @@ import validationUtils from '@utils/validation-utils';
 import passwordUtils from '@utils/password-utils';
 
 import {
-  CreateUserDTO,
-  GetUserDTO,
-  UpdatePasswordDTO,
-  UpdateUserDTO,
+  type CreateUserDTO,
+  type GetUserDTO,
+  type UpdatePasswordDTO,
+  type UpdateUserDTO,
 } from '../dtos';
 
 export class UsersService implements UsersServiceInterface {
   constructor(
     private readonly usersRepository: UsersRepositoryInterface,
-    private readonly rolesRepository: RolesRepositoryInterface
+    private readonly rolesRepository: RolesRepositoryInterface,
   ) {}
 
   async createUser({
@@ -99,7 +99,7 @@ export class UsersService implements UsersServiceInterface {
 
   async updateUserById(
     id: string,
-    dto: UpdateUserDTO
+    dto: UpdateUserDTO,
   ): Promise<GetUserDTO | null> {
     const { email, phone_number } = dto;
 
@@ -141,7 +141,7 @@ export class UsersService implements UsersServiceInterface {
 
   async updateUserPassword(
     userId: string,
-    dto: UpdatePasswordDTO
+    dto: UpdatePasswordDTO,
   ): Promise<void> {
     const user = await this.usersRepository.findById(userId);
 
@@ -151,7 +151,7 @@ export class UsersService implements UsersServiceInterface {
 
     const passwordsMatch = await passwordUtils.comparePass(
       dto.currentPassword,
-      user.password_hash
+      user.password_hash,
     );
 
     if (!passwordsMatch) {

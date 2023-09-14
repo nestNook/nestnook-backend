@@ -16,12 +16,12 @@ export class Database {
     this.prisma = prisma;
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     await this.prisma.$connect();
     console.log('Database connected');
   }
 
-  async disconnect() {
+  async disconnect(): Promise<void> {
     this.prisma?.$disconnect();
   }
 }

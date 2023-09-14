@@ -10,12 +10,14 @@ import { SessionsService } from '@modules/session/services/sessions.service';
 import { BadRequestException } from '@src/errors/bad-request-exception';
 import { UsersService } from '@modules/users/services/users.service';
 import { NotFoundException } from '@src/errors/not-found-exception';
-import { UserBuilder } from '@modules/users/providers/user.builder';
+import { UserBuilder } from '@modules/users/builders/user.builder';
 import { UsersRepositoryMock } from './mocks/users-mock.repository';
 import { sessionDTOMock } from '../sessions/mocks/sessions-mock';
 import { PasswordUtils } from '@utils/password-utils';
 import { GetUserDTO, User, UserQuery } from '@modules/users/dtos';
 import { ForbiddenException } from '@src/errors/forbidden-exception';
+import { RolesRepositoryMock } from '../roles/mocks/roles-mock.repository';
+import { roleMock } from '../roles/mocks/roles-mock';
 
 describe('Users service', () => {
   let usersService: UsersServiceInterface;
@@ -23,7 +25,7 @@ describe('Users service', () => {
 
   beforeEach(() => {
     usersRepository = new UsersRepositoryMock();
-    usersService = new UsersService(usersRepository);
+    usersService = new UsersService(usersRepository, new RolesRepositoryMock());
   });
 
   afterEach(() => {
@@ -173,6 +175,7 @@ describe('Users service', () => {
         email: updatedUserMock.email,
         id: userMock.id,
         name: updatedUserMock.name,
+        role: roleMock,
       };
 
       const updateUserRepositorySpy = jest

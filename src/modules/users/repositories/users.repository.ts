@@ -1,6 +1,11 @@
 import { prisma } from '@infra/database';
-import { InternCreateUserDTO, UpdateUserDTO, User, UserQuery } from '../dtos';
-import { UsersRepositoryInterface } from './users.repository.interface';
+import {
+  type InternCreateUserDTO,
+  type UpdateUserDTO,
+  type User,
+  type UserQuery,
+} from '../dtos';
+import { type UsersRepositoryInterface } from './users.repository.interface';
 
 export class UsersRepository implements UsersRepositoryInterface {
   async create(dto: InternCreateUserDTO): Promise<User> {

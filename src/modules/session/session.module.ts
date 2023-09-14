@@ -1,12 +1,12 @@
-import { BaseModule } from '@common/baseModule';
-import { BaseRouter } from '@common/baseRouter.interface';
+import type { BaseModule } from '@common/baseModule';
+import type { BaseRouter } from '@common/baseRouter.interface';
 import { SessionsRouter } from './routers/sessions.router';
 import { SessionsService } from './services/sessions.service';
 import { SessionsController } from './controllers/sessions.controller';
 import { SessionsRepository } from './repositories/sessions.repository';
-import { SessionsServiceInterface } from './services/sessions.service.interface';
-import { SessionsControllerInterface } from './controllers/sessions.controller.interface';
-import { SessionsRepositoryInterface } from './repositories/sessions.repository.interface';
+import { type SessionsServiceInterface } from './services/sessions.service.interface';
+import { type SessionsControllerInterface } from './controllers/sessions.controller.interface';
+import { type SessionsRepositoryInterface } from './repositories/sessions.repository.interface';
 
 export class SessionsModule implements BaseModule {
   router: BaseRouter;

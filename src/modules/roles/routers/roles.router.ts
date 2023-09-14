@@ -1,10 +1,12 @@
-import { RolesControllerInterface } from '../controllers/roles.controller.interface';
-import { BaseRouter } from '@common/baseRouter.interface';
-import { Route } from '@common/route.interface';
-
+import { type RolesControllerInterface } from '../controllers/roles.controller.interface';
+import { auth } from '@modules/auth/middlewares/auth.middleware';
+import { type BaseRouter } from '@common/baseRouter.interface';
+import { type Handler, type Route } from '@common/route.interface';
+import { UserRoles } from '@@types/user-roles';
 export class RolesRouter implements BaseRouter {
   routePrefix?: string | undefined = '/roles';
   routes: Route[];
+  middlewares?: Handler[] | undefined = [auth(UserRoles.ADMIN)];
 
   constructor(readonly rolesController: RolesControllerInterface) {
     this.routes = [
@@ -12,6 +14,7 @@ export class RolesRouter implements BaseRouter {
         method: 'post',
         handler: rolesController.createRole,
         path: '/',
+        middlewares: [],
       },
       {
         method: 'get',

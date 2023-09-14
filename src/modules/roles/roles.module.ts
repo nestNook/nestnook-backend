@@ -1,5 +1,5 @@
-import { BaseModule } from '@common/baseModule';
-import { BaseRouter } from '@common/baseRouter.interface';
+import { type BaseModule } from '@common/baseModule';
+import { type BaseRouter } from '@common/baseRouter.interface';
 
 import { RolesRouter } from './routers/roles.router';
 import { RolesService } from './services/roles.service';

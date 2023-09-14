@@ -1,6 +1,10 @@
 import SessionModel from '../models/sessions.model';
-import { CreateSessionDTO, Session, UpdateSessionDTO } from '../dtos';
-import { SessionsRepositoryInterface } from './sessions.repository.interface';
+import {
+  type CreateSessionDTO,
+  type Session,
+  type UpdateSessionDTO,
+} from '../dtos';
+import { type SessionsRepositoryInterface } from './sessions.repository.interface';
 
 export class SessionsRepository implements SessionsRepositoryInterface {
   async createSession(dto: CreateSessionDTO): Promise<Session> {
@@ -10,7 +14,7 @@ export class SessionsRepository implements SessionsRepositoryInterface {
 
   async deleteSession(
     sessionId: string,
-    userId: string
+    userId: string,
   ): Promise<Session | null> {
     const session = await SessionModel.findOneAndDelete({
       $and: [
@@ -25,12 +29,12 @@ export class SessionsRepository implements SessionsRepositoryInterface {
 
   async updateSession(
     sessionId: string,
-    dto: UpdateSessionDTO
+    dto: UpdateSessionDTO,
   ): Promise<Session | null> {
     const session = await SessionModel.findOneAndUpdate(
       { id: sessionId },
       dto,
-      { new: true }
+      { new: true },
     );
     return session;
   }

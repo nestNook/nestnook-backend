@@ -1,9 +1,9 @@
-import { AddressRepositoryInterface } from './address.repository.interface';
+import { type AddressRepositoryInterface } from './address.repository.interface';
 import {
-  Address,
-  CreateAddressDTO,
-  DeleteAddressQuery,
-  UpdateAddressDTO,
+  type Address,
+  type CreateAddressDTO,
+  type DeleteAddressQuery,
+  type UpdateAddressDTO,
 } from '../dtos';
 import { prisma } from '@infra/database';
 
@@ -31,7 +31,7 @@ export class AddressRepository implements AddressRepositoryInterface {
   async updateAddress(
     id: string,
     userId: string,
-    dto: UpdateAddressDTO
+    dto: UpdateAddressDTO,
   ): Promise<Address | null> {
     const updatedAddress = await prisma.address.update({
       where: {
@@ -46,7 +46,7 @@ export class AddressRepository implements AddressRepositoryInterface {
 
   async deleteAddress(
     id: string,
-    query: DeleteAddressQuery
+    query: DeleteAddressQuery,
   ): Promise<Address | null> {
     const deletedAddress = await prisma.address.delete({
       where: {

@@ -1,5 +1,5 @@
-import { CreateSectorDTO, Sector } from '../dtos';
+import { type CreateSectorDTO, type Sector } from '../dtos';
 
 export interface SectorServiceInterface {
-  createSector(dto: CreateSectorDTO): Promise<Sector>;
+  createSector: (dto: CreateSectorDTO) => Promise<Sector>;
 }

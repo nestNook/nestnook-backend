@@ -1,13 +1,13 @@
-import { CreateSectorDTO, Sector } from '../dtos';
-import { SectorServiceInterface } from './sector.service.interface';
-import { SectorRepositoryInterface } from '../repositories/sector.repository.interface';
+import { type CreateSectorDTO, type Sector } from '../dtos';
+import { type SectorServiceInterface } from './sector.service.interface';
+import { type SectorRepositoryInterface } from '../repositories/sector.repository.interface';
 
 export class SectorService implements SectorServiceInterface {
   constructor(private readonly sectorRepository: SectorRepositoryInterface) {}
 
   async createSector(dto: CreateSectorDTO): Promise<Sector> {
     const sectorAlreadyExists = await this.sectorRepository.findSectorByName(
-      dto.name
+      dto.name,
     );
 
     if (sectorAlreadyExists) {

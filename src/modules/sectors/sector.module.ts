@@ -1,7 +1,7 @@
-import { BaseModule } from '../../common/baseModule';
+import { type BaseModule } from '../../common/baseModule';
 import { SectorRouter } from './routers/sector.router';
 import { SectorService } from './services/sector.service';
-import { BaseRouter } from '../../common/baseRouter.interface';
+import { type BaseRouter } from '../../common/baseRouter.interface';
 import { SectorController } from './controllers/sector.controller';
 import { SectorRepository } from './repositories/sector.repository';
 

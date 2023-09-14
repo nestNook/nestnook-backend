@@ -1,20 +1,18 @@
-import { prisma } from '../../../infra/database';
-import { CreateProductDTO } from '../dtos/create-product.dto';
-import { Product } from '../dtos/product.dto';
-import { ProductsRepositoryInterface } from '../repositories/products.repository.interface';
-import { ProductsServiceInterface } from './products.service.interface';
+import { type CreateProductDTO } from '../dtos/create-product.dto';
+import { type Product } from '../dtos/product.dto';
+import { type ProductsRepositoryInterface } from '../repositories/products.repository.interface';
+import { type ProductsServiceInterface } from './products.service.interface';
 
 export class ProductsService implements ProductsServiceInterface {
   constructor(
-    private readonly productsRepository: ProductsRepositoryInterface
+    private readonly productsRepository: ProductsRepositoryInterface,
   ) {}
 
   async createProduct(
-    createProductDto: CreateProductDTO
+    createProductDto: CreateProductDTO,
   ): Promise<Product | null> {
-    const product = await this.productsRepository.createProduct(
-      createProductDto
-    );
+    const product =
+      await this.productsRepository.createProduct(createProductDto);
     return product;
   }
 }

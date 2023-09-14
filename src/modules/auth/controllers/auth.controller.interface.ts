@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 export interface AuthControllerInterface {
-  signIn(req: Request, res: Response): Promise<Response>;
+  signIn: (req: Request, res: Response) => Promise<Response>;
 }

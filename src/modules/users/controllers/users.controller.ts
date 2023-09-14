@@ -1,9 +1,13 @@
-import { Request, Response } from 'express';
-import { CreateUserDTO } from '../dtos/create-user.dto';
+import { type Request, type Response } from 'express';
+import { type CreateUserDTO } from '../dtos/create-user.dto';
 import { Controller } from '@common/controller.decorator';
-import { UsersControllerInterface } from './users.controller.interface';
-import { UsersServiceInterface } from '../services/users.service.interface';
-import { CreateUserResDTO, UpdatePasswordDTO, UpdateUserDTO } from '../dtos';
+import { type UsersControllerInterface } from './users.controller.interface';
+import { type UsersServiceInterface } from '../services/users.service.interface';
+import {
+  type CreateUserResDTO,
+  type UpdatePasswordDTO,
+  type UpdateUserDTO,
+} from '../dtos';
 
 @Controller
 export class UsersController implements UsersControllerInterface {
@@ -11,9 +15,8 @@ export class UsersController implements UsersControllerInterface {
 
   async createUser(req: Request, res: Response): Promise<Response> {
     const userDto: CreateUserDTO = req.body;
-    const tokens: CreateUserResDTO = await this.usersService.createUser(
-      userDto
-    );
+    const tokens: CreateUserResDTO =
+      await this.usersService.createUser(userDto);
 
     return res.status(201).json({
       status: 'success',

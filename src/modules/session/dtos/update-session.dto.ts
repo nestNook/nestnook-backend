@@ -1,4 +1,4 @@
-import { SessionStatus } from '@@types/session-status';
+import { type SessionStatus } from '@@types/session-status';
 
 export interface UpdateSessionDTO {
   status?: SessionStatus;
