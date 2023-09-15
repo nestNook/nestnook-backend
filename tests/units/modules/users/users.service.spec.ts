@@ -12,7 +12,7 @@ import { UsersService } from '@modules/users/services/users.service';
 import { NotFoundException } from '@src/errors/not-found-exception';
 import { UserBuilder } from '@modules/users/providers/user.builder';
 import { UsersRepositoryMock } from './mocks/users-mock.repository';
-import { sessionDTOMock } from '../sessions/mocks/sessions-mock';
+import { sessionDTOMock } from '../../../__mocks__/sessions-mock';
 import { PasswordUtils } from '@utils/password-utils';
 import { GetUserDTO, User, UserQuery } from '@modules/users/dtos';
 import { ForbiddenException } from '@src/errors/forbidden-exception';

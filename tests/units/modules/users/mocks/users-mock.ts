@@ -19,6 +19,7 @@ export const createUserMock = {
 } as CreateUserDTO;
 
 const userId = faker.string.uuid();
+const roleId = faker.string.uuid();
 
 export const userMock = {
   ...createUserMock,
@@ -31,6 +32,13 @@ export const userMock = {
   profile_pic_id: null,
   otp_secret: null,
   id: userId,
+  role: {
+    id: roleId,
+    name: 'admin',
+    description: 'admin',
+    created_at: new Date(),
+    updated_at: new Date(),
+  },
 } as User;
 
 export const internCreateUserMock = {
