@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { type Request, type Response, type NextFunction } from 'express';
 
 export interface SectorControllerInterface {
-  createSector(
+  createSector: (
     req: Request,
     res: Response,
-    next: NextFunction
-  ): Promise<Response>;
+    next: NextFunction,
+  ) => Promise<Response>;
 }

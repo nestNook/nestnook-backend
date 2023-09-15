@@ -1,8 +1,12 @@
-import { AddressServiceInterface } from '../services/address.service.interface';
-import { AddressControllerInterface } from './address.controller.interface';
-import { Address, CreateAddressDTO, UpdateAddressDTO } from '../dtos';
+import { type AddressServiceInterface } from '../services/address.service.interface';
+import { type AddressControllerInterface } from './address.controller.interface';
+import {
+  type Address,
+  type CreateAddressDTO,
+  type UpdateAddressDTO,
+} from '../dtos';
 import { Controller } from '@common/controller.decorator';
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 
 @Controller
 export class AddressController implements AddressControllerInterface {
@@ -25,7 +29,7 @@ export class AddressController implements AddressControllerInterface {
     const userId: string = req.app.locals.user.id;
     const address: Address = await this.addressService.getAddressById(
       id,
-      userId
+      userId,
     );
 
     return res.status(200).json({
@@ -36,9 +40,8 @@ export class AddressController implements AddressControllerInterface {
 
   async getUserAddresses(req: Request, res: Response): Promise<Response> {
     const userId: string = req.app.locals.user.id;
-    const addresses: Address[] = await this.addressService.getUserAddresses(
-      userId
-    );
+    const addresses: Address[] =
+      await this.addressService.getUserAddresses(userId);
 
     return res.status(200).json({
       status: 'success',
@@ -55,7 +58,7 @@ export class AddressController implements AddressControllerInterface {
     const address: Address = await this.addressService.updateAddress(
       id,
       userId,
-      dto
+      dto,
     );
 
     return res.status(200).json({
@@ -70,7 +73,7 @@ export class AddressController implements AddressControllerInterface {
 
     const address: Address = await this.addressService.deleteAddress(
       id,
-      userId
+      userId,
     );
 
     return res.status(200).json({

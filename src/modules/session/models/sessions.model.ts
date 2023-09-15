@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { Session } from '../dtos/session.dto';
+import { type Session } from '../dtos/session.dto';
 import { SessionStatus } from '@@types/session-status';
 
 const sessionSchema = new Schema<Session>(
@@ -32,7 +32,7 @@ const sessionSchema = new Schema<Session>(
         delete ret._id;
       },
     },
-  }
+  },
 );
 
 export const SessionModel = model('Session', sessionSchema);

@@ -1,20 +1,24 @@
-import { Request, Response, NextFunction } from 'express';
+import { type Request, type Response, type NextFunction } from 'express';
 import { Controller } from '../../../common/controller.decorator';
-import { ProductsControllerInterface } from './products.controller.interface';
-import { ProductsServiceInterface } from '../services/products.service.interface';
+import { type ProductsControllerInterface } from './products.controller.interface';
+import { type ProductsServiceInterface } from '../services/products.service.interface';
 
 @Controller
 export class ProductsController implements ProductsControllerInterface {
   constructor(private readonly productsService: ProductsServiceInterface) {}
 
-  async createProduct(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async createProduct(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response> {
     const product = await this.productsService.createProduct(req.body);
 
-    console.log(product)
+    console.log(product);
 
     return res.status(201).json({
       msg: 'Product created',
-      product
-    })
+      product,
+    });
   }
 }

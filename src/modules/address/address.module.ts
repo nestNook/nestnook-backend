@@ -1,7 +1,7 @@
-import { AddressRouter } from "./routers/address.router";
-import { AddressService } from "./services/address.service";
-import { AddressController } from "./controllers/address.controller";
-import { AddressRepository } from "./repositories/address.repository";
+import { AddressRouter } from './routers/address.router';
+import { AddressService } from './services/address.service';
+import { AddressController } from './controllers/address.controller';
+import { AddressRepository } from './repositories/address.repository';
 
 export class AddressModule {
   public repository: AddressRepository;
@@ -13,7 +13,7 @@ export class AddressModule {
     this.repository = new AddressRepository();
     this.service = new AddressService(this.repository);
     this.controller = new AddressController(this.service);
-    this.router = new AddressRouter(this.controller)
+    this.router = new AddressRouter(this.controller);
   }
 }
 

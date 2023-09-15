@@ -1,3 +1,5 @@
+import { type Role } from '@modules/roles/dtos';
+
 export interface User {
   id: string;
   name: string;
@@ -11,4 +13,5 @@ export interface User {
   profile_pic_id: string | null;
   created_at: Date;
   updated_at: Date;
+  role: Role;
 }

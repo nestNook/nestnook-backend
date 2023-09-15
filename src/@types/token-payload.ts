@@ -1,3 +1,3 @@
-import { JwtPayload } from 'jsonwebtoken';
+import { type JwtPayload } from 'jsonwebtoken';
 
 export type TokenPayload<T> = JwtPayload & T;

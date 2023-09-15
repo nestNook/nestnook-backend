@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 import { Controller } from '../../../common/controller.decorator';
-import { FabricatorsControllerInterface } from './fabricators.controller.interface';
-import { FabricatorServiceInterface } from '../services/fabricators.service.interface';
-import { CreateFabricatorDTO, UpdateFabricatorDTO } from '../dtos';
+import { type FabricatorsControllerInterface } from './fabricators.controller.interface';
+import { type FabricatorServiceInterface } from '../services/fabricators.service.interface';
+import { type CreateFabricatorDTO, type UpdateFabricatorDTO } from '../dtos';
 
 @Controller
 export class FabricatorsController implements FabricatorsControllerInterface {
@@ -10,9 +10,8 @@ export class FabricatorsController implements FabricatorsControllerInterface {
 
   async createFabricator(req: Request, res: Response): Promise<Response> {
     const createFabricatorDto: CreateFabricatorDTO = req.body;
-    const fabricator = await this.fabricatorService.createFabricator(
-      createFabricatorDto
-    );
+    const fabricator =
+      await this.fabricatorService.createFabricator(createFabricatorDto);
 
     return res.status(201).json({
       status: 'success',
@@ -35,7 +34,7 @@ export class FabricatorsController implements FabricatorsControllerInterface {
     const fabricator: UpdateFabricatorDTO = req.body;
     const updatedFabricator = await this.fabricatorService.updateFabricator(
       id,
-      fabricator
+      fabricator,
     );
 
     return res.status(200).json({

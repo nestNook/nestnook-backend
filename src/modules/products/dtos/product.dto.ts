@@ -1,5 +1,5 @@
 export interface Product {
-  id: string,
+  id: string;
   sku: string;
   name: string;
   description: string;
@@ -9,6 +9,6 @@ export interface Product {
   currency: string;
   sector_id: string;
   fabricator_id: string;
-  created_at: Date,
-  updated_at: Date
+  created_at: Date;
+  updated_at: Date;
 }

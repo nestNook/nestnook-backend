@@ -1,13 +1,23 @@
+<<<<<<< HEAD
 import { BadRequestException } from '@src/errors/bad-request-exception';
 import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
 import { FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { FabricatorServiceInterface } from './fabricators.service.interface';
 import validationUtils from '@utils/validation-utils';
 import { NotFoundException } from '@src/errors/not-found-exception';
+=======
+import {
+  type CreateFabricatorDTO,
+  type Fabricator,
+  type UpdateFabricatorDTO,
+} from '../dtos';
+import { type FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
+import { type FabricatorServiceInterface } from './fabricators.service.interface';
+>>>>>>> 962e9cb6e70c8dd133a14f84c3b327a76c6a5757
 
 export class FabricatorsService implements FabricatorServiceInterface {
   constructor(
-    private readonly fabricatorsRepository: FabricatorRepositoryInterface
+    private readonly fabricatorsRepository: FabricatorRepositoryInterface,
   ) {}
 
   private async checkFabricator({
@@ -27,7 +37,7 @@ export class FabricatorsService implements FabricatorServiceInterface {
       const registryAlreadyExists = fabricatorAlreadyExists.find(
         (fabricator) => {
           return registry === fabricator.registry;
-        }
+        },
       );
       if (registryAlreadyExists) {
         errors.push('Registry already exists');
@@ -70,7 +80,7 @@ export class FabricatorsService implements FabricatorServiceInterface {
 
   async updateFabricator(
     id: string,
-    dto: UpdateFabricatorDTO
+    dto: UpdateFabricatorDTO,
   ): Promise<Fabricator | null> {
     const isEmpty = validationUtils.isObjectEmpty(dto);
 
@@ -80,7 +90,7 @@ export class FabricatorsService implements FabricatorServiceInterface {
     await this.checkFabricator(dto);
     const updatedFabricator = await this.fabricatorsRepository.updateFabricator(
       id,
-      dto
+      dto,
     );
 
     return updatedFabricator;
