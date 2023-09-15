@@ -6,6 +6,7 @@ import { NotFoundException } from '@src/errors/not-found-exception';
 import { type RolesServiceInterface } from './roles.service.interface';
 import { type CreateRoleDTO, type Role, type UpdateRoleDTO } from '../dtos';
 import validationUtils from '@utils/validation-utils';
+import { createRoleSchema } from '../schemas/create-role.schema';
 
 export class RolesService implements RolesServiceInterface {
   constructor(
@@ -22,7 +23,9 @@ export class RolesService implements RolesServiceInterface {
       throw new BadRequestException('Role name already exists');
     }
 
-    const role = await this.rolesRepository.create(dto);
+    const roleData = validationUtils.validate(createRoleSchema, dto);
+
+    const role = await this.rolesRepository.create(roleData);
 
     return role;
   }
