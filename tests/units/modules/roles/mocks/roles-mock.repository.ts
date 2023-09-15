@@ -1,4 +1,4 @@
-import { RolesRepositoryInterface } from '@modules/roles/repositories/roles.repository.interface';
+import { type RolesRepositoryInterface } from '@modules/roles/repositories/roles.repository.interface';
 
 export class RolesRepositoryMock implements RolesRepositoryInterface {
   create = jest.fn();
