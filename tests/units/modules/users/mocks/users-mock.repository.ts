@@ -1,4 +1,4 @@
-import { UsersRepositoryInterface } from '@modules/users/repositories/users.repository.interface';
+import { type UsersRepositoryInterface } from '@modules/users/repositories/users.repository.interface';
 
 export class UsersRepositoryMock implements UsersRepositoryInterface {
   create = jest.fn();
