@@ -1,3 +1,4 @@
+import { NotFoundException } from '@src/errors/not-found-exception';
 import {
   type CreateFabricatorDTO,
   type Fabricator,
@@ -5,6 +6,7 @@ import {
 } from '../dtos';
 import { type FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { type FabricatorServiceInterface } from './fabricators.service.interface';
+import { BadRequestException } from '@src/errors/bad-request-exception';
 
 export class FabricatorsService implements FabricatorServiceInterface {
   constructor(
@@ -47,7 +49,7 @@ export class FabricatorsService implements FabricatorServiceInterface {
       }
 
       if (errors.length > 0) {
-        throw new Error(`Validation error: ${errors.join(', ')}`);
+        throw new BadRequestException(`Validation error: ${errors.join(', ')}`);
       }
     }
   }
@@ -58,25 +60,41 @@ export class FabricatorsService implements FabricatorServiceInterface {
     return fabricator;
   }
 
-  async findById(id: string): Promise<Fabricator | null> {
+  async findById(id: string): Promise<Fabricator> {
     const fabricator = await this.fabricatorsRepository.findById(id);
+
+    if (!fabricator) {
+      throw new NotFoundException('Fabricator not found');
+    }
+
     return fabricator;
   }
 
   async updateFabricator(
     id: string,
     dto: UpdateFabricatorDTO,
-  ): Promise<Fabricator | null> {
+  ): Promise<Fabricator> {
     await this.checkFabricator(dto);
     const updatedFabricator = await this.fabricatorsRepository.updateFabricator(
       id,
       dto,
     );
 
+    if (!updatedFabricator) {
+      throw new NotFoundException('Fabricator not found');
+    }
+
     return updatedFabricator;
   }
 
-  async deleteFabricator(id: string): Promise<void> {
-    await this.fabricatorsRepository.deleteFabricator(id);
+  async deleteFabricator(id: string): Promise<Fabricator> {
+    const deletedFabricator =
+      await this.fabricatorsRepository.deleteFabricator(id);
+
+    if (!deletedFabricator) {
+      throw new NotFoundException('Fabricator not found');
+    }
+
+    return deletedFabricator;
   }
 }
