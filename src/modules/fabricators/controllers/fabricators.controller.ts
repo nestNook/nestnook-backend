@@ -45,8 +45,11 @@ export class FabricatorsController implements FabricatorsControllerInterface {
 
   async deleteFabricator(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    await this.fabricatorService.deleteFabricator(id);
+    const deletedFabricator = await this.fabricatorService.deleteFabricator(id);
 
-    return res.status(204).json();
+    return res.status(200).json({
+      status: 'success',
+      data: deletedFabricator,
+    });
   }
 }
