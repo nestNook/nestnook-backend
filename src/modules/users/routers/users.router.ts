@@ -1,6 +1,7 @@
 import { type UsersControllerInterface } from '../controllers/users.controller.interface';
 import { auth } from '@modules/auth/middlewares/auth.middleware';
 import { type Route } from '@common/route.interface';
+import { AccessLevel } from '@@types/access-level';
 import {
   type MiddlewaresOptions,
   type BaseRouter,
@@ -16,6 +17,10 @@ export class UsersRouter implements BaseRouter {
         {
           method: 'post',
           path: '/',
+        },
+        {
+          method: 'post',
+          path: '/give-privileges',
         },
       ],
     },
@@ -47,6 +52,12 @@ export class UsersRouter implements BaseRouter {
         method: 'delete',
         handler: usersController.deleteMe,
         path: '/',
+      },
+      {
+        method: 'post',
+        handler: usersController.givePrivileges,
+        path: '/give-privileges',
+        middlewares: [auth(AccessLevel.ADMIN)],
       },
     ];
   }
