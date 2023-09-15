@@ -1,4 +1,16 @@
-import { UsersServiceInterface } from '@modules/users/services/users.service.interface';
+import { type RolesRepositoryInterface } from '@modules/roles/repositories/roles.repository.interface';
+import { type UsersServiceInterface } from '@modules/users/services/users.service.interface';
+import { SessionsService } from '@modules/session/services/sessions.service';
+import { RolesRepositoryMock } from '../roles/mocks/roles-mock.repository';
+import { BadRequestException } from '@src/errors/bad-request-exception';
+import { UsersService } from '@modules/users/services/users.service';
+import { ForbiddenException } from '@src/errors/forbidden-exception';
+import { NotFoundException } from '@src/errors/not-found-exception';
+import { UsersRepositoryMock } from './mocks/users-mock.repository';
+import { UserBuilder } from '@modules/users/builders/user.builder';
+import { sessionDTOMock } from '../sessions/mocks/sessions-mock';
+import { PasswordUtils } from '@utils/password-utils';
+import { roleMock } from '../roles/mocks/roles-mock';
 import {
   createUserMock,
   publicUserMock,
@@ -6,26 +18,21 @@ import {
   updateUserPasswordMock,
   userMock,
 } from './mocks/users-mock';
-import { SessionsService } from '@modules/session/services/sessions.service';
-import { BadRequestException } from '@src/errors/bad-request-exception';
-import { UsersService } from '@modules/users/services/users.service';
-import { NotFoundException } from '@src/errors/not-found-exception';
-import { UserBuilder } from '@modules/users/builders/user.builder';
-import { UsersRepositoryMock } from './mocks/users-mock.repository';
-import { sessionDTOMock } from '../sessions/mocks/sessions-mock';
-import { PasswordUtils } from '@utils/password-utils';
-import { GetUserDTO, User, UserQuery } from '@modules/users/dtos';
-import { ForbiddenException } from '@src/errors/forbidden-exception';
-import { RolesRepositoryMock } from '../roles/mocks/roles-mock.repository';
-import { roleMock } from '../roles/mocks/roles-mock';
+import {
+  type GetUserDTO,
+  type User,
+  type UserQuery,
+} from '@modules/users/dtos';
 
 describe('Users service', () => {
   let usersService: UsersServiceInterface;
   let usersRepository: UsersRepositoryMock;
+  let rolesRepository: RolesRepositoryInterface;
 
   beforeEach(() => {
+    rolesRepository = new RolesRepositoryMock();
     usersRepository = new UsersRepositoryMock();
-    usersService = new UsersService(usersRepository, new RolesRepositoryMock());
+    usersService = new UsersService(usersRepository, rolesRepository);
   });
 
   afterEach(() => {
@@ -43,6 +50,10 @@ describe('Users service', () => {
       jest
         .spyOn(usersRepository, 'find')
         .mockReturnValueOnce(Promise.resolve(null));
+
+      jest
+        .spyOn(rolesRepository, 'getByName')
+        .mockReturnValueOnce(Promise.resolve(roleMock));
 
       const sessionsServiceSpy = jest
         .spyOn(SessionsService.prototype, 'createSession')
@@ -65,11 +76,11 @@ describe('Users service', () => {
 
       const sessionsServiceSpy = jest.spyOn(
         SessionsService.prototype,
-        'createSession'
+        'createSession',
       );
 
       await expect(usersService.createUser(createUserMock)).rejects.toThrow(
-        error
+        error,
       );
 
       expect(sessionsServiceSpy).not.toHaveBeenCalled();
@@ -82,10 +93,13 @@ describe('Users service', () => {
         .spyOn(usersRepository, 'findById')
         .mockReturnValueOnce(Promise.resolve(userMock));
 
+      const userBuilderSpy = jest.spyOn(UserBuilder, 'publicUser');
       const user = await usersService.getUserById(userMock.id);
 
       expect(findUserRepositorySpy).toHaveBeenCalledWith(userMock.id);
-      expect(user).toEqual(userMock);
+      expect(user).toEqual(publicUserMock);
+      expect(userBuilderSpy).toBeCalledWith(userMock);
+      expect(userBuilderSpy).toHaveReturnedWith(publicUserMock);
     });
 
     it('should be able to find a user by email', async () => {
@@ -114,7 +128,7 @@ describe('Users service', () => {
         .mockReturnValueOnce(Promise.resolve(null));
 
       await expect(usersService.getUserById(userMock.id)).rejects.toThrow(
-        error
+        error,
       );
 
       expect(findUserRepositorySpy).toHaveBeenCalledWith(userMock.id);
@@ -128,7 +142,7 @@ describe('Users service', () => {
         .mockReturnValueOnce(Promise.resolve(null));
 
       await expect(usersService.getUserByEmail(userMock.email)).rejects.toThrow(
-        error
+        error,
       );
 
       expect(findUserRepositorySpy).toHaveBeenCalledWith({
@@ -157,7 +171,7 @@ describe('Users service', () => {
         .mockReturnValueOnce(Promise.resolve(null));
 
       await expect(usersService.deleteUserById(userMock.id)).rejects.toThrow(
-        error
+        error,
       );
 
       expect(deleteUserRepositorySpy).toHaveBeenCalledWith(userMock.id);
@@ -194,12 +208,12 @@ describe('Users service', () => {
 
       const updatedUser = await usersService.updateUserById(
         userMock.id,
-        updateUserMock
+        updateUserMock,
       );
 
       expect(updateUserRepositorySpy).toHaveBeenCalledWith(
         userMock.id,
-        updateUserMock
+        updateUserMock,
       );
       expect(updatedUser).toEqual(updatedPublicUserMock);
       expect(userBuilderSpy).toBeCalledWith(updatedUserMock);
@@ -214,7 +228,7 @@ describe('Users service', () => {
         .mockReturnValueOnce(Promise.resolve(null));
 
       await expect(
-        usersService.updateUserById(userMock.id, updateUserMock)
+        usersService.updateUserById(userMock.id, updateUserMock),
       ).rejects.toThrow(error);
 
       expect(updateUserRepositorySpy).not.toHaveReturnedWith(null);
@@ -233,7 +247,7 @@ describe('Users service', () => {
 
       const updateUserRepositorySpy = jest.spyOn(usersRepository, 'update');
       await expect(
-        usersService.updateUserById(userMock.id, updateUserMock)
+        usersService.updateUserById(userMock.id, updateUserMock),
       ).rejects.toThrow(error);
 
       expect(updateUserRepositorySpy).not.toHaveBeenCalled();
@@ -248,18 +262,18 @@ describe('Users service', () => {
 
       jest
         .spyOn(usersRepository, 'find')
-        .mockImplementation((query: UserQuery) => {
+        .mockImplementation(async (query: UserQuery) => {
           if (query.phone_number) {
-            return Promise.resolve({
+            return await Promise.resolve({
               phone_number: updateUserMock.phone_number,
             });
           }
-          return Promise.resolve(null);
+          return await Promise.resolve(null);
         });
 
       const updateUserRepositorySpy = jest.spyOn(usersRepository, 'update');
       await expect(
-        usersService.updateUserById(userMock.id, updateUserMock)
+        usersService.updateUserById(userMock.id, updateUserMock),
       ).rejects.toThrow(error);
 
       expect(updateUserRepositorySpy).not.toHaveBeenCalled();
@@ -267,7 +281,7 @@ describe('Users service', () => {
 
     it('should bot be able to update a user with empty body', async () => {
       const error = new BadRequestException(
-        'At least one field required to update'
+        'At least one field required to update',
       );
 
       jest
@@ -279,7 +293,7 @@ describe('Users service', () => {
         .mockReturnValue(Promise.resolve(null));
 
       await expect(
-        usersService.updateUserById(userMock.id, {})
+        usersService.updateUserById(userMock.id, {}),
       ).rejects.toThrow(error);
 
       const updateUserRepositorySpy = jest.spyOn(usersRepository, 'update');
@@ -301,11 +315,11 @@ describe('Users service', () => {
         .mockReturnValueOnce(Promise.resolve(true));
 
       await expect(
-        usersService.updateUserPassword(userMock.id, updateUserPasswordMock)
+        usersService.updateUserPassword(userMock.id, updateUserPasswordMock),
       ).resolves.not.toThrow();
       expect(updateUserRepositorySpy).toHaveBeenCalled();
       expect(passwordHashSpy).toHaveBeenCalledWith(
-        updateUserPasswordMock.password
+        updateUserPasswordMock.password,
       );
     });
 
@@ -322,7 +336,7 @@ describe('Users service', () => {
         .mockReturnValueOnce(Promise.resolve(false));
 
       await expect(
-        usersService.updateUserPassword(userMock.id, updateUserPasswordMock)
+        usersService.updateUserPassword(userMock.id, updateUserPasswordMock),
       ).rejects.toThrow(error);
 
       expect(updateUserRepositorySpy).not.toHaveBeenCalled();
@@ -344,7 +358,7 @@ describe('Users service', () => {
         usersService.updateUserPassword(userMock.id, {
           ...updateUserPasswordMock,
           passwordConfirm: '123',
-        })
+        }),
       ).rejects.toThrow(error);
 
       expect(updateUserRepositorySpy).not.toHaveBeenCalled();
@@ -359,7 +373,7 @@ describe('Users service', () => {
         .mockReturnValueOnce(Promise.resolve(null));
 
       await expect(
-        usersService.updateUserPassword(userMock.id, updateUserPasswordMock)
+        usersService.updateUserPassword(userMock.id, updateUserPasswordMock),
       ).rejects.toThrow(error);
 
       expect(updateUserRepositorySpy).not.toHaveBeenCalled();
