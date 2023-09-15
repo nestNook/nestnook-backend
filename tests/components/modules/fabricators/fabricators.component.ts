@@ -54,7 +54,11 @@ Then(
 Then('the response body should contain the fabricator data', function () {
   const body: { status: string; data: Fabricator } = response.body;
 
-  assert(body.data);
+  assert(body.data.email);
+  assert(body.data.id);
+  assert(body.data.name);
+  assert(body.data.phone_number);
+  assert(body.data.registry);
 });
 
 Given(
@@ -84,7 +88,11 @@ When(
 Then('the response body shuld contain the fabricator data', function () {
   const body: { status: string; data: Fabricator } = response.body;
 
-  assert(body.data);
+  assert(body.data.id);
+  assert(body.data.name);
+  assert(body.data.phone_number);
+  assert(body.data.email);
+  assert(body.data.registry);
 });
 
 Given(
@@ -96,17 +104,18 @@ Given(
     );
 
     MockSession.mockSession({ user: adminMock });
-    
+
     repositoryStub.callsFake(() => Promise.resolve(fabricatorMock));
-    
+
     response = await request(server.app)
-    .patch(`${url}/${fabricatorMock.id}`) .set({
-      Authorization: `Bearer ${accessToken}`,
-      'Refresh-Token': refreshToken,
-      Accept: 'application/json',
-    })
-    .send(fabricatorMock);
-    
+      .patch(`${url}/${fabricatorMock.id}`)
+      .set({
+        Authorization: `Bearer ${accessToken}`,
+        'Refresh-Token': refreshToken,
+        Accept: 'application/json',
+      })
+      .send(fabricatorMock);
+
     MockSession.restoreSessionMock();
     repositoryStub.restore();
   },
@@ -122,7 +131,11 @@ When(
 Then('the response body should contain new fabricator data', function () {
   const body: { status: string; data: Fabricator } = response.body;
 
-  assert(body.data);
+  assert(body.data.id);
+  assert(body.data.name);
+  assert(body.data.phone_number);
+  assert(body.data.registry);
+  assert(body.data.email);
 });
 
 Given(
@@ -132,17 +145,18 @@ Given(
       FabricatorRepository.prototype,
       'deleteFabricator',
     );
-    MockSession.mockSession({user: adminMock});
+    MockSession.mockSession({ user: adminMock });
     repositoryStub.callsFake(() => Promise.resolve(fabricatorMock));
-    
+
     response = await request(server.app)
-    .delete(`${url}/${fabricatorMock.id}`) .set({
-      Authorization: `Bearer ${accessToken}`,
-      'Refresh-Token': refreshToken,
-      Accept: 'application/json',
-    })
-    .send();
-    
+      .delete(`${url}/${fabricatorMock.id}`)
+      .set({
+        Authorization: `Bearer ${accessToken}`,
+        'Refresh-Token': refreshToken,
+        Accept: 'application/json',
+      })
+      .send();
+
     MockSession.restoreSessionMock();
     repositoryStub.restore();
   },
@@ -156,6 +170,11 @@ When(
 );
 
 Then('the delete fabricator response body should be empty', function () {
-  const body: { status: string } = response.body;
-  assert(body);
+  const body: { status: string; data: Fabricator } = response.body;
+
+  assert(body.data.id);
+  assert(body.data.name);
+  assert(body.data.phone_number);
+  assert(body.data.registry);
+  assert(body.data.email);
 });

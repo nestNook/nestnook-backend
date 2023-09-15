@@ -17,5 +17,5 @@ Feature: Fabricators
 
     Scenario: Delete a fabricator
       Given an admin send a delete request to "/api/v1/fabricators" to delete a fabricator
-      When the delete fabricator response status code is 204
+      When the delete fabricator response status code is 200
       Then the delete fabricator response body should be empty
