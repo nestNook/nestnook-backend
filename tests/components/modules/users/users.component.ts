@@ -10,7 +10,7 @@ import {
   userMock,
 } from '@test/units/modules/users/mocks/users-mock';
 import { SessionsService } from '@modules/session/services/sessions.service';
-import { sessionDTOMock } from '@test/units/modules/sessions/mocks/sessions-mock';
+import { sessionDTOMock } from '@test/__mocks__/sessions-mock';
 
 let response: Response;
 
