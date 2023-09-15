@@ -26,6 +26,12 @@ export class FabricatorsRouter implements BaseRouter {
         method: 'get',
         middlewares: [],
       },
+      {
+        path: '/:id',
+        handler: fabricatorsController.deleteFabricator,
+        method: 'delete',
+        middlewares: [],
+      },
     ];
   }
 }
