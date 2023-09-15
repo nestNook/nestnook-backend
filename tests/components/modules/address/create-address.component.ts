@@ -16,7 +16,7 @@ import {
   accessToken,
   refreshToken,
   sessionMock,
-} from '@test/units/modules/sessions/mocks/sessions-mock';
+} from '@test/__mocks__/sessions-mock';
 import { AuthRepository } from '@modules/auth/repositories/auth.repository';
 
 let response: Response;
