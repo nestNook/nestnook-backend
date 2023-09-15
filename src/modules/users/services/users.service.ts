@@ -1,9 +1,9 @@
 import { type RolesRepositoryInterface } from '@modules/roles/repositories/roles.repository.interface';
 import { type UsersRepositoryInterface } from '../repositories/users.repository.interface';
 import { BadRequestException } from '@src/errors/bad-request-exception';
-import { NotFoundException } from '@src/errors/not-found-exception';
-import { ForbiddenException } from '@src/errors/forbidden-exception';
 import { type UsersServiceInterface } from './users.service.interface';
+import { ForbiddenException } from '@src/errors/forbidden-exception';
+import { NotFoundException } from '@src/errors/not-found-exception';
 import { UserBuilder } from '../builders/user.builder';
 import { type SessionDTO } from '@@types/session.dto';
 import { UserRoles } from '@@types/user-roles';
@@ -13,10 +13,12 @@ import validationUtils from '@utils/validation-utils';
 import passwordUtils from '@utils/password-utils';
 
 import {
+  type GivePrivilegesDTO,
   type CreateUserDTO,
   type GetUserDTO,
   type UpdatePasswordDTO,
   type UpdateUserDTO,
+  type User,
 } from '../dtos';
 
 export class UsersService implements UsersServiceInterface {
@@ -165,5 +167,33 @@ export class UsersService implements UsersServiceInterface {
     const password_hash = await passwordUtils.hashPass(dto.password);
 
     await this.usersRepository.update(userId, { password_hash });
+  }
+
+  async givePrivileges(
+    admin: User,
+    { userId, privilege }: GivePrivilegesDTO,
+  ): Promise<void> {
+    if (admin.id === userId) {
+      throw new BadRequestException(
+        'You are not allowed to give privileges to yourself',
+      );
+    }
+
+    const user = await this.usersRepository.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (user.role.name === privilege) {
+      throw new BadRequestException(`User already is ${privilege}`);
+    }
+    const role = await this.rolesRepository.getByName(privilege);
+
+    if (!role) {
+      throw new BadRequestException('Role not found');
+    }
+
+    await this.usersRepository.update(userId, { role_id: role.id });
   }
 }
