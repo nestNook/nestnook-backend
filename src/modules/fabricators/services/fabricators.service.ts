@@ -1,4 +1,3 @@
-import { NotFoundException } from '@src/errors/not-found-exception';
 import {
   type CreateFabricatorDTO,
   type Fabricator,
@@ -6,6 +5,8 @@ import {
 } from '../dtos';
 import { type FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { type FabricatorServiceInterface } from './fabricators.service.interface';
+import validationUtils from '@utils/validation-utils';
+import { NotFoundException } from '@src/errors/not-found-exception';
 import { BadRequestException } from '@src/errors/bad-request-exception';
 
 export class FabricatorsService implements FabricatorServiceInterface {
@@ -55,6 +56,14 @@ export class FabricatorsService implements FabricatorServiceInterface {
   }
 
   async createFabricator(dto: CreateFabricatorDTO): Promise<Fabricator> {
+    const isEmpty = validationUtils.isObjectEmpty(dto);
+
+    if (isEmpty) {
+      throw new BadRequestException(
+        'At least one field is required to create a fabricator',
+      );
+    }
+
     await this.checkFabricator(dto);
     const fabricator = await this.fabricatorsRepository.createFabricator(dto);
     return fabricator;
@@ -94,7 +103,6 @@ export class FabricatorsService implements FabricatorServiceInterface {
     if (!deletedFabricator) {
       throw new NotFoundException('Fabricator not found');
     }
-
     return deletedFabricator;
   }
 }
