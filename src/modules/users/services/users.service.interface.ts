@@ -1,9 +1,11 @@
 import { type SessionDTO } from '@@types/session.dto';
-import { type CreateUserDTO } from '../dtos/create-user.dto';
 import {
   type GetUserDTO,
   type UpdatePasswordDTO,
   type UpdateUserDTO,
+  type CreateUserDTO,
+  type GivePrivilegesDTO,
+  type User,
 } from '../dtos';
 
 export interface UsersServiceInterface {
@@ -16,4 +18,5 @@ export interface UsersServiceInterface {
     dto: UpdateUserDTO,
   ) => Promise<GetUserDTO | null>;
   updateUserPassword: (userId: string, dto: UpdatePasswordDTO) => Promise<void>;
+  givePrivileges: (user: User, dto: GivePrivilegesDTO) => Promise<void>;
 }

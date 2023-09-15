@@ -1,12 +1,14 @@
-import { type Request, type Response } from 'express';
+import { type UsersServiceInterface } from '../services/users.service.interface';
+import { type UsersControllerInterface } from './users.controller.interface';
 import { type CreateUserDTO } from '../dtos/create-user.dto';
 import { Controller } from '@common/controller.decorator';
-import { type UsersControllerInterface } from './users.controller.interface';
-import { type UsersServiceInterface } from '../services/users.service.interface';
+import { type Request, type Response } from 'express';
 import {
+  type GivePrivilegesDTO,
   type CreateUserResDTO,
   type UpdatePasswordDTO,
   type UpdateUserDTO,
+  type User,
 } from '../dtos';
 
 @Controller
@@ -62,5 +64,15 @@ export class UsersController implements UsersControllerInterface {
     await this.usersService.updateUserPassword(id, dto);
 
     return res.status(204).json();
+  }
+
+  async givePrivileges(req: Request, res: Response): Promise<Response> {
+    const dto: GivePrivilegesDTO = req.body;
+    const admin: User = req.app.locals.user;
+    await this.usersService.givePrivileges(admin, dto);
+
+    return res.status(200).json({
+      status: 'success',
+    });
   }
 }

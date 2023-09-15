@@ -1,14 +1,14 @@
 import { UnauthorizedException } from '@src/errors/unauthorized-exception';
-import { ForbiddenException } from '@src/errors/forbidden-exception';
 import { type Request, type Response, type NextFunction } from 'express';
+import { ForbiddenException } from '@src/errors/forbidden-exception';
 import { SessionStatus } from '@@types/session-status';
 import { type Session } from '@modules/session/dtos';
-import { UserRoles } from '@@types/user-roles';
+import { AccessLevel } from '@@types/access-level';
 import cookieUtils from '@utils/cookie-utils';
 import tokenUtils from '@utils/token-utils';
 import authModule from '../auth.module';
 
-export function auth(role: UserRoles = UserRoles.CUSTOMER) {
+export function auth(accessLevel: AccessLevel = AccessLevel.CUSTOMER) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const accessToken =
@@ -48,7 +48,7 @@ export function auth(role: UserRoles = UserRoles.CUSTOMER) {
           return;
         }
 
-        if (user.role.name !== role) {
+        if (user.role.access_level < accessLevel) {
           next(
             new ForbiddenException(
               'You are not allowed to perform this action',
@@ -74,7 +74,7 @@ export function auth(role: UserRoles = UserRoles.CUSTOMER) {
         return;
       }
 
-      if (user.role.name !== role) {
+      if (user.role.access_level !== accessLevel) {
         next(
           new ForbiddenException('You are not allowed to perform this action'),
         );

@@ -6,4 +6,5 @@ export interface UsersControllerInterface {
   deleteMe: (req: Request, res: Response) => Promise<Response>;
   updateMe: (req: Request, res: Response) => Promise<Response>;
   updatePassword: (req: Request, res: Response) => Promise<Response>;
+  givePrivileges: (req: Request, res: Response) => Promise<Response>;
 }

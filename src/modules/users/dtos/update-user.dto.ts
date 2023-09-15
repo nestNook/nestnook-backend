@@ -3,4 +3,5 @@ export interface UpdateUserDTO {
   email?: string;
   phone_number?: string;
   password_hash?: string;
+  role_id?: string;
 }

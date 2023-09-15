@@ -6,3 +6,4 @@ export * from './responses';
 export * from './update-user.dto';
 export * from './user-query.dto';
 export * from './update-password.dto';
+export * from './give-privileges.dto';
