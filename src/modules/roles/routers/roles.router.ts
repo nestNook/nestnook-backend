@@ -1,7 +1,7 @@
 import { type RolesControllerInterface } from '../controllers/roles.controller.interface';
 import { auth } from '@modules/auth/middlewares/auth.middleware';
 import { type Route } from '@common/route.interface';
-import { UserRoles } from '@@types/user-roles';
+import { AccessLevel } from '@@types/access-level';
 import {
   type MiddlewaresOptions,
   type BaseRouter,
@@ -11,7 +11,7 @@ export class RolesRouter implements BaseRouter {
   routes: Route[];
   middlewaresOptions?: MiddlewaresOptions[] | undefined = [
     {
-      middleware: auth(UserRoles.ADMIN),
+      middleware: auth(AccessLevel.ADMIN),
     },
   ];
 
