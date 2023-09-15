@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import { BadRequestException } from '@src/errors/bad-request-exception';
-import { CreateFabricatorDTO, Fabricator, UpdateFabricatorDTO } from '../dtos';
-import { FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
-import { FabricatorServiceInterface } from './fabricators.service.interface';
-import validationUtils from '@utils/validation-utils';
-import { NotFoundException } from '@src/errors/not-found-exception';
-=======
 import {
   type CreateFabricatorDTO,
   type Fabricator,
@@ -13,7 +5,10 @@ import {
 } from '../dtos';
 import { type FabricatorRepositoryInterface } from '../repositories/fabricators.repository.interface';
 import { type FabricatorServiceInterface } from './fabricators.service.interface';
->>>>>>> 962e9cb6e70c8dd133a14f84c3b327a76c6a5757
+import validationUtils from '@utils/validation-utils';
+import { NotFoundException } from '@src/errors/not-found-exception';
+import { BadRequestException } from '@src/errors/bad-request-exception';
+
 
 export class FabricatorsService implements FabricatorServiceInterface {
   constructor(
