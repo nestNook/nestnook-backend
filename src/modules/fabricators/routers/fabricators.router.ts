@@ -1,6 +1,8 @@
 import { type Route } from '../../../common/route.interface';
 import { type BaseRouter } from '../../../common/baseRouter.interface';
 import { type FabricatorsControllerInterface } from '../controllers/fabricators.controller.interface';
+import { auth } from '@modules/auth/middlewares/auth.middleware';
+import { UserRoles } from '@@types/user-roles';
 
 export class FabricatorsRouter implements BaseRouter {
   routePrefix?: string = '/fabricators';
@@ -12,13 +14,13 @@ export class FabricatorsRouter implements BaseRouter {
         path: '/',
         handler: fabricatorsController.createFabricator,
         method: 'post',
-        middlewares: [],
+        middlewares: [auth(UserRoles.ADMIN)],
       },
       {
         path: '/:id',
         handler: fabricatorsController.updateFabricator,
         method: 'patch',
-        middlewares: [],
+        middlewares: [auth(UserRoles.ADMIN)],
       },
       {
         path: '/:id',
@@ -30,7 +32,7 @@ export class FabricatorsRouter implements BaseRouter {
         path: '/:id',
         handler: fabricatorsController.deleteFabricator,
         method: 'delete',
-        middlewares: [],
+        middlewares: [auth(UserRoles.ADMIN)],
       },
     ];
   }
