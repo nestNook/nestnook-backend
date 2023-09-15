@@ -12,7 +12,7 @@ describe('Users repository', () => {
   describe('Create user', () => {
     it('should be able to create a user', async () => {
       const createUserPrismaMock = mockPrisma.user.create.mockReturnValueOnce(
-        Promise.resolve(userMock)
+        Promise.resolve(userMock),
       );
 
       const user = await usersRepository.create(internCreateUserMock);
@@ -20,6 +20,9 @@ describe('Users repository', () => {
       expect(user).toEqual(userMock);
       expect(createUserPrismaMock).toBeCalledWith({
         data: internCreateUserMock,
+        include: {
+          role: true,
+        },
       });
     });
   });
