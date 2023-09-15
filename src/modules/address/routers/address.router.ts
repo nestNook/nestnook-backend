@@ -1,12 +1,19 @@
 import { type AddressControllerInterface } from '../controllers/address.controller.interface';
-import { type BaseRouter } from '@common/baseRouter.interface';
-import { type Handler, type Route } from '@common/route.interface';
 import { auth } from '@modules/auth/middlewares/auth.middleware';
+import { type Route } from '@common/route.interface';
+import {
+  type MiddlewaresOptions,
+  type BaseRouter,
+} from '@common/baseRouter.interface';
 
 export class AddressRouter implements BaseRouter {
   routePrefix?: string | undefined = '/address';
-  middlewares?: Handler[] = [auth()];
   public routes: Route[] = [];
+  middlewaresOptions?: MiddlewaresOptions[] | undefined = [
+    {
+      middleware: auth(),
+    },
+  ];
 
   constructor(readonly addressController: AddressControllerInterface) {
     this.routes = [
