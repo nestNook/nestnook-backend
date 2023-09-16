@@ -8,11 +8,12 @@ import { ForbiddenException } from '@src/errors/forbidden-exception';
 import { NotFoundException } from '@src/errors/not-found-exception';
 import { UsersRepositoryMock } from './mocks/users-mock.repository';
 import { UserBuilder } from '@modules/users/builders/user.builder';
-import { sessionDTOMock } from '../sessions/mocks/sessions-mock';
+import { sessionDTOMock } from '@test/__mocks__/sessions-mock';
 import { PasswordUtils } from '@utils/password-utils';
-import { roleMock } from '../roles/mocks/roles-mock';
+import { adminRoleMock, roleMock } from '../roles/mocks/roles-mock';
 import {
   createUserMock,
+  givePrivilegesDTOMock,
   publicUserMock,
   updateUserMock,
   updateUserPasswordMock,
@@ -23,6 +24,8 @@ import {
   type User,
   type UserQuery,
 } from '@modules/users/dtos';
+import { ValidationUtils } from '@utils/validation-utils';
+import { adminMock } from '@test/__mocks__/admin-user-mock';
 
 describe('Users service', () => {
   let usersService: UsersServiceInterface;
@@ -84,6 +87,76 @@ describe('Users service', () => {
       );
 
       expect(sessionsServiceSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not be able to create a user with already existent phone number', async () => {
+      const error = new BadRequestException('Phone number already exists');
+      jest
+        .spyOn(usersRepository, 'find')
+        .mockImplementation(async (dto: UserQuery) => {
+          if (dto.phone_number) {
+            return await Promise.resolve({
+              phone_number: createUserMock.phone_number,
+            });
+          }
+          return await Promise.resolve(null);
+        });
+
+      const sessionsServiceSpy = jest.spyOn(
+        SessionsService.prototype,
+        'createSession',
+      );
+
+      await expect(usersService.createUser(createUserMock)).rejects.toThrow(
+        error,
+      );
+
+      expect(sessionsServiceSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not be able to create a user with invalid body data', async () => {
+      const createUserRepositorySpy = jest.spyOn(usersRepository, 'create');
+      const validateSpy = jest.spyOn(ValidationUtils.prototype, 'validate');
+
+      await expect(
+        usersService.createUser({
+          ...createUserMock,
+          email: '123',
+        }),
+      ).rejects.toThrow(
+        new BadRequestException('A valid email must be provided'),
+      );
+
+      await expect(
+        usersService.createUser({
+          ...createUserMock,
+          phone_number: '123',
+        }),
+      ).rejects.toThrow(new BadRequestException('Invalid phone number'));
+
+      await expect(
+        usersService.createUser({
+          ...createUserMock,
+          password_confirm: '123',
+        }),
+      ).rejects.toThrow(new BadRequestException('Passwords does not match'));
+
+      expect(createUserRepositorySpy).not.toHaveBeenCalled();
+      expect(validateSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not be able to create a user with non existent role', async () => {
+      const createUserRepositorySpy = jest.spyOn(usersRepository, 'create');
+
+      jest
+        .spyOn(rolesRepository, 'getByName')
+        .mockReturnValueOnce(Promise.resolve(null));
+
+      await expect(usersService.createUser(createUserMock)).rejects.toThrow(
+        new NotFoundException('Role not found'),
+      );
+
+      expect(createUserRepositorySpy).not.toHaveBeenCalled();
     });
   });
 
@@ -377,6 +450,130 @@ describe('Users service', () => {
       ).rejects.toThrow(error);
 
       expect(updateUserRepositorySpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('give user privileges', () => {
+    it('should be able to give privileges to a user', async () => {
+      const updateUserRepositorySpy = jest
+        .spyOn(usersRepository, 'update')
+        .mockReturnValueOnce(Promise.resolve(adminMock));
+
+      const userBuilderSpy = jest.spyOn(UserBuilder, 'publicUser');
+
+      jest
+        .spyOn(usersRepository, 'findById')
+        .mockReturnValueOnce(Promise.resolve(userMock));
+
+      jest
+        .spyOn(rolesRepository, 'getByName')
+        .mockReturnValueOnce(Promise.resolve(roleMock));
+
+      const user = await usersService.givePrivileges(
+        userMock,
+        givePrivilegesDTOMock,
+      );
+      expect(user.role).toEqual(adminMock.role);
+      expect(userBuilderSpy).toHaveBeenCalledWith(adminMock);
+      expect(updateUserRepositorySpy).toHaveBeenCalledWith(
+        givePrivilegesDTOMock.userId,
+        {
+          role_id: roleMock.id,
+        },
+      );
+    });
+
+    it('should not be able to the user to change their privileges', async () => {
+      const updateUserRepositorySpy = jest
+        .spyOn(usersRepository, 'update')
+        .mockReturnValueOnce(Promise.resolve(adminMock));
+
+      await expect(
+        usersService.givePrivileges(
+          {
+            ...userMock,
+            id: givePrivilegesDTOMock.userId,
+          },
+          givePrivilegesDTOMock,
+        ),
+      ).rejects.toThrow(
+        new BadRequestException(
+          'You are not allowed to give privileges to yourself',
+        ),
+      );
+
+      expect(updateUserRepositorySpy).not.toHaveBeenCalled();
+    });
+
+    it('should not be able to give the same privilege that user already has', async () => {
+      const updateUserRepositorySpy = jest.spyOn(usersRepository, 'update');
+
+      jest
+        .spyOn(usersRepository, 'findById')
+        .mockReturnValueOnce(Promise.resolve({ role: adminRoleMock }));
+
+      await expect(
+        usersService.givePrivileges(userMock, givePrivilegesDTOMock),
+      ).rejects.toThrow(
+        new BadRequestException(`User already is ${adminRoleMock.name}`),
+      );
+
+      expect(updateUserRepositorySpy).not.toHaveBeenCalled();
+    });
+
+    it('should not be able to give a privilege of a role that does not exist', async () => {
+      const updateUserRepositorySpy = jest.spyOn(usersRepository, 'update');
+
+      jest
+        .spyOn(usersRepository, 'findById')
+        .mockReturnValueOnce(Promise.resolve(userMock));
+
+      jest
+        .spyOn(rolesRepository, 'getByName')
+        .mockReturnValueOnce(Promise.resolve(null));
+
+      await expect(
+        usersService.givePrivileges(userMock, givePrivilegesDTOMock),
+      ).rejects.toThrow(new NotFoundException('Role not found'));
+
+      expect(updateUserRepositorySpy).not.toHaveBeenCalled();
+    });
+
+    it('should not be able to give privileges to a user that does not exist', async () => {
+      const updateUserRepositorySpy = jest
+        .spyOn(usersRepository, 'update')
+        .mockReturnValueOnce(Promise.resolve(null));
+
+      jest
+        .spyOn(usersRepository, 'findById')
+        .mockReturnValueOnce(Promise.resolve(userMock));
+
+      jest
+        .spyOn(rolesRepository, 'getByName')
+        .mockReturnValueOnce(Promise.resolve(adminRoleMock));
+
+      await expect(
+        usersService.givePrivileges(userMock, givePrivilegesDTOMock),
+      ).rejects.toThrow(new NotFoundException('User not found'));
+
+      expect(updateUserRepositorySpy).toHaveBeenCalledWith(
+        givePrivilegesDTOMock.userId,
+        {
+          role_id: adminRoleMock.id,
+        },
+      );
+
+      jest.clearAllMocks();
+
+      updateUserRepositorySpy.mockReturnValueOnce(Promise.resolve(null));
+
+      jest
+        .spyOn(usersRepository, 'findById')
+        .mockReturnValueOnce(Promise.resolve(null));
+
+      await expect(
+        usersService.givePrivileges(userMock, givePrivilegesDTOMock),
+      ).rejects.toThrow(new NotFoundException('User not found'));
     });
   });
 });

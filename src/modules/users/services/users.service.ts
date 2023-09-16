@@ -20,6 +20,8 @@ import {
   type UpdateUserDTO,
   type User,
 } from '../dtos';
+import { createUserSchema } from '../schemas/crate-user.schema';
+import { updateUserSchema } from '../schemas/update-user.schema';
 
 export class UsersService implements UsersServiceInterface {
   constructor(
@@ -27,23 +29,35 @@ export class UsersService implements UsersServiceInterface {
     private readonly rolesRepository: RolesRepositoryInterface,
   ) {}
 
-  async createUser({
-    email,
-    name,
-    phone_number,
-    password,
-    password_confirm,
-  }: CreateUserDTO): Promise<SessionDTO> {
-    const isEmailAlreadyExistent = await this.usersRepository.find({ email });
+  async createUser(dto: CreateUserDTO): Promise<SessionDTO> {
+    const { email, password, phone_number, password_confirm } = dto;
 
-    if (isEmailAlreadyExistent) {
+    const emailPromise = email
+      ? this.usersRepository.find({ email })
+      : Promise.resolve(null);
+
+    const phoneNumberPromise = phone_number
+      ? this.usersRepository.find({ phone_number })
+      : Promise.resolve(null);
+
+    const [existingEmailUser, existingPhoneNumberUser] = await Promise.all([
+      emailPromise,
+      phoneNumberPromise,
+    ]);
+
+    if (existingEmailUser) {
       throw new BadRequestException('Email already exists');
+    }
+
+    if (existingPhoneNumberUser) {
+      throw new BadRequestException('Phone number already exists');
     }
 
     if (password !== password_confirm) {
       throw new BadRequestException('Passwords does not match');
     }
 
+    const userData = validationUtils.validate(createUserSchema, dto);
     const role = await this.rolesRepository.getByName(UserRoles.CUSTOMER);
 
     if (!role) {
@@ -53,9 +67,7 @@ export class UsersService implements UsersServiceInterface {
     const password_hash = await passwordUtils.hashPass(password);
 
     const user = await this.usersRepository.create({
-      email,
-      name,
-      phone_number,
+      ...userData,
       password_hash,
       role_id: role.id,
     });
@@ -65,7 +77,7 @@ export class UsersService implements UsersServiceInterface {
     return session;
   }
 
-  async getUserById(userId: string): Promise<GetUserDTO | null> {
+  async getUserById(userId: string): Promise<GetUserDTO> {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
@@ -77,7 +89,7 @@ export class UsersService implements UsersServiceInterface {
     return publicUser;
   }
 
-  async deleteUserById(id: string): Promise<GetUserDTO | null> {
+  async deleteUserById(id: string): Promise<GetUserDTO> {
     const deletedUser = await this.usersRepository.delete(id);
 
     if (!deletedUser) {
@@ -87,7 +99,7 @@ export class UsersService implements UsersServiceInterface {
     return deletedUser;
   }
 
-  async getUserByEmail(email: string): Promise<GetUserDTO | null> {
+  async getUserByEmail(email: string): Promise<GetUserDTO> {
     const user = await this.usersRepository.find({ email });
 
     if (!user) {
@@ -99,10 +111,7 @@ export class UsersService implements UsersServiceInterface {
     return publicUser;
   }
 
-  async updateUserById(
-    id: string,
-    dto: UpdateUserDTO,
-  ): Promise<GetUserDTO | null> {
+  async updateUserById(id: string, dto: UpdateUserDTO): Promise<GetUserDTO> {
     const { email, phone_number } = dto;
 
     const emailPromise = email
@@ -130,7 +139,8 @@ export class UsersService implements UsersServiceInterface {
       throw new BadRequestException('At least one field required to update');
     }
 
-    const updatedUser = await this.usersRepository.update(id, dto);
+    const userData = validationUtils.validate(updateUserSchema, dto);
+    const updatedUser = await this.usersRepository.update(id, userData);
 
     if (!updatedUser) {
       throw new NotFoundException('User not found');
@@ -172,7 +182,7 @@ export class UsersService implements UsersServiceInterface {
   async givePrivileges(
     admin: User,
     { userId, privilege }: GivePrivilegesDTO,
-  ): Promise<void> {
+  ): Promise<GetUserDTO> {
     if (admin.id === userId) {
       throw new BadRequestException(
         'You are not allowed to give privileges to yourself',
@@ -194,6 +204,16 @@ export class UsersService implements UsersServiceInterface {
       throw new BadRequestException('Role not found');
     }
 
-    await this.usersRepository.update(userId, { role_id: role.id });
+    const updatedUser = await this.usersRepository.update(userId, {
+      role_id: role.id,
+    });
+
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    const publicUser = UserBuilder.publicUser(updatedUser);
+
+    return publicUser;
   }
 }

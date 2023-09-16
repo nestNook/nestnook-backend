@@ -1,4 +1,5 @@
 import {
+  type GivePrivilegesDTO,
   type CreateUserDTO,
   type GetUserDTO,
   type InternCreateUserDTO,
@@ -8,6 +9,7 @@ import {
 } from '@modules/users/dtos';
 import { faker } from '@faker-js/faker';
 import { roleMock } from '../../roles/mocks/roles-mock';
+import { UserRoles } from '@@types/user-roles';
 
 const password = faker.internet.password({ length: 8 });
 
@@ -63,4 +65,9 @@ export const updateUserPasswordMock: UpdatePasswordDTO = {
   currentPassword: createUserMock.password,
   password,
   passwordConfirm: password,
+};
+
+export const givePrivilegesDTOMock: GivePrivilegesDTO = {
+  privilege: UserRoles.ADMIN,
+  userId: faker.string.uuid(),
 };

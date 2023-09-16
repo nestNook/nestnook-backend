@@ -1,7 +1,7 @@
 import { BRAZIL_PHONE_NUMBER_REGEX } from '@common/constants';
 import { z } from 'zod';
 
-export const createUserSchema = z.object({
+export const updateUserSchema = z.object({
   name: z.string({ required_error: 'A name must be provided' }),
   email: z
     .string({ required_error: 'A email must be provided' })

@@ -9,6 +9,7 @@ import {
   type UpdatePasswordDTO,
   type UpdateUserDTO,
   type User,
+  type GetUserDTO,
 } from '../dtos';
 
 @Controller
@@ -69,10 +70,11 @@ export class UsersController implements UsersControllerInterface {
   async givePrivileges(req: Request, res: Response): Promise<Response> {
     const dto: GivePrivilegesDTO = req.body;
     const admin: User = req.app.locals.user;
-    await this.usersService.givePrivileges(admin, dto);
+    const user: GetUserDTO = await this.usersService.givePrivileges(admin, dto);
 
     return res.status(200).json({
       status: 'success',
+      data: user,
     });
   }
 }

@@ -1,9 +1,9 @@
-import { sessionMock } from '@test/units/modules/sessions/mocks/sessions-mock';
 import { AuthRepository } from '@modules/auth/repositories/auth.repository';
 import { userMock } from '@test/units/modules/users/mocks/users-mock';
 import { AuthService } from '@modules/auth/services/auth.service';
 import { type SessionDTO } from '@@types/session.dto';
 import { type User } from '@modules/users/dtos';
+import { sessionMock } from './sessions-mock';
 import * as sinon from 'sinon';
 
 interface MockSessionParams {

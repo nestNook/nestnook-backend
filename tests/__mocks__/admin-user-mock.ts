@@ -1,15 +1,13 @@
-import { faker } from '@faker-js/faker';
+import { AccessLevel } from '@@types/access-level';
 import { User } from '@modules/users/dtos';
+import { faker } from '@faker-js/faker';
 
 const userId = faker.string.uuid();
 const roleId = faker.string.uuid();
-const password = faker.internet.password({ length: 8 });
 
-export const adminMock = {
+export const adminMock: User = {
   email: faker.internet.email(),
   name: faker.person.fullName(),
-  password,
-  password_confirm: password,
   phone_number: faker.phone.number('189########'),
   created_at: new Date(),
   updated_at: new Date(),
@@ -26,5 +24,6 @@ export const adminMock = {
     description: 'admin',
     created_at: new Date(),
     updated_at: new Date(),
+    access_level: AccessLevel.ADMIN,
   },
-} as User;
+};
