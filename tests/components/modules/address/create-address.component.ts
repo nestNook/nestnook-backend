@@ -10,10 +10,7 @@ import {
   createAddressMock,
 } from '@test/units/modules/address/mocks/address-mock';
 
-import {
-  accessToken,
-  refreshToken,
-} from '@test/units/modules/sessions/mocks/sessions-mock';
+import { accessToken, refreshToken } from '@test/__mocks__/sessions-mock';
 import { MockSession } from '@test/__mocks__/sessions-mocks';
 
 let response: Response;
