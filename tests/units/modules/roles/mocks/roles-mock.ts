@@ -11,3 +11,12 @@ export const roleMock: Role = {
   access_level: AccessLevel.CUSTOMER,
   id: faker.string.uuid(),
 };
+
+export const adminRoleMock: Role = {
+  created_at: new Date(),
+  updated_at: new Date(),
+  description: 'Admin',
+  name: UserRoles.ADMIN,
+  access_level: AccessLevel.ADMIN,
+  id: faker.string.uuid(),
+};
