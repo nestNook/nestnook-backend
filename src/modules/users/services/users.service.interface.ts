@@ -18,5 +18,5 @@ export interface UsersServiceInterface {
     dto: UpdateUserDTO,
   ) => Promise<GetUserDTO | null>;
   updateUserPassword: (userId: string, dto: UpdatePasswordDTO) => Promise<void>;
-  givePrivileges: (user: User, dto: GivePrivilegesDTO) => Promise<void>;
+  givePrivileges: (user: User, dto: GivePrivilegesDTO) => Promise<GetUserDTO>;
 }
