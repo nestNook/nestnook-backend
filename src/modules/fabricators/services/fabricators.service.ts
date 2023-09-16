@@ -83,6 +83,14 @@ export class FabricatorsService implements FabricatorServiceInterface {
     id: string,
     dto: UpdateFabricatorDTO,
   ): Promise<Fabricator> {
+    const isEmpty = validationUtils.isObjectEmpty(dto);
+
+    if (isEmpty) {
+      throw new BadRequestException(
+        'At least one field is required to update a fabricator',
+      );
+    }
+
     await this.checkFabricator(dto);
     const updatedFabricator = await this.fabricatorsRepository.updateFabricator(
       id,
