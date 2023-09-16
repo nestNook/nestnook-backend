@@ -1,6 +1,8 @@
-import { sessionDTOMock } from '@test/units/modules/sessions/mocks/sessions-mock';
 import { UsersRepository } from '@modules/users/repositories/users.repository';
+import { RolesRepository } from '@modules/roles/repositories/roles.repository';
 import { SessionsService } from '@modules/session/services/sessions.service';
+import { roleMock } from '@test/units/modules/roles/mocks/roles-mock';
+import { sessionDTOMock } from '@test/__mocks__/sessions-mock';
 import { type SessionDTO } from '@@types/session.dto';
 import request, { type Response } from 'supertest';
 import { server } from '@test/components/setup';
@@ -11,8 +13,6 @@ import {
   createUserMock,
   userMock,
 } from '@test/units/modules/users/mocks/users-mock';
-import { RolesRepository } from '@modules/roles/repositories/roles.repository';
-import { roleMock } from '@test/units/modules/roles/mocks/roles-mock';
 
 let response: Response;
 

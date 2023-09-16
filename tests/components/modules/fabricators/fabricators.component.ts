@@ -27,8 +27,14 @@ Given(
       'createFabricator',
     );
 
+    const findORFabricatorStub = sinon.stub(
+      FabricatorRepository.prototype,
+      'findOr',
+    );
+
     MockSession.mockSession({ user: adminMock });
     createFabricatorStub.callsFake(() => Promise.resolve(fabricatorMock));
+    findORFabricatorStub.callsFake(() => Promise.resolve([]));
 
     response = await request(server.app)
       .post(url)
@@ -40,6 +46,7 @@ Given(
       .send(createFabricatorMock);
 
     createFabricatorStub.restore();
+    findORFabricatorStub.restore();
     MockSession.restoreSessionMock();
   },
 );
@@ -85,16 +92,6 @@ When(
   },
 );
 
-Then('the response body shuld contain the fabricator data', function () {
-  const body: { status: string; data: Fabricator } = response.body;
-
-  assert(body.data.id);
-  assert(body.data.name);
-  assert(body.data.phone_number);
-  assert(body.data.email);
-  assert(body.data.registry);
-});
-
 Given(
   'an admin send a patch request to {string} to update a fabricator',
   async function (url: string) {
@@ -103,9 +100,14 @@ Given(
       'updateFabricator',
     );
 
+    const findORFabricatorStub = sinon.stub(
+      FabricatorRepository.prototype,
+      'findOr',
+    );
     MockSession.mockSession({ user: adminMock });
 
     repositoryStub.callsFake(() => Promise.resolve(fabricatorMock));
+    findORFabricatorStub.callsFake(() => Promise.resolve([]));
 
     response = await request(server.app)
       .patch(`${url}/${fabricatorMock.id}`)
@@ -116,8 +118,9 @@ Given(
       })
       .send(fabricatorMock);
 
-    MockSession.restoreSessionMock();
     repositoryStub.restore();
+    findORFabricatorStub.restore();
+    MockSession.restoreSessionMock();
   },
 );
 
