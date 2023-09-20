@@ -2,5 +2,8 @@ import { SectorRepositoryInterface } from '@modules/sectors/repositories/sector.
 
 export class SectorRepositoryMock implements SectorRepositoryInterface {
   createSector = jest.fn();
-  findSectorByName = jest.fn();
+  findByName = jest.fn();
+  findById = jest.fn();
+  updateSector = jest.fn();
+  deleteSector = jest.fn()
 }
