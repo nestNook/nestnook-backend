@@ -238,7 +238,7 @@ describe('Fabricator service', () => {
       expect(repositorySpy).toHaveBeenCalledWith(fabricatorMock.id);
     });
 
-    it('should not be able to delete a user that does not exist', async () => {
+    it('should not be able to delete a fabricator that does not exist', async () => {
       const error = new NotFoundException('Fabricator not found');
 
       const deleteFabricatorRepositorySpy = jest

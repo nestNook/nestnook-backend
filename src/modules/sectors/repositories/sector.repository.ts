@@ -42,7 +42,7 @@ export class SectorRepository implements SectorRepositoryInterface {
     return updatedSector;
   }
 
-  async deleteSector(id: string): Promise<Sector> {
+  async deleteSector(id: string): Promise<Sector | null> {
     const sector = await prisma.sector.delete({
       where: { id },
     });

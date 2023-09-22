@@ -9,5 +9,5 @@ export interface SectorRepositoryInterface {
     updateSectorDto: UpdateSectorDTO,
   ) => Promise<Sector>;
   findByName: (name: string) => Promise<Sector | null>;
-  deleteSector: (id: string) => Promise<Sector>;
+  deleteSector: (id: string) => Promise<Sector | null>;
 }

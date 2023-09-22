@@ -68,7 +68,7 @@ export class SectorService implements SectorServiceInterface {
     const deletedSector = await this.sectorRepository.deleteSector(id);
 
     if (!deletedSector) {
-      throw new NotFoundException('Fabricator not found');
+      throw new NotFoundException('Sector not found');
     }
 
     return deletedSector;
